@@ -1,0 +1,28 @@
+
+<Printer LABELLABELNUMBERZEROED>
+UUID urn:uuid:612253cc-13dc-343e-6501-9b64342cefLABELNUMBERZEROED
+AuthInfoRequired none
+Info Brother QL-720NW LABELNUMBER
+MakeModel Brother QL-720NW CUPS
+DeviceURI lpd://192.168.88.2LABELIP/BINARY_P1
+State Idle
+StateTime 1511188635
+ConfigTime 1509012145
+Type 8392772
+Accepting Yes
+Shared No
+JobSheets none none
+QuotaPeriod 0
+PageLimit 0
+KLimit 0
+OpPolicy default
+ErrorPolicy retry-job
+Attribute marker-colors \#000000
+Attribute marker-levels -1
+Attribute marker-low-levels 10
+Attribute marker-high-levels 100
+Attribute marker-names Thermal
+Attribute marker-types unknown
+Attribute marker-change-time 1511188635
+</Printer>
+

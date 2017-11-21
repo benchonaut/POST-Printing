@@ -1,0 +1,77 @@
+<?php
+//printer routing config
+
+function url_origin( $s, $use_forwarded_host = false )
+{
+    $ssl      = ( ! empty( $s['HTTPS'] ) && $s['HTTPS'] == 'on' );
+    $sp       = strtolower( $s['SERVER_PROTOCOL'] );
+    $protocol = substr( $sp, 0, strpos( $sp, '/' ) ) . ( ( $ssl ) ? 's' : '' );
+    $port     = $s['SERVER_PORT'];
+    $port     = ( ( ! $ssl && $port=='80' ) || ( $ssl && $port=='443' ) ) ? '' : ':'.$port;
+    $host     = ( $use_forwarded_host && isset( $s['HTTP_X_FORWARDED_HOST'] ) ) ? $s['HTTP_X_FORWARDED_HOST'] : ( isset( $s['HTTP_HOST'] ) ? $s['HTTP_HOST'] : null );
+    $host     = isset( $host ) ? $host : $s['SERVER_NAME'] . $port;
+    return $protocol . '://' . $host;
+}
+
+function full_url( $s, $use_forwarded_host = false )
+	{    return url_origin( $s, $use_forwarded_host ) . $s['REQUEST_URI']; } //$absolute_url = full_url( $_SERVER );
+
+function curPageURL() {	
+	return strtok(full_url( $_SERVER ), '?'); //return url_origin( $_SERVER ) . strtok( $s['REQUEST_URI'], '\?');
+	}
+	
+$configfile=getenv("HOME").'/.printroute.json';
+$config=array();
+function emptyPrinterConfig($count = 16) {	
+	$route = array_fill(1, $count ,array_fill_keys(array('card','label'),'1'));
+	foreach ($route as $key => $value)
+			{ $route[$key]['label']=$key;$route[$key]['card']=$key; }
+	return $route;
+}
+
+function initPrinterConfig($configfile , $count = 16)
+	{	file_put_contents($configfile,json_encode(emptyPrinterConfig($count))); 	}
+
+if (file_exists($configfile))  { 				$config=json_decode(file_get_contents($configfile),1); }
+		else { initPrinterConfig($configfile);	$config=json_decode(file_get_contents($configfile),1); }
+		
+function getCardNum($config , $station)		{ return $config[$station]['card']; }
+
+function getLabelNum($config , $station)	{ return $config[$station]['label']; }
+
+function setCardNum($conf_obj , $station, $num)
+		{ global $configfile;$conf_obj[$station]['card']=$num; file_put_contents($configfile,json_encode($conf_obj)); return $conf_obj; }
+
+function setLabelNum($conf_obj , $station,$num)
+		{ global $configfile;$conf_obj[$station]['label']=$num; file_put_contents($configfile,json_encode($conf_obj)); return $conf_obj; }
+
+
+if(isset($_POST) AND !empty($_POST)) 
+	{
+	//file_put_contents('/tmp/printrouterPOST.log', print_r($_POST, true)); //DEBUG...DUMP POST REQUEST
+	foreach ($_POST as $action => $value) { 
+	$act=explode("_", $action);
+	if ($act[0] == 'label' ) 	{ $config=setLabelNum($config,$act[1],$value); }
+	elseif ($act[0] == 'card')	{ $config=setCardNum($config,$act[1],$value); }
+	 } 
+	// $action = $_GET['action']; 
+	// $agent_id = $_POST['agent_id']; 
+	header("HTTP/1.0 204 No Content");
+	exit;
+	}
+
+//file_put_contents('/tmp/printrouterCONF.log', print_r(count((array)$config))); //DEBUG...DUMP config object count
+//station id is determined by last number of ipv4
+print('<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html><head><title>Printer Selector '.curPageURL().'</title></head><body><br><hr>Printer Routing</h1>');
+print('<table><tr><th>Station</th><th>Card<br>Printer</th><th>Label<br>Printer</th></tr><tr>');
+   for($station=1; $station < count((array)$config) + 1 ; $station++) {
+		print('<td>'.$station.'</td>');
+		print('<td><form method="POST" action="'.curPageURL().'?action=card" onchange="document.getElementById(\'card_'.$station.'\').form.submit()"> <select id=card_'.$station.'  name=card_'.$station.'  required><option selected>'.getCardNum($config,$station)); 
+			for($i=1; $i < count((array)$config) + 1; $i++) { print('<option>'.$i); }
+		print('</select></form></td>');
+		print('<td><form method="POST" action="'.curPageURL().'?action=label" onchange="document.getElementById(\'label_'.$station.'\').form.submit()"><select id=label_'.$station.' name=label_'.$station.' required><option selected>'.getLabelNum($config,$station));
+			for($i=1; $i < count((array)$config) + 1 ; $i++) { print('<option>'.$i); }
+		print('</select></form></td></tr>');
+	}
+print('</table>');
+print('</body></html>');
