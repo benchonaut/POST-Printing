@@ -35,7 +35,7 @@ ln -s /etc/ssl/private/crt.pem /etc/ssl/private/ca.pem
 /etc/init.d/nginx restart
 
 
-grep printer_clean_tmp /etc/crontab  || (echo Installing cron printer dat cleanr; echo "Ki81ICoJKiAqICoJbHAJL2Jpbi9iYXNoIC1jICIuIH4vLmJhc2hyYzsgL2V0Yy9wcmludGVyX2NsZWFuX3RtcC5zaCAyPiYxID4gL3RtcC9jbGVhbmxvZyAiCgo="|base64 -d |tee -a /etc/crontab )
+grep printer_clean_tmp /etc/crontab  || (echo Installing cron printer dat cleanr; echo "Ki81ICoJKiAqICoJcm9vdAkvYmluL2Jhc2ggLWMgIi4gfi8uYmFzaHJjOyAvZXRjL3ByaW50ZXJfY2xlYW5fdG1wLnNoIDI+JjEgPiAvdG1wL2NsZWFubG9nICIKCg=="|base64 -d |tee -a /etc/crontab )
 grep 'find /var/log/ -name ' /etc/crontab |grep 'gz" -delete'  || (echo Installing cron log.gz cleaner;echo "KiAqLzIJKiAqICoJcm9vdAlmaW5kIC92YXIvbG9nLyAtbmFtZSAiKmd6IiAtZGVsZXRlIDI+JjEgPiAvdG1wL2NsZWFubG9nbG9nCgo="|base64 -d |tee -a /etc/crontab )
 
 echo;echo;echo;echo;echo;
