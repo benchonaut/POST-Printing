@@ -75,12 +75,12 @@ print('<table><tr><th>Station</th><th>Card<br>Printer</th><th>Card<br>Status</th
 			for($i=1; $i < count((array)$config) + 1; $i++) { print('<option>'.$i); }
 		print('</select></form></td>');
 		if (isset($status['card-'.sprintf("%02d",$station)])) { print('<td>'.$status['card-'.sprintf("%02d",$station)].'</td>'); }
-			else { print('<td>..</td>'); }
+			else { print('<td style="font-size: 70%;">..</td>'); }
 		print('<td><form method="POST" action="'.curPageURL().'?action=label" onchange="document.getElementById(\'label_'.$station.'\').form.submit()"><select id=label_'.$station.' name=label_'.$station.' required><option selected>'.getLabelNum($config,$station));
 			for($i=1; $i < count((array)$config) + 1 ; $i++) { print('<option>'.$i); }
 		print('</select></form></td>');
 		if (isset($status['label-'.sprintf("%02d",$station)])) { print('<td>'.$status['label-'.sprintf("%02d",$station)].'</td>'); }
-			else { print('<td>..</td>'); }		
+			else { print('<td style="font-size: 70%;">..</td>'); }		
 		print('</tr>');
 	}
 print('</table>');
