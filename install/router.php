@@ -24,8 +24,8 @@ $configfile=getenv("HOME").'/.printroute.json';
 $statusfile='/tmp/.status.json'
 $config=array();
 $status=array();
-exec('/bin/bash /etc/printer_status.sh '.$statusfile)
-$status=json_decode(file_get_contents($configfile),1);
+exec('/bin/bash /etc/printer_status.sh '.$statusfile);
+$status=json_decode(file_get_contents($statusfile),1);
 
 function emptyPrinterConfig($count = 16) {	
 	$route = array_fill(1, $count ,array_fill_keys(array('card','label'),'1'));
