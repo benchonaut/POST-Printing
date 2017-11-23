@@ -21,9 +21,11 @@ function curPageURL() {
 	}
 	
 $configfile=getenv("HOME").'/.printroute.json';
+$statusfile='/tmp/.status.json'
 $config=array();
 $status=array();
-$status=json_decode(exec('/bin/bash /etc/printer_status.sh'),1);
+exec('/bin/bash /etc/printer_status.sh '.$statusfile)
+$status=json_decode(file_get_contents($configfile),1);
 
 function emptyPrinterConfig($count = 16) {	
 	$route = array_fill(1, $count ,array_fill_keys(array('card','label'),'1'));
