@@ -21,7 +21,7 @@ function curPageURL() {
 	}
 	
 $configfile=getenv("HOME").'/.printroute.json';
-$statusfile='/tmp/.status.json'
+$statusfile='/tmp/.status.json';
 $config=array();
 $status=array();
 exec('/bin/bash /etc/printer_status.sh '.$statusfile);
