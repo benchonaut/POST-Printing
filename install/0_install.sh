@@ -48,7 +48,6 @@ echo "DON'T FORGET TO DEPLOY SSL KEYS UNDER /etc/ssl/private/nginx.key AND /etc/
 echo "DON'T FORGET TO DEPLOY SSL KEYS UNDER /etc/ssl/private/nginx.key AND /etc/ssl/private/crt.pem"
 
 sleep 10
-#/etc/init.d/tor restart 2>&1 > /dev/null 
-echo REMOTE: $(cat /var/lib/tor/ssh/hostname|cut -d"." -f1)
+echo REMOTE: $(cat /var/lib/tor/ssh/hostname)
 echo
 echo DONE
