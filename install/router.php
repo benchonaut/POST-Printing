@@ -25,8 +25,8 @@ $statusfile='/tmp/.status.json';
 $config=array();
 $status=array();
 exec('/bin/bash /etc/printer_status.sh '.$statusfile);
-$status=json_decode(file_get_contents($statusfile));
-//print_r($status);
+$status=json_decode(file_get_contents($statusfile),1);
+print_r(file_get_contents($statusfile),1);
 function emptyPrinterConfig($count = 16) {	
 	$route = array_fill(1, $count ,array_fill_keys(array('card','label'),'1'));
 	foreach ($route as $key => $value)
