@@ -1,7 +1,6 @@
 <?php 
 
-
-$url = 'http://printserver.local/print.php';
+echo 'usage '.basename(__FILE__).' [https://print.url/print.php [clientnum [file]]]'."\n" ;
 
 $client=1;
 $url = 'http://printserver.local/print.php';
@@ -29,3 +28,4 @@ if ($result === FALSE) { /* Handle error */ }
 
 var_dump($result);
 ?>
+
