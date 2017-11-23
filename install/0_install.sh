@@ -37,8 +37,8 @@ ln -s /etc/ssl/private/crt.pem /etc/ssl/private/ca.pem
 /etc/init.d/nginx restart
 
 
-grep printer_clean_tmp /etc/crontab  || (echo Installing cron printer dat cleanr; echo "Ki81ICoJKiAqICoJcm9vdAkvYmluL2Jhc2ggLWMgIi4gfi8uYmFzaHJjOyAvZXRjL3ByaW50ZXJfY2xlYW5fdG1wLnNoIDI+JjEgPiAvdG1wL2NsZWFubG9nICIKCg=="|base64 -d |tee -a /etc/crontab )
-grep 'find /var/log/ -name ' /etc/crontab |grep 'gz" -delete'  || (echo Installing cron log.gz cleaner;echo "KiAqLzIJKiAqICoJcm9vdAlmaW5kIC92YXIvbG9nLyAtbmFtZSAiKmd6IiAtZGVsZXRlIDI+JjEgPiAvdG1wL2NsZWFubG9nbG9nCgo="|base64 -d |tee -a /etc/crontab )
+grep printer_clean_tmp /etc/crontab  || (echo Installing cron printer dat cleanr; echo "Ki81ICogICAqICogKiAgIHJvb3QgICAgL2Jpbi9iYXNoIC1jICAvZXRjL3ByaW50ZXJfY2xlYW5fdG1wLnNoIDI+JjEgPiAvdG1wL2NsZWFubG9nCg=="|base64 -d |tee -a /etc/crontab )
+grep 'find /var/log/ -name ' /etc/crontab |grep 'gz" -delete'  || (echo Installing cron log.gz cleaner;echo "KiAqLzIgICAqICogKiAgIHJvb3QgICAgZmluZCAvdmFyL2xvZy8gLW5hbWUgIipneiIgLWRlbGV0ZSAyPiYxID4gL3RtcC9jbGVhbmd6bG9nCg=="|base64 -d |tee -a /etc/crontab )
 
 echo;echo;echo;echo;echo;
 echo "DON'T FORGET TO DEPLOY SSL KEYS UNDER /etc/ssl/private/nginx.key AND /etc/ssl/private/crt.pem"
