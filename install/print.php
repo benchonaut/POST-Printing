@@ -14,6 +14,7 @@ function getRealIpAddr()
     return $ip;
 }
 
+
 $RealIP=explode(".",getRealIpAddr());
 $lastOctet=$RealIP[3];
 
