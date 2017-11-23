@@ -2,8 +2,11 @@
 
 
 
->installing
->>cd to install directory
+> ## installing
+>>## deploay standard ubuntu16.04 (we used mini iso/tftp)
 
->>sudo bash 0_install.sh
+>>>sudo apt-get install git
+>>>git clone https://github.com/benchonaut/POST-Printing.git
+>>>cd POST-Printing/install
+>>>sudo bash 0_install.sh
 
