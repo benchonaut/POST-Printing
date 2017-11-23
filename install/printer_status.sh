@@ -14,5 +14,5 @@ for LABEL in $(lpstat -s|grep LABEL|cut -d: -f1,3|sed 's/^.\+LABEL//g');do
 	i=$(echo $LABEL |cut -d":" -f1) ; IP=$(echo $LABEL |cut -d"/" -f3);
 	(echo -n '"label-'$i'":"';ql720_stat $IP;echo -n '",' )	> /tmp/.status_label.$i & done
 wait
-( echo -n "{";grep -v '"",' /tmp/.status_{card,label}.* |sed 's/,$//g';echo -n "}" ) |tee $1
-rm /tmp/.status_{card,label}.*
+( echo -n "{";cat /tmp/.status_{card,label}.* |grep -v '"",'|sed 's/,$//g';echo -n "}" ) |tee $1
+#rm /tmp/.status_{card,label}.*
