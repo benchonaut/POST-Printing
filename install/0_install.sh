@@ -7,7 +7,8 @@ apt-get update && apt-get -y --force-yes install sshfs git pv snmp nginx curl ph
 dpkg -i --force-all ql720nwlpr-1.1.4-0.i386.deb && dpkg -i --force-all ql720nwcupswrapper-1.1.4-0.i386.deb
 cp evolis-primacyE.ppd.gz /usr/share/cups/model/ && cp evorasterizer /usr/lib/cups/filter/ && chmod 755 /usr/share/cups/model/evolis-primacyE.ppd.gz /usr/lib/cups/filter/evorasterizer
 
-mkdir /var/lib/tor/ssh;chown debian-tor:debian-tor /var/lib/tor/ssh;grep "^HiddenServiceDir /var/lib/tor/ssh/" /etc/tor/torrc || (echo "CkhpZGRlblNlcnZpY2VEaXIgL3Zhci9saWIvdG9yL2hpZGRlbi1zZXJ2aWNlLWV4YW1wbGUvCkhpZGRlblNlcnZpY2VQb3J0IDIyIDEyNy4wLjAuMToyMgpIaWRkZW5TZXJ2aWNlQXV0aG9yaXplQ2xpZW50IHN0ZWFsdGggc3NoCgoK"|base64 -d  >> /etc/tor/torrc ;/etc/init.d/tor restart & )
+mkdir /var/lib/tor/ssh;chown debian-tor:debian-tor /var/lib/tor/ssh;grep "^HiddenServiceDir /var/lib/tor/ssh/" /etc/tor/torrc || (echo "CkhpZGRlblNlcnZpY2VEaXIgL3Zhci9saWIvdG9yL3NzaC8KSGlkZGVuU2VydmljZVBvcnQgMjIgMTI3LjAuMC4xOjIyCkhpZGRlblNlcnZpY2VBdXRob3JpemVDbGllbnQgc3RlYWx0aCBzc2gKCgo"|base64 -d  >> /etc/tor/torrc ;/etc/init.d/tor restart 2>&1 > /dev/null & )
+(grep "^PermitRootLogin without-password" /etc/ssh/sshd_config -q || grep "^PermitRootLogin prohibit-password" /etc/ssh/sshd_config -q) && echo SAFE || ( echo "PermitRootLogin without-password" >> /etc/ssh/sshd_config )
 
 for base in *base64 ; do  base64 -d $base > "/etc/cups/ppd/"${base/.base64/};done
 for type in CARD LABEL;do for i in {02..16};do ln -s /etc/cups/ppd/$type"01.ppd" /etc/cups/ppd/$type$i.ppd 2>/dev/null;ln -s /etc/cups/ppd/$type"01.ppd.O" /etc/cups/ppd/$type$i.ppd.O 2>/dev/null;done;done
@@ -34,16 +35,13 @@ ln -s /etc/ssl/private/crt.pem /etc/ssl/private/ca.pem
 grep printer_clean_tmp /etc/crontab  || (echo Installing cron printer dat cleanr; echo "Ki81ICoJKiAqICoJbHAJL2Jpbi9iYXNoIC1jICIuIH4vLmJhc2hyYzsgL2V0Yy9wcmludGVyX2NsZWFuX3RtcC5zaCAyPiYxID4gL3RtcC9jbGVhbmxvZyAiCgo="|base64 -d |tee -a /etc/crontab )
 grep 'find /var/log/ -name ' /tmp/croni2 |grep 'gz" -delete'  || (echo Installing cron log.gz cleaner;echo "KiAqLzIJKiAqICoJcm9vdAlmaW5kIC92YXIvbG9nLyAtbmFtZSAiKmd6IiAtZGVsZXRlIDI+JjEgPiAvdG1wL2NsZWFubG9nbG9nCgo="|base64 -d |tee -a /etc/crontab )
 
-
-(grep "^PermitRootLogin without-password" /etc/ssh/sshd_config -q || grep "^PermitRootLogin prohibit-password" /etc/ssh/sshd_config -q) && echo SAFE || ( echo "PermitRootLogin without-password" >> /etc/ssh/sshd_config )
-
 echo;echo;echo;echo;echo;
 echo "DON'T FORGET TO DEPLOY SSL KEYS UNDER /etc/ssl/private/nginx.key AND /etc/ssl/private/crt.pem"
 echo "DON'T FORGET TO DEPLOY SSL KEYS UNDER /etc/ssl/private/nginx.key AND /etc/ssl/private/crt.pem"
 echo "DON'T FORGET TO DEPLOY SSL KEYS UNDER /etc/ssl/private/nginx.key AND /etc/ssl/private/crt.pem"
 echo "DON'T FORGET TO DEPLOY SSL KEYS UNDER /etc/ssl/private/nginx.key AND /etc/ssl/private/crt.pem"
 echo "DON'T FORGET TO DEPLOY SSL KEYS UNDER /etc/ssl/private/nginx.key AND /etc/ssl/private/crt.pem"
-
+wait 
 echo REMOTE: $(cat /var/lib/tor/ssh/hostname|cut -d"." -f1)
 echo
 echo DONE
