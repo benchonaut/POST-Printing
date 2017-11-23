@@ -18,6 +18,7 @@ tar xzf ql720nw.tgz -C /
 ln -s /opt/brother/PTouch/ql720nw/cupswrapper/brother_lpdwrapper_ql720nw /usr/lib/cups/filter/
 #cp -aurv brother_lpdwrapper_ql720nw /usr/lib/cups/filter/brother_lpdwrapper_ql720nw
 cp -aurv default /etc/nginx/sites-available
+cp -aurv printer_status.sh /etc/
 cp -aurv print.php router.php /var/www/html/
 chown -R www-data:www-data /var/www/
 chown -R root:lp /etc/cups

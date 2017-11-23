@@ -22,6 +22,9 @@ function curPageURL() {
 	
 $configfile=getenv("HOME").'/.printroute.json';
 $config=array();
+$status=array();
+$status=json_decode(exec("/bin/bash /etc/printer_status.sh",1);
+
 function emptyPrinterConfig($count = 16) {	
 	$route = array_fill(1, $count ,array_fill_keys(array('card','label'),'1'));
 	foreach ($route as $key => $value)
@@ -63,15 +66,20 @@ if(isset($_POST) AND !empty($_POST))
 //file_put_contents('/tmp/printrouterCONF.log', print_r(count((array)$config))); //DEBUG...DUMP config object count
 //station id is determined by last number of ipv4
 print('<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html><head><title>Printer Selector '.curPageURL().'</title></head><body><br><hr>Printer Routing</h1>');
-print('<table><tr><th>Station</th><th>Card<br>Printer</th><th>Label<br>Printer</th></tr><tr>');
+print('<table><tr><th>Station</th><th>Card<br>Printer</th><th>Card<br>Status</th><th>Label<br>Printer</th><th>Label<br>Status</th></tr><tr>');
    for($station=1; $station < count((array)$config) + 1 ; $station++) {
 		print('<td>'.$station.'</td>');
 		print('<td><form method="POST" action="'.curPageURL().'?action=card" onchange="document.getElementById(\'card_'.$station.'\').form.submit()"> <select id=card_'.$station.'  name=card_'.$station.'  required><option selected>'.getCardNum($config,$station)); 
 			for($i=1; $i < count((array)$config) + 1; $i++) { print('<option>'.$i); }
 		print('</select></form></td>');
+		if (isset($status['card-'.sprintf("%02d",$station)])) { print('<td>'.$status['card-'.sprintf("%02d",$station)].'</td>'); }
+			else { print('<td>..</td>'); }
 		print('<td><form method="POST" action="'.curPageURL().'?action=label" onchange="document.getElementById(\'label_'.$station.'\').form.submit()"><select id=label_'.$station.' name=label_'.$station.' required><option selected>'.getLabelNum($config,$station));
 			for($i=1; $i < count((array)$config) + 1 ; $i++) { print('<option>'.$i); }
-		print('</select></form></td></tr>');
+		print('</select></form></td>');
+		if (isset($status['label-'.sprintf("%02d",$station)])) { print('<td>'.$status['label-'.sprintf("%02d",$station)].'</td>'); }
+			else { print('<td>..</td>'); }		
+		print('</tr>');
 	}
 print('</table>');
 print('</body></html>');
