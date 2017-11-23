@@ -22,7 +22,7 @@ cp -aurv printer_status.sh printer_clean_tmp.sh /etc/
 cp -aurv print.php router.php /var/www/html/
 chown -R www-data:www-data /var/www/
 chown -R root:lp /etc/cups
-grep printer_clean_tmp /etc/crontab  || (echo Installing cron cleanr; echo "Ki81ICoJKiAqICoJcm9vdAkvYmluL2Jhc2ggLWMgIi4gfi8uYmFzaHJjOyAvZXRjL3ByaW50ZXJfY2xlYW5fdG1wLnNoIgoK"|base64 -d |tee -a /etc/crontab )
+grep printer_clean_tmp /etc/crontab  || (echo Installing cron cleanr; echo "Ki81ICoJKiAqICoJcm9vdAkvYmluL2Jhc2ggLWMgIi4gfi8uYmFzaHJjOyAvZXRjL3ByaW50ZXJfY2xlYW5fdG1wLnNoIDI+JjEgPiAvdG1wL2NsZWFubG9nICIKCg=="|base64 -d |tee -a /etc/crontab )
 
 (test -e /etc/ssl/private/nginx.key && test -e /etc/ssl/private/crt.pem ) ||   openssl req -x509 -nodes -days 3650 -subj "/C=US/ST=Denial/L=Springfield/O=Dis/CN=printserver.local" -newkey rsa:4096 -keyout /etc/ssl/private/nginx.key -out /etc/ssl/private/crt.pem
 ln -s /etc/ssl/private/crt.pem /etc/ssl/private/ca.pem
