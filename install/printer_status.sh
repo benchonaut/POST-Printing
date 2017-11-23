@@ -8,11 +8,11 @@ replace() { sed 's/^/'$1'/g;s///g' ; } ;
 
 for CARD in $(lpstat -s|grep CARD|cut -d: -f1,3|sed 's/^.\+CARD//g');do
 	i=$(echo $CARD |cut -d":" -f1) ; IP=$(echo $CARD |cut -d"/" -f3); 
-	(echo -n '"card-'$i'":"';primacy_stat $IP;echo -n '",' ) > /tmp/.status_card.$i & done
+	(echo -n '"card-'$i'":"';primacy_stat $IP;echo -n '",' ) |grep -v '""' > /tmp/.status_card.$i & done
 	
 for LABEL in $(lpstat -s|grep LABEL|cut -d: -f1,3|sed 's/^.\+LABEL//g');do
 	i=$(echo $LABEL |cut -d":" -f1) ; IP=$(echo $LABEL |cut -d"/" -f3);
-	(echo -n '"label-'$i'":"';ql720_stat $IP;echo -n '",' )	> /tmp/.status_label.$i & done
+	(echo -n '"label-'$i'":"';ql720_stat $IP;echo -n '",' )	|grep -v '""' > /tmp/.status_label.$i & done
 wait
-( echo -n "{";cat /tmp/.status_{card,label}.* |sed 's/,$//g;s/""/"___"/g';echo -n "}" ) |tee $1
+( echo -n "{";cat /tmp/.status_{card,label}.* |sed 's/,$//g';echo -n "}" ) |tee $1
 rm /tmp/.status_{card,label}.*
