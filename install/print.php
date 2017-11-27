@@ -1,8 +1,8 @@
 <?php 
 
 // (int)$_POST['client'];
-// (int)$_POST['type']; // card,label 
-//$_POST['file']; //base64 encoded pdf
+// $_POST['type']; // card,label 
+// $_POST['file']; //base64 encoded pdf
 function getRealIpAddr()
 {
     if (!empty($_SERVER['HTTP_CLIENT_IP']))   //check ip from share internet

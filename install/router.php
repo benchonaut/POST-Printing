@@ -58,6 +58,7 @@ if(isset($_POST) AND !empty($_POST))
 	$act=explode("_", $action);
 	if ($act[0] == 'label' ) 	{ $config=setLabelNum($config,$act[1],$value); }
 	elseif ($act[0] == 'card')	{ $config=setCardNum($config,$act[1],$value); }
+	elseif ($action == 'Rotate')	{ $config=setCardNum($config,$act[1],$value); }
 	 } 
 	// $action = $_GET['action']; 
 	// $agent_id = $_POST['agent_id']; 
@@ -68,7 +69,8 @@ if(isset($_POST) AND !empty($_POST))
 //file_put_contents('/tmp/printrouterCONF.log', print_r(count((array)$config))); //DEBUG...DUMP config object count
 //station id is determined by last number of ipv4
 print('<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html><head><title>Printer Selector '.curPageURL().'</title></head><body><br><hr>Printer Routing</h1>');
-//print('<form method="POST" action="'.curPageURL().'?action=cardFrontRot" onchange="document.getElementById(\'card_'.$station.'\').form.submit()"> <button name="foo" value="upvote">Upvote</button></form>');
+print('<form method="POST" action="'.curPageURL().'?action=RotFront" onchange="document.getElementById(\'RotFront\').form.submit()"> <button name="RotFront" id="RotFront" value="upvote">Upvote</button></form>');
+
 print('<table><tr><th>Station</th><th>Card<br>Printer</th><th>Card<br>Status</th><th>Label<br>Printer</th><th>Label<br>Status</th></tr><tr>');
    for($station=1; $station < count((array)$config) + 1 ; $station++) {
 		print('<td>'.$station.'</td>');
