@@ -76,7 +76,7 @@ print('</td><td><form method="POST" action="'.curPageURL().'?action=NoRotBack" o
 print('</td><td><form method="POST" action="'.curPageURL().'?action=RotBack" onchange="document.getElementById(\'RotBack\').form.submit()"> <button name="Rotate" id="RotBack" value="Back">Rotate Back</button></form>');
 print('</td></tr></table>');
 print('</tr></table><hr><table><tr><th>Station</th><th>Card<br>Printer</th><th>Card<br>Status</th><th>Label<br>Printer</th><th>Label<br>Status</th></tr><tr>');
-   for($station=1; $station < count((array)$config) + 1 ; $station++) {
+   for($station=1; $station < count((array)$config) ; $station++) {
 		print('<td>'.$station.'</td>');
 		print('<td><form method="POST" action="'.curPageURL().'?action=card" onchange="document.getElementById(\'card_'.$station.'\').form.submit()"> <select id=card_'.$station.'  name=card_'.$station.'  required><option selected>'.getCardNum($config,$station)); 
 			for($i=1; $i < count((array)$config) + 1; $i++) { print('<option>'.$i); }
