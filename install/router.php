@@ -59,14 +59,14 @@ if(isset($_POST) AND !empty($_POST))
 	if ($act[0] == 'label' ) 	{ $config=setLabelNum($config,$act[1],$value); }
 	elseif ($act[0] == 'card')	{ $config=setCardNum($config,$act[1],$value); }
 	elseif ($_POST['Rotate'] == 'Front')
-		{ $execute='';for ($a=1;$a<16;$a++ ) { $num=sprintf("%02d",$a);$execute=$execute.'lpadmin -p CARD'.$num.' -o FPageRotate180=yes;' ; } ; exec($execute); } 
+		{ $execute='';for ($a=1;$a<16;$a++ ) { $num=sprintf("%02d",$a);$execute=$execute.'lpadmin -p CARD'.$num.' -o FPageRotate180=yes;' ; } ; exec($execute); exit; } 
 	elseif ($_POST['Rotate'] == 'Back')
-		{ $execute='';for ($a=1;$a<16;$a++ ) { $num=sprintf("%02d",$a);$execute=$execute.'lpadmin -p CARD'.$num.' -o BPageRotate180=yes;' ; } ; exec($execute); } 
+		{ $execute='';for ($a=1;$a<16;$a++ ) { $num=sprintf("%02d",$a);$execute=$execute.'lpadmin -p CARD'.$num.' -o BPageRotate180=yes;' ; } ; exec($execute); exit;} 
 									
 	elseif ($_POST['NoRotate'] == 'Front')	 
-		{ $execute='';for ($a=1;$a<16;$a++ ) { $num=sprintf("%02d",$a);$execute=$execute.'lpadmin -p CARD'.$num.' -o FPageRotate180=no;' ; } ; exec($execute); } 
+		{ $execute='';for ($a=1;$a<16;$a++ ) { $num=sprintf("%02d",$a);$execute=$execute.'lpadmin -p CARD'.$num.' -o FPageRotate180=no;' ; } ; exec($execute); exit;} 
 	elseif ($_POST['NoRotate'] == 'Back')	 
-		{ $execute='';for ($a=1;$a<16;$a++ ) { $num=sprintf("%02d",$a);$execute=$execute.'lpadmin -p CARD'.$num.' -o BPageRotate180=no;' ; } ; exec($execute); } 
+		{ $execute='';for ($a=1;$a<16;$a++ ) { $num=sprintf("%02d",$a);$execute=$execute.'lpadmin -p CARD'.$num.' -o BPageRotate180=no;' ; } ; exec($execute); exit;} 
 									
 	
 	 } 
