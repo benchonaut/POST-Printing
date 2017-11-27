@@ -81,10 +81,10 @@ if(isset($_POST) AND !empty($_POST))
 //station id is determined by last number of ipv4
 print('<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html><head><title>Printer Selector '.curPageURL().'</title></head><body><h3>Printer Routing</h3>');
 print('<hr>Card Rotation(all printers):<br><table><tr><td>');
-print('<form method="POST" action="'.curPageURL().'?action=NoRotFront" onchange="document.getElementById(\'NoRotFront\').form.submit();setTimeout(location.reload(),5000)"> <button name="NoRotate" id="NoRotFront" value="Front">Straight Front</button></form>');
-print('</td><td><form method="POST" action="'.curPageURL().'?action=RotFront" onchange="document.getElementById(\'RotFront\').form.submit();setTimeout(location.reload(),5000)"> <button name="Rotate" id="RotFront" value="Front">Rotate Front</button></form>');
-print('</td><td><form method="POST" action="'.curPageURL().'?action=NoRotBack" onchange="document.getElementById(\'NoRotBack\').form.submit();setTimeout(location.reload(),5000)"> <button name="NoRotate" id="NoRotBack" value="Back">Straight Back</button></form>');
-print('</td><td><form method="POST" action="'.curPageURL().'?action=RotBack" onchange="document.getElementById(\'RotBack\').form.submit();setTimeout(location.reload(),5000)"> <button name="Rotate" id="RotBack" value="Back">Rotate Back</button></form>');
+print('<form method="POST" action="'.curPageURL().'?action=NoRotFront" onchange="document.getElementById(\'NoRotFront\').form.submit();setTimeout(window.location.reload.bind(window.location), 5000);"> <button name="NoRotate" id="NoRotFront" value="Front">Straight Front</button></form>');
+print('</td><td><form method="POST" action="'.curPageURL().'?action=RotFront" onchange="document.getElementById(\'RotFront\').form.submit();setTimeout(window.location.reload.bind(window.location), 5000);"> <button name="Rotate" id="RotFront" value="Front">Rotate Front</button></form>');
+print('</td><td><form method="POST" action="'.curPageURL().'?action=NoRotBack" onchange="document.getElementById(\'NoRotBack\').form.submit();setTimeout(window.location.reload.bind(window.location), 5000);"> <button name="NoRotate" id="NoRotBack" value="Back">Straight Back</button></form>');
+print('</td><td><form method="POST" action="'.curPageURL().'?action=RotBack" onchange="document.getElementById(\'RotBack\').form.submit();setTimeout(window.location.reload.bind(window.location), 5000);"> <button name="Rotate" id="RotBack" value="Back">Rotate Back</button></form>');
 print('</td></tr></table>');
 print('</tr></table><hr><table><tr><th>Station</th><th>Card<br>Printer</th><th>Card<br>Status</th><th>Label<br>Printer</th><th>Label<br>Status</th></tr><tr>');
    for($station=1; $station < count((array)$config) ; $station++) {
