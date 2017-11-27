@@ -68,14 +68,13 @@ if(isset($_POST) AND !empty($_POST))
 
 //file_put_contents('/tmp/printrouterCONF.log', print_r(count((array)$config))); //DEBUG...DUMP config object count
 //station id is determined by last number of ipv4
-print('<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html><head><title>Printer Selector '.curPageURL().'</title></head><body><h3>Printer Routing</h3><br>');
-print('<hr>Card Rotation(all printers):<br>');
+print('<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html><head><title>Printer Selector '.curPageURL().'</title></head><body><h3>Printer Routing</h3>');
+print('<hr>Card Rotation(all printers):<br><div>');
 
 print('<form method="POST" action="'.curPageURL().'?action=NoRotFront" onchange="document.getElementById(\'NoRotFront\').form.submit()"> <button name="NoRotFront" id="RotOff" value="Front">Straight Front</button></form>');
 print('<form method="POST" action="'.curPageURL().'?action=RotFront" onchange="document.getElementById(\'RotFront\').form.submit()"> <button name="RotFront" id="RotOn" value="Front">Rotate Front</button></form>');
 
-
-print('<hr><table><tr><th>Station</th><th>Card<br>Printer</th><th>Card<br>Status</th><th>Label<br>Printer</th><th>Label<br>Status</th></tr><tr>');
+print('</div><hr><table><tr><th>Station</th><th>Card<br>Printer</th><th>Card<br>Status</th><th>Label<br>Printer</th><th>Label<br>Status</th></tr><tr>');
    for($station=1; $station < count((array)$config) + 1 ; $station++) {
 		print('<td>'.$station.'</td>');
 		print('<td><form method="POST" action="'.curPageURL().'?action=card" onchange="document.getElementById(\'card_'.$station.'\').form.submit()"> <select id=card_'.$station.'  name=card_'.$station.'  required><option selected>'.getCardNum($config,$station)); 
