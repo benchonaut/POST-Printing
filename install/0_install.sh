@@ -30,6 +30,7 @@ cp -aurv printer_status.sh printer_clean_tmp.sh /etc/
 cp -aurv print.php router.php /var/www/html/
 chown -R www-data:www-data /var/www/
 chown -R root:lp /etc/cups
+adduser www-data lpadmin
 
 (test -e /etc/ssl/private/nginx.key && test -e /etc/ssl/private/crt.pem ) ||   openssl req -x509 -nodes -days 3650 -subj "/C=US/ST=Denial/L=Springfield/O=Dis/CN=printserver.local" -newkey rsa:4096 -keyout /etc/ssl/private/nginx.key -out /etc/ssl/private/crt.pem
 ln -s /etc/ssl/private/crt.pem /etc/ssl/private/ca.pem
