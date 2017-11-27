@@ -68,8 +68,8 @@ if(isset($_POST) AND !empty($_POST))
 
 //file_put_contents('/tmp/printrouterCONF.log', print_r(count((array)$config))); //DEBUG...DUMP config object count
 //station id is determined by last number of ipv4
-print('<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html><head><title>Printer Selector '.curPageURL().'</title></head><body><br><hr>Printer Routing</h1>');
-print('<br>Card Rotation(all printers)');
+print('<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html><head><title>Printer Selector '.curPageURL().'</title></head><body><br><h1>Printer Routing</h1><br>');
+print('Card Rotation(all printers):<br>');
 print('<form method="POST" action="'.curPageURL().'?action=NoRotFront" onchange="document.getElementById(\'NoRotFront\').form.submit()"> <button name="NoRotFront" id="RotOff" value="Front">Straight Front</button></form>');
 print('<form method="POST" action="'.curPageURL().'?action=RotFront" onchange="document.getElementById(\'RotFront\').form.submit()"> <button name="RotFront" id="RotOn" value="Front">Rotate Front</button></form>');
 
