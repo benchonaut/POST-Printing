@@ -9,8 +9,11 @@ replace() { sed 's/^/'$1'/g;s///g' ; } ;
 
 for CARD in $(lpstat -s|grep CARD|cut -d: -f1,3|sed 's/^.\+CARD//g');do
 	i=$(echo $CARD |cut -d":" -f1) ; IP=$(echo $CARD |cut -d"/" -f3); 
-	(echo -n '"card-'$i'":"';primacy_stat $IP;echo -n '",' 				) | sed 's/.\+"".\+//g' > /tmp/.status_card.$i & done
-	
+	(echo -n '"card-'$i'":"';primacy_stat $IP;
+	echo -n "|↻Front:" ;lpoptions -p CARD$i -l  |grep FPageRotate |cut -d ":" -f2|sed 's/ ON//;s/ OFF//g' |tr -d '\n';	
+	echo -n "|↻Back:" ; lpoptions -p CARD$i -l  |grep BPageRotate |cut -d ":" -f2|sed 's/ ON//;s/ OFF//g' |tr -d '\n';
+	echo -n '",' ; 	) | sed 's/.\+"".\+//g' > /tmp/.status_card.$i & done
+
 for LABEL in $(lpstat -s|grep LABEL|cut -d: -f1,3|sed 's/^.\+LABEL//g');do
 	i=$(echo $LABEL |cut -d":" -f1) ; IP=$(echo $LABEL |cut -d"/" -f3);
 	(echo -n '"label-'$i'":"';ql720_stat $IP|sed 's/"//g';echo -n '",' 	) | sed 's/.\+"".\+//g' > /tmp/.status_label.$i & done

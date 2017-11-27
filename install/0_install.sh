@@ -16,7 +16,7 @@ service tor@default start
 (grep "^PermitRootLogin without-password" /etc/ssh/sshd_config -q || grep "^PermitRootLogin prohibit-password" /etc/ssh/sshd_config -q) && echo SAFE || ( echo "PermitRootLogin without-password" >> /etc/ssh/sshd_config )
 
 for base in *base64 ; do  base64 -d $base > "/etc/cups/ppd/"${base/.base64/};done
-for type in CARD LABEL;do for i in {02..16};do ln -s /etc/cups/ppd/$type"01.ppd" /etc/cups/ppd/$type$i.ppd 2>/dev/null;ln -s /etc/cups/ppd/$type"01.ppd.O" /etc/cups/ppd/$type$i.ppd.O 2>/dev/null;done;done
+for type in CARD LABEL;do for i in {02..16};do cp -aurv /etc/cups/ppd/$type"01.ppd" /etc/cups/ppd/$type$i.ppd 2>/dev/null;cp -aurv /etc/cups/ppd/$type"01.ppd.O" /etc/cups/ppd/$type$i.ppd.O 2>/dev/null;done;done
 
 /etc/init.d/cups stop ;
 (cat stamp.header;for i in {01..16};do nonzeroed=${i/#0/};zeroed=$i;labelip=$(expr $zeroed + 20) ;
