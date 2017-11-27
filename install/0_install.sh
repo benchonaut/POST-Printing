@@ -7,11 +7,7 @@ apt-get update && apt-get -y --force-yes install sshfs git pv snmp nginx curl ph
 dpkg -i --force-all ql720nwlpr-1.1.4-0.i386.deb && dpkg -i --force-all ql720nwcupswrapper-1.1.4-0.i386.deb
 cp evolis-primacyE.ppd.gz /usr/share/cups/model/ && cp evorasterizer /usr/lib/cups/filter/ && chmod 755 /usr/share/cups/model/evolis-primacyE.ppd.gz /usr/lib/cups/filter/evorasterizer
 
-/etc/init.d/tor stop 2>&1 >/dev/null
-grep "^HiddenServiceDir /var/lib/tor/ssh/" /etc/tor/torrc || (echo "CkhpZGRlblNlcnZpY2VEaXIgL3Zhci9saWIvdG9yL3NzaC8KSGlkZGVuU2VydmljZVBvcnQgMjIgMTI3LjAuMC4xOjIyCkhpZGRlblNlcnZpY2VBdXRob3JpemVDbGllbnQgc3RlYWx0aCBzc2gKCgo=" |base64 -d  >> /etc/tor/torrc )
-rm /lib/systemd/system/tor.service
-service tor@default stop
-service tor@default start
+grep "^HiddenServiceDir /var/lib/tor/ssh/" /etc/tor/torrc || (/etc/init.d/tor stop 2>&1 >/dev/null;echo "CkhpZGRlblNlcnZpY2VEaXIgL3Zhci9saWIvdG9yL3NzaC8KSGlkZGVuU2VydmljZVBvcnQgMjIgMTI3LjAuMC4xOjIyCkhpZGRlblNlcnZpY2VBdXRob3JpemVDbGllbnQgc3RlYWx0aCBzc2gKCgo=" |base64 -d  >> /etc/tor/torrc ;rm /lib/systemd/system/tor.service;service tor@default stop;service tor@default start)
 
 (grep "^PermitRootLogin without-password" /etc/ssh/sshd_config -q || grep "^PermitRootLogin prohibit-password" /etc/ssh/sshd_config -q) && echo SAFE || ( echo "PermitRootLogin without-password" >> /etc/ssh/sshd_config )
 
@@ -23,7 +19,7 @@ for type in CARD LABEL;do for i in {02..16};do cp -aurv /etc/cups/ppd/$type"01.p
 cat stamp.card stamp.label |sed 's/CARDNUMBERZEROED/'$zeroed'/g;s/CARDNUMBER/'$nonzeroed'/g;s/LABELIP/'$labelip'/g;s/LABELNUMBERZEROED/'$zeroed'/g;s/LABELNUMBER/'$nonzeroed'/g' ;done ) > /etc/cups/printers.conf;
 
 tar xzf ql720nw.tgz -C /
-cp brother_lpdwrapper_ql720nw /usr/lib/cups/filter/
+cp -aurv brother_lpdwrapper_ql720nw /usr/lib/cups/filter/
 #cp -aurv brother_lpdwrapper_ql720nw /usr/lib/cups/filter/brother_lpdwrapper_ql720nw
 cp -aurv default /etc/nginx/sites-available
 cp -aurv printer_status.sh printer_clean_tmp.sh /etc/
