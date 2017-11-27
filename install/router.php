@@ -62,16 +62,16 @@ if(isset($_POST) AND !empty($_POST))
 	 if(isset($_POST['Rotate']))
 		{
 		if ($_POST['Rotate'] == 'Front')
-			{ $execute='';for ($a=1;$a<16;$a++ ) { $num=sprintf("%02d",$a);$execute=$execute.'lpadmin -p CARD'.$num.' -o FPageRotate180=yes;' ; } ; exec($execute); } 
+			{ $execute='';for ($a=1;$a<16;$a++ ) { $num=sprintf("%02d",$a);$execute=$execute.'lpadmin -p CARD'.$num.' -o FPageRotate180=ON;' ; } ; exec($execute); } 
 		elseif ($_POST['Rotate'] == 'Back')
-			{ $execute='';for ($a=1;$a<16;$a++ ) { $num=sprintf("%02d",$a);$execute=$execute.'lpadmin -p CARD'.$num.' -o BPageRotate180=yes;' ; } ; exec($execute); } 
+			{ $execute='';for ($a=1;$a<16;$a++ ) { $num=sprintf("%02d",$a);$execute=$execute.'lpadmin -p CARD'.$num.' -o BPageRotate180=ON;' ; } ; exec($execute); } 
 		}
 	if(isset($_POST['NoRotate']))
 		{			
 		if ($_POST['NoRotate'] == 'Front')	 
-			{ $execute='';for ($a=1;$a<16;$a++ ) { $num=sprintf("%02d",$a);$execute=$execute.'lpadmin -p CARD'.$num.' -o FPageRotate180=no;' ; } ; exec($execute); } 
+			{ $execute='';for ($a=1;$a<16;$a++ ) { $num=sprintf("%02d",$a);$execute=$execute.'lpadmin -p CARD'.$num.' -o FPageRotate180=OFF;' ; } ; exec($execute); } 
 		elseif ($_POST['NoRotate'] == 'Back')	 
-			{ $execute='';for ($a=1;$a<16;$a++ ) { $num=sprintf("%02d",$a);$execute=$execute.'lpadmin -p CARD'.$num.' -o BPageRotate180=no;' ; } ; exec($execute); } 
+			{ $execute='';for ($a=1;$a<16;$a++ ) { $num=sprintf("%02d",$a);$execute=$execute.'lpadmin -p CARD'.$num.' -o BPageRotate180=OFF;' ; } ; exec($execute); } 
 		}
 	// $action = $_GET['action']; 
 	// $agent_id = $_POST['agent_id']; 
