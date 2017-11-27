@@ -68,7 +68,7 @@ if(isset($_POST) AND !empty($_POST))
 		}
 	if(isset($_POST['NoRotate']))
 		{			
-		elseif ($_POST['NoRotate'] == 'Front')	 
+		if ($_POST['NoRotate'] == 'Front')	 
 			{ $execute='';for ($a=1;$a<16;$a++ ) { $num=sprintf("%02d",$a);$execute=$execute.'lpadmin -p CARD'.$num.' -o FPageRotate180=no;' ; } ; exec($execute); } 
 		elseif ($_POST['NoRotate'] == 'Back')	 
 			{ $execute='';for ($a=1;$a<16;$a++ ) { $num=sprintf("%02d",$a);$execute=$execute.'lpadmin -p CARD'.$num.' -o BPageRotate180=no;' ; } ; exec($execute); } 
