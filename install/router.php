@@ -53,7 +53,7 @@ function setLabelNum($conf_obj , $station,$num)
 
 if(isset($_POST) AND !empty($_POST)) 
 	{
-	file_put_contents('/tmp/printrouterPOST.log', print_r($_POST, true)); //DEBUG...DUMP POST REQUEST
+	//file_put_contents('/tmp/printrouterPOST.log', print_r($_POST, true)); //DEBUG...DUMP POST REQUEST
 	foreach ($_POST as $action => $value) { 
 	$act=explode("_", $action);
 	if ($act[0] == 'label' ) 	{ $config=setLabelNum($config,$act[1],$value); }
