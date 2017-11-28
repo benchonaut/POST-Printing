@@ -161,12 +161,12 @@ print('</th></tr></table>');
 print('<hr><table><tr><th>Station<br>/Printer</th><th>Card<br>Printer</th><th>Card Status(Printer Number)</th><th>Label<br>Printer</th><th>Label Status(Printer Number)</th></tr><tr>');
    for($station=1; $station < count((array)$config) + 1 ; $station++) {
 		print('<td>'.$station.'</td>');
-		print('<td>S'.$station.'<form method="POST" action="'.curPageURL().'?action=card" onchange="document.getElementById(\'card_'.$station.'\').form.submit()"> <select id=card_'.$station.'  name=card_'.$station.'  required><option selected>'.getCardNum($config,$station)); 
+		print('<td style="white-space: nowrap">S'.$station.'<form method="POST" action="'.curPageURL().'?action=card" onchange="document.getElementById(\'card_'.$station.'\').form.submit()"> <select id=card_'.$station.'  name=card_'.$station.'  required><option selected>'.getCardNum($config,$station)); 
 				for($i=1; $i < count((array)$config) + 1; $i++) { print('<option>'.$i); }
 			print('</select></form></td>');
 		if (isset($status['card-'.sprintf("%02d",$station)])) { print('<td>'.$status['card-'.sprintf("%02d",$station)].'</td>'); }
 			else { print('<td >..</td>'); }
-		print('<td>S'.$station.'<form method="POST" action="'.curPageURL().'?action=label" onchange="document.getElementById(\'label_'.$station.'\').form.submit()"><select id=label_'.$station.' name=label_'.$station.' required><option selected>'.getLabelNum($config,$station));
+		print('<td style="white-space: nowrap">S'.$station.'<form method="POST" action="'.curPageURL().'?action=label" onchange="document.getElementById(\'label_'.$station.'\').form.submit()"><select id=label_'.$station.' name=label_'.$station.' required><option selected>'.getLabelNum($config,$station));
 				for($i=1; $i < count((array)$config) + 1 ; $i++) { print('<option>'.$i); }
 			print('</select></form></td>');
 		
