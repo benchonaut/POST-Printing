@@ -19,8 +19,13 @@ for type in CARD LABEL;do for i in {02..16};do cp -aurv /etc/cups/ppd/$type"01.p
 cat stamp.card stamp.label |sed 's/CARDNUMBERZEROED/'$zeroed'/g;s/CARDNUMBER/'$nonzeroed'/g;s/LABELIP/'$labelip'/g;s/LABELNUMBERZEROED/'$zeroed'/g;s/LABELNUMBER/'$nonzeroed'/g' ;done ) > /etc/cups/printers.conf;
 
 tar xzf ql720nw.tgz -C /
-cp -aurv brother_lpdwrapper_ql720nw /usr/lib/cups/filter/
+rm /usr/lib/cups/filter/brother_lpdwrapper_ql720nw
+cp -aurv brother_lpdwrapper_ql720nw /opt/brother/PTouch/ql720nw/cupswrapper/brother_lpdwrapper_ql720nw
+ln -s /opt/brother/PTouch/ql720nw/cupswrapper/brother_lpdwrapper_ql720nw /usr/lib/cups/filter/brother_lpdwrapper_ql720nw
+chown root:root /opt/brother/PTouch/ql720nw/cupswrapper/brother_lpdwrapper_ql720nw /usr/lib/cups/filter/brother_lpdwrapper_ql720nw 
+chmod go-w /opt/brother/PTouch/ql720nw/cupswrapper/brother_lpdwrapper_ql720nw /usr/lib/cups/filter/brother_lpdwrapper_ql720nw
 #cp -aurv brother_lpdwrapper_ql720nw /usr/lib/cups/filter/brother_lpdwrapper_ql720nw
+
 cp -aurv default /etc/nginx/sites-available
 cp -aurv printer_status.sh printer_clean_tmp.sh /etc/
 cp -aurv print.php router.php /var/www/html/
