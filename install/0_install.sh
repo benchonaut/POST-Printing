@@ -29,6 +29,7 @@ chmod go-w /opt/brother/PTouch/ql720nw/cupswrapper/brother_lpdwrapper_ql720nw /u
 cp -aurv default /etc/nginx/sites-available
 cp -aurv printer_status.sh printer_clean_tmp.sh /etc/
 cp -aurv print.php router.php /var/www/html/
+tar xvzf favicon.tgz -C /var/www/html/
 chown -R www-data:www-data /var/www/
 chown -R root:lp /etc/cups
 adduser www-data lpadmin

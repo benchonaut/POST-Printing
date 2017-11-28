@@ -24,9 +24,6 @@ $configfile=getenv("HOME").'/.printroute.json';
 $statusfile='/tmp/.status.json';
 $config=array();
 $status=array();
-exec('/bin/bash /etc/printer_status.sh '.$statusfile);
-$status=json_decode(file_get_contents($statusfile),1);
-print_r(file_get_contents($statusfile),1);
 function emptyPrinterConfig($count = 16) {	
 	$route = array_fill(1, $count ,array_fill_keys(array('card','label'),'1'));
 	foreach ($route as $key => $value)
@@ -62,7 +59,7 @@ if(isset($_POST) AND !empty($_POST))
 	 if(isset($_POST['Rotate']))
 		{
 		if ($_POST['Rotate'] == 'Front')
-			{ $execute='';for ($a=1;$a<16;$a++ ) { $num=sprintf("%02d",$a);$execute=$execute.'lpadmin -p CARD'.$num.' -o FPageRotate180=ON;' ; } ; exec($execute); } 
+			{ $execute='';for ($a=1;$a<16;$a++ ) { $num=sprintf("%02d",$a);$execute=$execute.'lpadmin -p CARD'.$num.' -o FPageRotate180=ON;' ; } ; exec($execute);  } 
 		elseif ($_POST['Rotate'] == 'Back')
 			{ $execute='';for ($a=1;$a<16;$a++ ) { $num=sprintf("%02d",$a);$execute=$execute.'lpadmin -p CARD'.$num.' -o BPageRotate180=ON;' ; } ; exec($execute); } 
 		}
@@ -73,20 +70,96 @@ if(isset($_POST) AND !empty($_POST))
 		elseif ($_POST['NoRotate'] == 'Back')	 
 			{ $execute='';for ($a=1;$a<16;$a++ ) { $num=sprintf("%02d",$a);$execute=$execute.'lpadmin -p CARD'.$num.' -o BPageRotate180=OFF;' ; } ; exec($execute); } 
 		}
+		//header("HTTP/1.0 204 No Content");	exit;
 	// $action = $_GET['action']; 
 	// $agent_id = $_POST['agent_id']; 
 	}
 
 //file_put_contents('/tmp/printrouterCONF.log', print_r(count((array)$config))); //DEBUG...DUMP config object count
 //station id is determined by last number of ipv4
-print('<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html><head><title>Printer Selector '.curPageURL().'</title></head><body><h3>Printer Routing</h3>');
-print('<hr>Card Rotation(all printers):<br><table><tr><td>');
-print('<form method="POST" action="'.curPageURL().'?action=NoRotFront" onchange="document.getElementById(\'NoRotFront\').form.submit();setTimeout(function() { window.location.reload.bind(window.location) }, 5000);"> <button name="NoRotate" id="NoRotFront" value="Front">Straight Front</button></form>');
-print('</td><td><form method="POST" action="'.curPageURL().'?action=RotFront" onchange="document.getElementById(\'RotFront\').form.submit();setTimeout(function() { window.location.reload.bind(window.location) }, 5000);"> <button name="Rotate" id="RotFront" value="Front">Rotate Front</button></form>');
-print('</td><td><form method="POST" action="'.curPageURL().'?action=NoRotBack" onchange="document.getElementById(\'NoRotBack\').form.submit();setTimeout(function() { window.location.reload.bind(window.location) }, 5000);"> <button name="NoRotate" id="NoRotBack" value="Back">Straight Back</button></form>');
-print('</td><td><form method="POST" action="'.curPageURL().'?action=RotBack" onchange="document.getElementById(\'RotBack\').form.submit();setTimeout(function() { window.location.reload.bind(window.location) }, 5000);"> <button name="Rotate" id="RotBack" value="Back">Rotate Back</button></form>');
-print('</td></tr></table>');
-print('</tr></table><hr><table><tr><th>Station</th><th>Card<br>Printer</th><th>Card<br>Status</th><th>Label<br>Printer</th><th>Label<br>Status</th></tr><tr>');
+exec('/bin/bash /etc/printer_status.sh '.$statusfile);
+$status=json_decode(file_get_contents($statusfile),1);
+print_r(file_get_contents($statusfile),1);
+
+print('<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html><head><title>Printer Selector '.curPageURL().'</title>');
+
+print('<style>
+table {
+    border-collapse: collapse;
+}
+
+table, td, th {
+    border: 1px solid black;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th, td {
+    padding: 4px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+	font-size: 90%;
+    background-color: #2499e2;
+    color: white;
+    border-top: none;
+}
+
+tr:hover {background-color:#016daf;}
+td:hover {background-color:#6c76c1;}
+th:hover {background-color:#ff76ff;}
+tr:nth-child(even) {background-color: #debecf;}
+
+table {
+	font-size: 80%;
+    border-collapse:separate;
+    border:solid black 1px;
+    border-radius:6px;
+    -moz-border-radius:6px;
+}
+
+td, th {
+    border-left:solid black 1px;
+    border-top:solid black 1px;
+}
+
+td:first-child, th:first-child {
+     border-left: none;
+}
+</style>
+<link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+<link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
+<link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
+<link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
+<link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
+<link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
+<link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
+<link rel="icon" type="image/png" sizes="192x192"  href="/android-icon-192x192.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+<meta name="theme-color" content="#ffffff">
+</head><body><h3>Printer Routing</h3>
+');
+
+
+print('<hr>Card Rotation(all printers):<br><table align=center><tr><th>');
+print('<form method="POST" action="'.curPageURL().'?action=NoRotFront" onchange="document.getElementById(\'NoRotFront\').form.submit();history.go(0);"> <button name="NoRotate" id="NoRotFront" value="Front">Straight Front</button></form>');
+print('</th><th><form method="POST" action="'.curPageURL().'?action=RotFront" onchange="document.getElementById(\'RotFront\').form.submit();history.go(0);"> <button name="Rotate" id="RotFront" value="Front">Rotate Front 180°</button></form>');
+print('</th><th><form method="POST" action="'.curPageURL().'?action=NoRotBack" onchange="document.getElementById(\'NoRotBack\').form.submit();history.go(0);"> <button name="NoRotate" id="NoRotBack" value="Back">Straight Back</button></form>');
+print('</th><th><form method="POST" action="'.curPageURL().'?action=RotBack" onchange="document.getElementById(\'RotBack\').form.submit();history.go(0);"> <button name="Rotate" id="RotBack" value="Back">Rotate Back 180°</button></form>');
+print('</th></tr></table>');
+print('<hr><table><tr><th>Station</th><th>Card<br>Printer</th><th>Card<br>Status</th><th>Label<br>Printer</th><th>Label<br>Status</th></tr><tr>');
    for($station=1; $station < count((array)$config) ; $station++) {
 		print('<td>'.$station.'</td>');
 		print('<td><form method="POST" action="'.curPageURL().'?action=card" onchange="document.getElementById(\'card_'.$station.'\').form.submit()"> <select id=card_'.$station.'  name=card_'.$station.'  required><option selected>'.getCardNum($config,$station)); 
