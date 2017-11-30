@@ -153,12 +153,13 @@ td:first-child, th:first-child {
 ');
 
 print('<hr>Card Rotation(all printers):<br><table align=center><tr><th>');
-print('<form method="POST" action="'.curPageURL().'?action=NoRotFront" onchange="document.getElementById(\'NoRotFront\').form.submit();history.go(0);"> <button name="NoRotate" id="NoRotFront" value="Front">Straight Front</button></form>');
-print('</th><th><form method="POST" action="'.curPageURL().'?action=RotFront" onchange="document.getElementById(\'RotFront\').form.submit();history.go(0);"> <button name="Rotate" id="RotFront" value="Front">Rotate Front 180°</button></form>');
-print('</th><th><form method="POST" action="'.curPageURL().'?action=NoRotBack" onchange="document.getElementById(\'NoRotBack\').form.submit();history.go(0);"> <button name="NoRotate" id="NoRotBack" value="Back">Straight Back</button></form>');
-print('</th><th><form method="POST" action="'.curPageURL().'?action=RotBack" onchange="document.getElementById(\'RotBack\').form.submit();history.go(0);"> <button name="Rotate" id="RotBack" value="Back">Rotate Back 180°</button></form>');
+print('           <form method="POST" action="'.curPageURL().'?action=NoRotFront" onchange="document.getElementById(\'NoRotFront\').form.submit();history.go(0);"> <button name="NoRotate" id="NoRotFront" value="Front">Straight Front</button></form>');
+print('  </th><th><form method="POST" action="'.curPageURL().'?action=RotFront"   onchange="document.getElementById(\'RotFront\').form.submit();history.go(0);"> <button name="Rotate" id="RotFront" value="Front">Rotate Front 180°</button></form>');
 print('</th></tr></table>');
-print('<hr><table><tr><th>Station<br>/Printer</th><th>Card<br>Printer</th><th>Card Status(Printer Number)</th><th>Label<br>Printer</th><th>Label Status(Printer Number)</th></tr><tr>');
+print('<table><tr><th><form method="POST" action="'.curPageURL().'?action=NoRotBack"  onchange="document.getElementById(\'NoRotBack\').form.submit();history.go(0);"> <button name="NoRotate" id="NoRotBack" value="Back">Straight Back</button></form>');
+print('  </th><th><form method="POST" action="'.curPageURL().'?action=RotBack"    onchange="document.getElementById(\'RotBack\').form.submit();history.go(0);"> <button name="Rotate" id="RotBack" value="Back">Rotate Back 180°</button></form>');
+print('</th></tr></table>');
+print('<hr><table align=center><tr><th>Station<br>/Printer</th><th>Card<br>Printer</th><th>Card Status(Printer Number)</th><th>Label<br>Printer</th><th>Label Status(Printer Number)</th></tr><tr>');
    for($station=1; $station < count((array)$config) + 1 ; $station++) {
 		print('<td>'.$station.'</td>');
 		print('<td ><form method="POST" action="'.curPageURL().'?action=card" onchange="document.getElementById(\'card_'.$station.'\').form.submit()"> <select id=card_'.$station.'  name=card_'.$station.'  required><option selected>'.getCardNum($config,$station)); 

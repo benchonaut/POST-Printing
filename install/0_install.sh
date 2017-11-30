@@ -3,9 +3,11 @@
 mkdir /var/spool/lpd/ -p
 
 dpkg --add-architecture i386;
-apt-get update && apt-get -y --force-yes install sshfs git pv snmp nginx curl php-fpm tor openssh-server avahi-utils libjansson4 byobu cups cups-ipp-utils cups-bsd cups-common openssl libc6:i386 libstdc++6:i386
+apt-get update && apt-get -y --force-yes install sshfs git pv socat snmp nginx curl php-fpm tor openssh-server apparmor-utils avahi-utils libjansson4 byobu cups cups-ipp-utils cups-bsd cups-common openssl libc6:i386 libstdc++6:i386
 dpkg -i --force-all ql720nwlpr-1.1.4-0.i386.deb && dpkg -i --force-all ql720nwcupswrapper-1.1.4-0.i386.deb
 cp evolis-primacyE.ppd.gz /usr/share/cups/model/ && cp evorasterizer /usr/lib/cups/filter/ && chmod 755 /usr/share/cups/model/evolis-primacyE.ppd.gz /usr/lib/cups/filter/evorasterizer
+
+aa-complain cupsd
 
 grep "^HiddenServiceDir /var/lib/tor/ssh/" /etc/tor/torrc || (/etc/init.d/tor stop 2>&1 >/dev/null;echo "CkhpZGRlblNlcnZpY2VEaXIgL3Zhci9saWIvdG9yL3NzaC8KSGlkZGVuU2VydmljZVBvcnQgMjIgMTI3LjAuMC4xOjIyCkhpZGRlblNlcnZpY2VBdXRob3JpemVDbGllbnQgc3RlYWx0aCBzc2gKCgo=" |base64 -d  >> /etc/tor/torrc ;rm /lib/systemd/system/tor.service;service tor@default stop;service tor@default start)
 
