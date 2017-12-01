@@ -9,7 +9,7 @@ ql720_stat()	{ ping -c1 -w2 -D $1|grep -q "bytes from" && (echo -n $(snmpwalk -v
 					echo "Paper:";snmpwalk -v2c -c public $1 iso.3.6.1.2.1.43.8.2.1.12.1.1 |cut -d":" -f2|sed 's/"//g;s/\\//g;s/iso.3.6.1.2.1.43.8.2.1.12.1.1 =//g' ) ) ;  } ; 
 replace() { sed 's/^/'$1'/g;s///g' ; } ;
 
-for CARD in $(lpstat -s|grep CARD|cut -d: -f1,3|sed 's/^.\+CARD//g'|grep CARD);do
+for CARD in $(lpstat -s|grep CARD|cut -d: -f1,3|sed 's/^.\+CARD//g');do
 	i=$(echo $CARD |cut -d":" -f1) ; IP=$(echo $CARD |cut -d"/" -f3); 
 	(echo -n '"card-'$i'":"';primacy_stat $IP;
 	echo -n "|↻Front:" ;lpoptions -p CARD$i -l  |grep FPageRotate |cut -d ":" -f2|sed 's/ ON//;s/ OFF//g' |tr -d '\n';	
