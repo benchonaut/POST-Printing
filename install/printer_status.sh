@@ -9,14 +9,14 @@ ql720_stat()	{ ping -c1 -w2 -D $1|grep -q "bytes from" && (echo -n $(snmpwalk -v
 					echo "Paper:";snmpwalk -v2c -c public $1 iso.3.6.1.2.1.43.8.2.1.12.1.1 |cut -d":" -f2|sed 's/"//g;s/\\//g;s/iso.3.6.1.2.1.43.8.2.1.12.1.1 =//g' ) ) ;  } ; 
 replace() { sed 's/^/'$1'/g;s///g' ; } ;
 
-for CARD in $(lpstat -s|grep CARD|cut -d: -f1,3|sed 's/^.\+CARD//g');do
+for CARD in $(lpstat -s|grep CARD|cut -d: -f1,3|sed 's/^.\+CARD//g'|grep CARD);do
 	i=$(echo $CARD |cut -d":" -f1) ; IP=$(echo $CARD |cut -d"/" -f3); 
 	(echo -n '"card-'$i'":"';primacy_stat $IP;
 	echo -n "|↻Front:" ;lpoptions -p CARD$i -l  |grep FPageRotate |cut -d ":" -f2|sed 's/ ON//;s/ OFF//g' |tr -d '\n';	
 	echo -n "|↻Back:" ; lpoptions -p CARD$i -l  |grep BPageRotate |cut -d ":" -f2|sed 's/ ON//;s/ OFF//g' |tr -d '\n';
 	echo -n '",' ; 	) | sed 's/.\+"".\+//g' > /tmp/.status_card.$i & done
 
-for LABEL in $(lpstat -s|grep LABEL|cut -d: -f1,3|sed 's/^.\+LABEL//g');do
+for LABEL in $(lpstat -s|grep LABEL|cut -d: -f1,3|sed 's/^.\+LABEL//g'|grep BINAR);do
 	i=$(echo $LABEL |cut -d":" -f1) ; IP=$(echo $LABEL |cut -d"/" -f3);
 	(echo -n '"label-'$i'":"';ql720_stat $IP|sed 's/"//g';echo -n '",' 	) | sed 's/.\+"".\+//g' > /tmp/.status_label.$i & done
 wait

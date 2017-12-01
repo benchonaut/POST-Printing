@@ -15,15 +15,6 @@ function getRealIpAddr()
 }
 
 
-$RealIP=explode(".",getRealIpAddr());
-$lastOctet=$RealIP[3];
-
-if (($lastOctet > 100) && ($lastOctet<200))
-	{ $client=$lastOctet % 100 ; }
-	else { $client=$_POST['client']; }
-
-$configfile=getenv("HOME").'/.printroute.json';
-$config=array();
 function emptyPrinterConfig($count = 16) {	
 	$route = array_fill(1, $count ,array_fill_keys(array('card','label'),'1'));
 	foreach ($route as $key => $value)
@@ -40,8 +31,21 @@ if (file_exists($configfile))  { 				$config=json_decode(file_get_contents($conf
 		
 function getCardNum($config , $station)		{ return sprintf("%02d",$config[$station]['card']); }
 function getLabelNum($config , $station)	{ return sprintf("%02d",$config[$station]['label']); }
-header("HTTP/1.0 204 No Content");
-$filename='/tmp/'.getmygid().getmypid().'.pdf';
+	
+if(isset($_POST) AND !empty($_POST)) 
+	{
+	$RealIP=explode(".",getRealIpAddr());
+	$lastOctet=$RealIP[3];
+	
+	if (($lastOctet > 100) && ($lastOctet<200))
+		{ $client=$lastOctet % 100 ; }
+		else { $client=$_POST['client']; }
+	
+	$configfile=getenv("HOME").'/.printroute.json';
+	$config=array();
+	header("HTTP/1.0 204 No Content");
+	$filename='/tmp/'.getmygid().getmypid().'.pdf';
+	
 	if ($_POST['type'] == 'card' ) {
 			$printer='CARD'.getCardNum($config,$client);
 			file_put_contents($filename, base64_decode($_POST['file']));
@@ -49,14 +53,13 @@ $filename='/tmp/'.getmygid().getmypid().'.pdf';
 			exec('lpr -o landscape -o fit-to-page -o media=Card -P'.$printer.' -r '.$filename);
 			echo 'queued-client'.$client.' printer '.getCardNum($config,$client);
 			} 
-	elseif ($_POST['type'] == 'label') {
-		    
+	elseif ($_POST['type'] == 'label') {	    
 			$printer='LABEL'.getLabelNum($config,$client);
 			file_put_contents($filename, base64_decode($_POST['file']));
 			exec('lpadmin -p'.$printer.' -o PageSize=62x100 ;');
 			exec('lpr -o fit-to-page -P'.$printer.' -r '.$filename);
 			echo 'queued-client'.$client.' printer '.getLabelNum($config,$client);
 			};
-
+	}
 exit
 ?>
