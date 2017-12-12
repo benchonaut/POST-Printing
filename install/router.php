@@ -25,9 +25,9 @@ $statusfile='/tmp/.status.json';
 $config=array();
 $status=array();
 function emptyPrinterConfig($count = 16) {	
-	$route = array_fill(1, $count ,array_fill_keys(array('card','label'),'1'));
+	$route = array_fill(1, $count ,array_fill_keys(array('card','label','cardmode','cardribbon'),'1'));
 	foreach ($route as $key => $value)
-			{ $route[$key]['label']=$key;$route[$key]['card']=$key; }
+			{ $route[$key]['label']=$key;$route[$key]['card']=$key;$route[$key]['cardmode']='DUPLEX_MM';$route[$key]['cardribbon']='RM_KBLACK'; }
 	return $route;
 }
 
@@ -36,13 +36,18 @@ function initPrinterConfig($configfile , $count = 16)
 
 if (file_exists($configfile))  { 				$config=json_decode(file_get_contents($configfile),1); }
 		else { initPrinterConfig($configfile);	$config=json_decode(file_get_contents($configfile),1); }
-		
-function getCardNum($config , $station)		{ return $config[$station]['card']; }
-
-function getLabelNum($config , $station)	{ return $config[$station]['label']; }
-
+			
+function getCardNum($config , $station)		{ return sprintf("%02d",$config[$station]['card']); }
+function getCardMode($config , $station)		{ return sprintf("%02d",$config[$station]['cardmode']); }
+function getCardRibbon($config , $station)		{ return sprintf("%02d",$config[$station]['cardribbon']); }
+function getLabelNum($config , $station)	{ return sprintf("%02d",$config[$station]['label']); }
+	
 function setCardNum($conf_obj , $station, $num)
 		{ global $configfile;$conf_obj[$station]['card']=$num; file_put_contents($configfile,json_encode($conf_obj)); return $conf_obj; }
+function setCardMode($conf_obj , $station, $mode)
+		{ global $configfile;$conf_obj[$station]['cardmode']=$mode; file_put_contents($configfile,json_encode($conf_obj)); return $conf_obj; }
+function setCardRibbon($conf_obj , $station, $ribbon)
+		{ global $configfile;$conf_obj[$station]['cardribbon']=$ribbon; file_put_contents($configfile,json_encode($conf_obj)); return $conf_obj; }
 
 function setLabelNum($conf_obj , $station,$num)
 		{ global $configfile;$conf_obj[$station]['label']=$num; file_put_contents($configfile,json_encode($conf_obj)); return $conf_obj; }
@@ -53,7 +58,9 @@ if(isset($_POST) AND !empty($_POST))
 	//file_put_contents('/tmp/printrouterPOST.log', print_r($_POST, true)); //DEBUG...DUMP POST REQUEST
 	foreach ($_POST as $action => $value) { 
 	$act=explode("_", $action);
-	if ($act[0] == 'label' ) 	{ $config=setLabelNum($config,$act[1],$value); header("HTTP/1.0 204 No Content");	exit; }
+	if ($act[0] == 'label' ) 			{ $config=setLabelNum($config,$act[1],$value); 		header("HTTP/1.0 204 No Content");	exit; }
+	elseif ($act[0] == 'cardmode')		{ $config=setCardMode($config,$act[1],$value);  	header("HTTP/1.0 204 No Content");	exit; }
+	elseif ($act[0] == 'cardribbon')	{ $config=setCardRibbon($config,$act[1],$value);  	header("HTTP/1.0 204 No Content");	exit; }
 	elseif ($act[0] == 'card')	{ $config=setCardNum($config,$act[1],$value);  header("HTTP/1.0 204 No Content");	exit; }
 	 } 
 	 if(isset($_POST['Rotate']))
@@ -164,7 +171,17 @@ print('<hr><table align=center><tr><th>Station<br>/Printer</th><th>Card<br>Print
 		print('<td>'.$station.'</td>');
 		print('<td ><form method="POST" action="'.curPageURL().'?action=card" onchange="document.getElementById(\'card_'.$station.'\').form.submit()"> <select id=card_'.$station.'  name=card_'.$station.'  required><option selected>'.getCardNum($config,$station)); 
 				for($i=1; $i < count((array)$config) + 1; $i++) { print('<option>'.$i); }
-			print('</select></form></td>');
+		print('</select></form></td>');
+		print('<td ><form method="POST" action="'.curPageURL().'?action=cardmode" onchange="document.getElementById(\'cardmode_'.$station.'\').form.submit()"> <select id=cardmode_'.$station.'  name=card_'.$station.'  required><option selected>'.getCardMode($config,$station)); 
+				$opt = array('SIMPLEX','DUPLEX_CC','DUPLEX_CM','DUPLEX_MM','DUPLEX_MC');
+				foreach ($opt as &$value){ print('<option>'.$value); }
+		print('</select></form></td>');
+
+		print('<td ><form method="POST" action="'.curPageURL().'?action=cardribbon" onchange="document.getElementById(\'cardribbon_'.$station.'\').form.submit()"> <select id=cardribbon_'.$station.'  name=card_'.$station.'  required><option selected>'.getCardRibbon($config,$station)); 
+				$opt = array('RC_YMCKO','RC_YMCKOS','RC_YMCKOK','RC_YMCKOKOS','RM_KO','RM_KBLACK','RM_KWHITE','RM_KRED','RM_KGREEN','RM_KBLUE','RM_KSCRATCH','RM_KMETALSILVER','RM_KMETALGOLD','RM_KSIGNATURE','RM_KWAX','RM_KPREMIUM','RM_HOLO');
+				foreach ($opt as &$value){ print('<option>'.$value); }
+		print('</select></form></td>');
+
 		if (isset($status['card-'.sprintf("%02d",$station)])) { print('<td>'.$status['card-'.sprintf("%02d",$station)].'</td>'); }
 			else { print('<td >..</td>'); }
 		print('<td ><form method="POST" action="'.curPageURL().'?action=label" onchange="document.getElementById(\'label_'.$station.'\').form.submit()"><select id=label_'.$station.' name=label_'.$station.' required><option selected>'.getLabelNum($config,$station));

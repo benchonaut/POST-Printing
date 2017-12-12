@@ -16,9 +16,9 @@ function getRealIpAddr()
 
 
 function emptyPrinterConfig($count = 16) {	
-	$route = array_fill(1, $count ,array_fill_keys(array('card','label'),'1'));
+	$route = array_fill(1, $count ,array_fill_keys(array('card','label','cardmode','cardribbon'),'1'));
 	foreach ($route as $key => $value)
-			{ $route[$key]['label']=$key;$route[$key]['card']=$key; }
+			{ $route[$key]['label']=$key;$route[$key]['card']=$key;$route[$key]['cardmode']='DUPLEX_MM';$route[$key]['cardribbon']='RM_KBLACK'; }
 	return $route;
 }
 
@@ -30,6 +30,8 @@ if (file_exists($configfile))  { 				$config=json_decode(file_get_contents($conf
 		else { initPrinterConfig($configfile);	$config=json_decode(file_get_contents($configfile),1); }
 		
 function getCardNum($config , $station)		{ return sprintf("%02d",$config[$station]['card']); }
+function getCardMode($config , $station)		{ return sprintf("%02d",$config[$station]['cardmode']); }
+function getCardRibbon($config , $station)		{ return sprintf("%02d",$config[$station]['cardribbon']); }
 function getLabelNum($config , $station)	{ return sprintf("%02d",$config[$station]['label']); }
 	
 if(isset($_POST) AND !empty($_POST)) 
@@ -49,7 +51,7 @@ if(isset($_POST) AND !empty($_POST))
 	if ($_POST['type'] == 'card' ) {
 			$printer='CARD'.getCardNum($config,$client);
 			file_put_contents($filename, base64_decode($_POST['file']));
-			exec('lpadmin -p'.$printer.' -o GDuplexMode=DUPLEX_MM -o GRibbonType=RM_KBLACK ;');
+			exec('lpadmin -p'.$printer.' -o GDuplexMode='.getCardMode($config,$client).' -o GRibbonType='.getCardRibbon($config,$client).' ;');
 			exec('lpr -o landscape -o fit-to-page -o media=Card -P'.$printer.' -r '.$filename);
 			echo 'queued-client'.$client.' printer '.getCardNum($config,$client);
 			} 
