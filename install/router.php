@@ -38,8 +38,8 @@ if (file_exists($configfile))  { 				$config=json_decode(file_get_contents($conf
 		else { initPrinterConfig($configfile);	$config=json_decode(file_get_contents($configfile),1); }
 			
 function getCardNum($config , $station)		{ return sprintf("%02d",$config[$station]['card']); }
-function getCardMode($config , $cardmode)		{ return sprintf("%02d",$config[$station]['cardmode']); }
-function getCardRibbon($config , $cardribbon)		{ return sprintf("%02d",$config[$station]['cardribbon']); }
+function getCardMode($config , $station)		{ return $config[$station]['cardmode']; }
+function getCardRibbon($config ,$station)		{ return $config[$station]['cardribbon']; }
 function getLabelNum($config , $station)	{ return sprintf("%02d",$config[$station]['label']); }
 	
 function setCardNum($conf_obj , $station, $num)

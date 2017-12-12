@@ -30,10 +30,10 @@ if (file_exists($configfile))  { 				$config=json_decode(file_get_contents($conf
 		else { initPrinterConfig($configfile);	$config=json_decode(file_get_contents($configfile),1); }
 		
 function getCardNum($config , $station)		{ return sprintf("%02d",$config[$station]['card']); }
-function getCardMode($config , $station)		{ return sprintf("%02d",$config[$station]['cardmode']); }
-function getCardRibbon($config , $station)		{ return sprintf("%02d",$config[$station]['cardribbon']); }
+function getCardMode($config , $station)		{ return $config[$station]['cardmode']; }
+function getCardRibbon($config ,$station)		{ return $config[$station]['cardribbon']; }
 function getLabelNum($config , $station)	{ return sprintf("%02d",$config[$station]['label']); }
-	
+
 if(isset($_POST) AND !empty($_POST)) 
 	{
 	$RealIP=explode(".",getRealIpAddr());
