@@ -38,8 +38,8 @@ if (file_exists($configfile))  { 				$config=json_decode(file_get_contents($conf
 		else { initPrinterConfig($configfile);	$config=json_decode(file_get_contents($configfile),1); }
 			
 function getCardNum($config , $station)		{ return sprintf("%02d",$config[$station]['card']); }
-function getCardMode($config , $station)		{ return sprintf("%02d",$config[$station]['cardmode']); }
-function getCardRibbon($config , $station)		{ return sprintf("%02d",$config[$station]['cardribbon']); }
+function getCardMode($config , $cardmode)		{ return sprintf("%02d",$config[$station]['cardmode']); }
+function getCardRibbon($config , $cardribbon)		{ return sprintf("%02d",$config[$station]['cardribbon']); }
 function getLabelNum($config , $station)	{ return sprintf("%02d",$config[$station]['label']); }
 	
 function setCardNum($conf_obj , $station, $num)
@@ -174,12 +174,12 @@ print('<hr><table align=center><tr><th>Station<br>/Printer</th><th>Card<br>Print
 		print('<td ><form method="POST" action="'.curPageURL().'?action=card" onchange="document.getElementById(\'card_'.$station.'\').form.submit()"> <select id=card_'.$station.'  name=card_'.$station.'  required><option selected>'.getCardNum($config,$station)); 
 				for($i=1; $i < count((array)$config) + 1; $i++) { print('<option>'.$i); }
 		print('</select></form></td>');
-		print('<td ><form method="POST" action="'.curPageURL().'?action=cardmode" onchange="document.getElementById(\'cardmode_'.$station.'\').form.submit()"> <select id=cardmode_'.$station.'  name=card_'.$station.'  required><option selected>'.getCardMode($config,$station)); 
+		print('<td ><form method="POST" action="'.curPageURL().'?action=cardmode" onchange="document.getElementById(\'cardmode_'.$station.'\').form.submit()"> <select id=cardmode_'.$station.'  name=cardmode_'.$station.'  required><option selected>'.getCardMode($config,$station)); 
 				$opt = array('SIMPLEX','DUPLEX_CC','DUPLEX_CM','DUPLEX_MM','DUPLEX_MC');
 				foreach ($opt as &$value){ print('<option>'.$value); }
 		print('</select></form></td>');
 
-		print('<td ><form method="POST" action="'.curPageURL().'?action=cardribbon" onchange="document.getElementById(\'cardribbon_'.$station.'\').form.submit()"> <select id=cardribbon_'.$station.'  name=card_'.$station.'  required><option selected>'.getCardRibbon($config,$station)); 
+		print('<td ><form method="POST" action="'.curPageURL().'?action=cardribbon" onchange="document.getElementById(\'cardribbon_'.$station.'\').form.submit()"> <select id=cardribbon_'.$station.'  name=cardribbon_'.$station.'  required><option selected>'.getCardRibbon($config,$station)); 
 				$opt = array('RC_YMCKO','RC_YMCKOS','RC_YMCKOK','RC_YMCKOKOS','RM_KO','RM_KBLACK','RM_KWHITE','RM_KRED','RM_KGREEN','RM_KBLUE','RM_KSCRATCH','RM_KMETALSILVER','RM_KMETALGOLD','RM_KSIGNATURE','RM_KWAX','RM_KPREMIUM','RM_HOLO');
 				foreach ($opt as &$value){ print('<option>'.$value); }
 		print('</select></form></td>');
