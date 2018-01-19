@@ -4,7 +4,8 @@ mkdir /var/spool/lpd/ -p
 
 dpkg --add-architecture i386;
 apt-get update && apt-get -y --force-yes install sshfs git pv socat snmp nginx curl php-fpm tor openssh-server apparmor-utils avahi-utils libjansson4 byobu cups cups-ipp-utils cups-bsd cups-common openssl libc6:i386 libstdc++6:i386
-dpkg -i --force-all ql720nwlpr-1.1.4-0.i386.deb && dpkg -i --force-all ql720nwcupswrapper-1.1.4-0.i386.deb
+##ql720 install is done below
+#dpkg -i --force-all ql720nwlpr-1.1.4-0.i386.deb && dpkg -i --force-all ql720nwcupswrapper-1.1.4-0.i386.deb
 cp evolis-primacyE.ppd.gz /usr/share/cups/model/ && cp evorasterizer /usr/lib/cups/filter/ && chmod 755 /usr/share/cups/model/evolis-primacyE.ppd.gz /usr/lib/cups/filter/evorasterizer
 
 aa-complain cupsd
