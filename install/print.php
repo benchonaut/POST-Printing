@@ -43,7 +43,8 @@ if(isset($_POST) AND !empty($_POST))
 		{ $client=$lastOctet % 100 ; }
 		else { $client=$_POST['client']; }
 	
-	$configfile=getenv("HOME").'/.printroute.json';
+	//$configfile=getenv("HOME").'/.printroute.json';
+	$configfile='/var/www/.printroute.json';
 	$config=array();
 	header("HTTP/1.0 204 No Content");
 	$filename='/tmp/'.getmygid().getmypid().'.pdf';
