@@ -56,6 +56,7 @@ if(isset($_POST) AND !empty($_POST))
 			exec('lpadmin -p'.$printer.' -o GDuplexMode='.getCardMode($config,$client).' -o GRibbonType='.getCardRibbon($config,$client).' ;');
 			exec('lpr -o landscape -o fit-to-page -o media=Card -P'.$printer.' -r '.$filename);
 			echo 'queued-client'.$client.' printer '.getCardNum($config,$client);
+			header("Access-Control-Allow-Origin: *");
 			header("HTTP/1.1 200 OK");
 			} 
 	elseif ($_POST['type'] == 'label') {	    
@@ -64,6 +65,7 @@ if(isset($_POST) AND !empty($_POST))
 			exec('lpadmin -p'.$printer.' -o PageSize=62x100 ;');
 			exec('lpr -o fit-to-page -P'.$printer.' -r '.$filename);
 			echo 'queued-client'.$client.' printer '.getLabelNum($config,$client);
+			header("Access-Control-Allow-Origin: *");
 			header("HTTP/1.1 200 OK");
 			};
 	}
