@@ -47,7 +47,7 @@ if(isset($_POST) AND !empty($_POST))
 		{ $client=$lastOctet % 100 ; }
 		else { $client=$_POST['client']; }
 
-	header("HTTP/1.0 204 No Content");
+	
 	$filename='/tmp/'.getmygid().getmypid().'.pdf';
 	
 	if ($_POST['type'] == 'card' ) {
@@ -56,6 +56,7 @@ if(isset($_POST) AND !empty($_POST))
 			exec('lpadmin -p'.$printer.' -o GDuplexMode='.getCardMode($config,$client).' -o GRibbonType='.getCardRibbon($config,$client).' ;');
 			exec('lpr -o landscape -o fit-to-page -o media=Card -P'.$printer.' -r '.$filename);
 			echo 'queued-client'.$client.' printer '.getCardNum($config,$client);
+			header("HTTP/1.1 200 OK");
 			} 
 	elseif ($_POST['type'] == 'label') {	    
 			$printer='LABEL'.getLabelNum($config,$client);
@@ -63,7 +64,13 @@ if(isset($_POST) AND !empty($_POST))
 			exec('lpadmin -p'.$printer.' -o PageSize=62x100 ;');
 			exec('lpr -o fit-to-page -P'.$printer.' -r '.$filename);
 			echo 'queued-client'.$client.' printer '.getLabelNum($config,$client);
+			header("HTTP/1.1 200 OK");
 			};
 	}
+else
+	{
+	header("HTTP/1.0 204 No Content");
+	}
+
 exit
 ?>
