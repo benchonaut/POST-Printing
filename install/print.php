@@ -32,7 +32,7 @@ function initPrinterConfig($configfile , $count = 16)
 		
 if (file_exists($configfile))  { 				$config=json_decode(file_get_contents($configfile),1); }
 		else { initPrinterConfig($configfile);	$config=json_decode(file_get_contents($configfile),1); }
-		print_r($config);
+		//print_r($config);
 function getCardNum($config , $station)		{ return sprintf("%02d",$config[$station]['card']); }
 function getCardMode($config , $station)		{ return $config[$station]['cardmode']; }
 function getCardRibbon($config ,$station)		{ return $config[$station]['cardribbon']; }
