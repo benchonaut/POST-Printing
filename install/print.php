@@ -28,10 +28,11 @@ function initPrinterConfig($configfile , $count = 16)
 
 //$configfile='/var/www/.printroute.json';
 	$configfile=getenv("HOME").'/.printroute.json';
-	
+	$config=array();
+		
 if (file_exists($configfile))  { 				$config=json_decode(file_get_contents($configfile),1); }
 		else { initPrinterConfig($configfile);	$config=json_decode(file_get_contents($configfile),1); }
-		
+		print_r($config);
 function getCardNum($config , $station)		{ return sprintf("%02d",$config[$station]['card']); }
 function getCardMode($config , $station)		{ return $config[$station]['cardmode']; }
 function getCardRibbon($config ,$station)		{ return $config[$station]['cardribbon']; }
@@ -45,7 +46,7 @@ if(isset($_POST) AND !empty($_POST))
 	if (($lastOctet > 100) && ($lastOctet<200))
 		{ $client=$lastOctet % 100 ; }
 		else { $client=$_POST['client']; }
-	$config=array();
+
 	header("HTTP/1.0 204 No Content");
 	$filename='/tmp/'.getmygid().getmypid().'.pdf';
 	
