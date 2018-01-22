@@ -23,7 +23,7 @@ function emptyPrinterConfig($count = 16) {
 }
 
 function initPrinterConfig($configfile , $count = 16)
-	{	echo 1;
+	{	echo INIT;
 		file_put_contents($configfile,json_encode(emptyPrinterConfig($count))); 	}
 
 if (file_exists($configfile))  { 				$config=json_decode(file_get_contents($configfile),1); }
