@@ -40,6 +40,7 @@ adduser www-data lpadmin
 (test -e /etc/ssl/private/nginx.key && test -e /etc/ssl/private/crt.pem ) ||   openssl req -x509 -nodes -days 3650 -subj "/C=US/ST=Denial/L=Springfield/O=Dis/CN=printserver.local" -newkey rsa:4096 -keyout /etc/ssl/private/nginx.key -out /etc/ssl/private/crt.pem
 ln -s /etc/ssl/private/crt.pem /etc/ssl/private/ca.pem
 /etc/init.d/cups start
+rm /var/www/html/index.nginx-debian.html
 /etc/init.d/nginx restart
 
 
