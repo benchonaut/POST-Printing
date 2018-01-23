@@ -41,6 +41,7 @@ adduser www-data lpadmin
 ln -s /etc/ssl/private/crt.pem /etc/ssl/private/ca.pem
 /etc/init.d/cups start
 rm /var/www/html/index.nginx-debian.html
+cp index.html /var/www/html/;chown www-data:www-data /var/www/html/index.html
 /etc/init.d/nginx restart
 
 
