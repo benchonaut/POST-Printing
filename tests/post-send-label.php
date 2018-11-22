@@ -11,6 +11,7 @@ if (isset($argv[1])) { $url = $argv[1]; } ;
 
 $imagedata = file_get_contents($filename);
 $base64 = base64_encode($imagedata);
+var_dump($client);
 $data = array('client' => $client, 'type' => 'label', 'file' => $base64);
 
 // use key 'http' even if you send the request to https://...

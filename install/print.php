@@ -54,8 +54,26 @@ if(isset($_POST) AND !empty($_POST))
 			$printer='CARD'.getCardNum($config,$client);
 			file_put_contents($filename, base64_decode($_POST['file']));
 			exec('lpadmin -p'.$printer.' -o GDuplexMode='.getCardMode($config,$client).' -o GRibbonType='.getCardRibbon($config,$client).' ;');
-			exec('lpr -o landscape -o fit-to-page -o media=Card -P'.$printer.' -r '.$filename);
-			echo 'queued-client'.$client.' printer '.getCardNum($config,$client);
+			$orientation='landscape'; //check for portrait parameter,otherwise autodetect , fallback to parameter defined here
+			if (!empty($_SERVER['portrait']))   
+				{
+			    //use paramater portrait [true|false] to print specific mode, 
+				if ($_POST['portrait'] == 'true' ) { exec('lpr -o portrait -o fit-to-page -o media=Card -P'.$printer.' -r '.$filename); $orientation='portrait';}
+				elseif ($_POST['portrait'] == 'false' ) { exec('lpr -o landscape -o fit-to-page -o media=Card -P'.$printer.' -r '.$filename); $orientation='landscape';}
+				}
+			else  {	
+					$pdfinfoout = shell_exec("pdfinfo ".$filename);
+					preg_match('~Page size: +([0-9\.]+) x ([0-9\.]+) pts~', $pdfinfoout, $matches);
+					if (!empty($matches[2]))	{  
+						$width=intval($matches[1]);
+						$height=intval($matches[2]);
+						if ( $width > $height ) { $orientation='landscape'; }
+						elseif ( $height > $width ) { $orientation='portrait'; }
+						else { $orientation='landscape'; } // x=y , a square
+					} 
+					exec('lpr -o '.$orientation.' -o fit-to-page -o media=Card -P'.$printer.' -r '.$filename);	 
+			}
+			echo 'queued-client'.$client.'oritentation:'.$orientation.' printer '.getCardNum($config,$client);
 			header("Access-Control-Allow-Origin: *");
 			header("HTTP/1.1 200 OK");
 			} 
