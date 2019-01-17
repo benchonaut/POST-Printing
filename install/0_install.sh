@@ -4,9 +4,25 @@ mkdir /var/spool/lpd/ -p
 
 dpkg --add-architecture i386;
 apt-get update && apt-get -y --force-yes install sshfs git pv socat snmp nginx curl php-fpm tor openssh-server apparmor-utils avahi-utils libjansson4 byobu cups cups-ipp-utils cups-bsd cups-common openssl libc6:i386 libstdc++6:i386
+
+#Evolis Primacy installation
+cp evolis-primacyE.ppd.gz /usr/share/cups/model/ && cp evorasterizer /usr/lib/cups/filter/ && chmod 755 /usr/share/cups/model/evolis-primacyE.ppd.gz /usr/lib/cups/filter/evorasterizer
+
 ##ql720 install is done below
 #dpkg -i --force-all ql720nwlpr-1.1.4-0.i386.deb && dpkg -i --force-all ql720nwcupswrapper-1.1.4-0.i386.deb
-cp evolis-primacyE.ppd.gz /usr/share/cups/model/ && cp evorasterizer /usr/lib/cups/filter/ && chmod 755 /usr/share/cups/model/evolis-primacyE.ppd.gz /usr/lib/cups/filter/evorasterizer
+
+tar xzf ql720nw.tgz -C /
+rm /usr/lib/cups/filter/brother_lpdwrapper_ql720nw
+cp -aurv brother_lpdwrapper_ql720nw /opt/brother/PTouch/ql720nw/cupswrapper/brother_lpdwrapper_ql720nw
+ln -s /opt/brother/PTouch/ql720nw/cupswrapper/brother_lpdwrapper_ql720nw /usr/lib/cups/filter/brother_lpdwrapper_ql720nw
+chown root:root /opt/brother/PTouch/ql720nw/cupswrapper/brother_lpdwrapper_ql720nw /usr/lib/cups/filter/brother_lpdwrapper_ql720nw 
+chmod go-w /opt/brother/PTouch/ql720nw/cupswrapper/brother_lpdwrapper_ql720nw /usr/lib/cups/filter/brother_lpdwrapper_ql720nw
+#cp -aurv brother_lpdwrapper_ql720nw /usr/lib/cups/filter/brother_lpdwrapper_ql720nw
+
+#QL810w needs some special attention
+pip install --upgrade https://github.com/pklaus/brother_ql/archive/master.zip
+cd brother_ql;sudo python setup.py install;cd ..
+
 
 aa-complain cupsd
 
@@ -20,14 +36,6 @@ for type in CARD LABEL;do for i in {02..16};do cp -aurv /etc/cups/ppd/$type"01.p
 /etc/init.d/cups stop ;
 (cat stamp.header;for i in {01..16};do nonzeroed=${i/#0/};zeroed=$i;labelip=$(expr $zeroed + 20) ;
 cat stamp.card stamp.label |sed 's/CARDNUMBERZEROED/'$zeroed'/g;s/CARDNUMBER/'$nonzeroed'/g;s/LABELIP/'$labelip'/g;s/LABELNUMBERZEROED/'$zeroed'/g;s/LABELNUMBER/'$nonzeroed'/g' ;done ) > /etc/cups/printers.conf;
-
-tar xzf ql720nw.tgz -C /
-rm /usr/lib/cups/filter/brother_lpdwrapper_ql720nw
-cp -aurv brother_lpdwrapper_ql720nw /opt/brother/PTouch/ql720nw/cupswrapper/brother_lpdwrapper_ql720nw
-ln -s /opt/brother/PTouch/ql720nw/cupswrapper/brother_lpdwrapper_ql720nw /usr/lib/cups/filter/brother_lpdwrapper_ql720nw
-chown root:root /opt/brother/PTouch/ql720nw/cupswrapper/brother_lpdwrapper_ql720nw /usr/lib/cups/filter/brother_lpdwrapper_ql720nw 
-chmod go-w /opt/brother/PTouch/ql720nw/cupswrapper/brother_lpdwrapper_ql720nw /usr/lib/cups/filter/brother_lpdwrapper_ql720nw
-#cp -aurv brother_lpdwrapper_ql720nw /usr/lib/cups/filter/brother_lpdwrapper_ql720nw
 
 cp -aurv default /etc/nginx/sites-available
 cp -aurv printer_status.sh printer_clean_tmp.sh /etc/
@@ -47,6 +55,7 @@ cp index.html /var/www/html/;chown www-data:www-data /var/www/html/index.html
 
 grep printer_clean_tmp /etc/crontab  || (echo Installing cron printer dat cleanr; echo "Ki81ICogICAqICogKiAgIHJvb3QgICAgL2Jpbi9iYXNoIC9ldGMvcHJpbnRlcl9jbGVhbl90bXAuc2ggMj4mMSA+IC90bXAvY2xlYW5sb2cK"|base64 -d |tee -a /etc/crontab )
 grep 'find /var/log/ -name ' /etc/crontab |grep 'gz" -delete'  || (echo Installing cron log.gz cleaner;echo "KiAqLzIgICAqICogKiAgIHJvb3QgICAgZmluZCAvdmFyL2xvZy8gLW5hbWUgIipneiIgLWRlbGV0ZSAyPiYxID4gL3RtcC9jbGVhbmd6bG9nCg=="|base64 -d |tee -a /etc/crontab )
+
 
 echo;echo;echo;echo;echo;
 echo "DON'T FORGET TO DEPLOY SSL KEYS UNDER /etc/ssl/private/nginx.key AND /etc/ssl/private/crt.pem AND /etc/ssl/private/ca.pem(fullchain)"

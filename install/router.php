@@ -25,9 +25,9 @@ $statusfile='/tmp/.status.json';
 $config=array();
 $status=array();
 function emptyPrinterConfig($count = 16) {	
-	$route = array_fill(1, $count ,array_fill_keys(array('card','label','cardmode','cardribbon'),'1'));
+	$route = array_fill(1, $count ,array_fill_keys(array('card','label','labelmode','cardmode','cardribbon'),'1'));
 	foreach ($route as $key => $value)
-			{ $route[$key]['label']=$key;$route[$key]['card']=$key;$route[$key]['cardmode']='DUPLEX_MM';$route[$key]['cardribbon']='RM_KBLACK'; }
+			{ $route[$key]['label']=$key;$route[$key]['card']=$key;$route[$key]['cardmode']='DUPLEX_MM';$route[$key]['cardribbon']='RM_KBLACK';$route[$key]['labelmode']='WIRE_BLK'; }
 	return $route;
 }
 
@@ -37,11 +37,12 @@ function initPrinterConfig($configfile , $count = 16)
 if (file_exists($configfile))  { 				$config=json_decode(file_get_contents($configfile),1); }
 		else { initPrinterConfig($configfile);	$config=json_decode(file_get_contents($configfile),1); }
 			
-function getCardNum($config , $station)		{ return sprintf("%02d",$config[$station]['card']); }
+function getCardNum($config , $station)			{ return sprintf("%02d",$config[$station]['card']); }
 function getCardMode($config , $station)		{ return $config[$station]['cardmode']; }
 function getCardRibbon($config ,$station)		{ return $config[$station]['cardribbon']; }
-function getLabelNum($config , $station)	{ return sprintf("%02d",$config[$station]['label']); }
-	
+function getLabelNum($config , $station)		{ return sprintf("%02d",$config[$station]['label']); }
+function getLabelMode($config , $station)		{ return $config[$station]['labelmode']; }
+
 function setCardNum($conf_obj , $station, $num)
 		{ global $configfile;$conf_obj[$station]['card']=$num; file_put_contents($configfile,json_encode($conf_obj)); return $conf_obj; }
 function setCardMode($conf_obj , $station, $mode)
@@ -191,7 +192,11 @@ print('<hr><table align=center><tr><th>Station<br>/Printer</th><th>Card<br>Print
 			print('</select></form></td>');
 		
 		if (isset($status['label-'.sprintf("%02d",$station)])) { print('<td>'.$status['label-'.sprintf("%02d",$station)].'</td>'); }
-			else { print('<td >..</td>'); }		
+			else { print('<td >..</td>'); }	
+		print('<td ><form method="POST" action="'.curPageURL().'?action=cardmode" onchange="document.getElementById(\'cardmode_'.$station.'\').form.submit()"> <select id=cardmode_'.$station.'  name=cardmode_'.$station.'  required><option selected>'.getCardMode($config,$station)); 
+				$opt = array('WIRE_BLK','WIFI_BLK','WIFI_RED');
+				foreach ($opt as &$value){ print('<option>'.$value); }
+		print('</select></form></td>');	
 		print('</tr>');
 	}
 print('</table>');
