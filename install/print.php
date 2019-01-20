@@ -86,12 +86,15 @@ if(isset($_POST) AND !empty($_POST))
 				exec('lpadmin -p'.$printer.' -o PageSize=62x100 ;');
 				exec('lpr -o fit-to-page -P'.$printer.' -r '.$filename);
 				}
+//TODO time (convert label.pdf -resize 720x1108 /tmp/label.jpg ; brother_ql -p tcp://192.168.88.221:9100 -m QL-810W -b network  print -l 62 --lq   /tmp/label.jpg 2>&1 |grep "Sending instructions" -q && echo SENT) ## --red for DK-22251
 			if ( getLabelMode($config,$client) == 'WIFI_RED') {
+				$printerip=exec('lpoptions  -p '.$printer.' | awk \'{for (i=1; i<=NF; i++) {if ($i ~ /device-uri/) {print $i}}}\' |cut -d"/" -f3');
 				//convert
 				//brother_ql blabla
 				}
 			
 			if ( getLabelMode($config,$client) == 'WIFI_BLK') {
+				$printerip=exec('lpoptions  -p '.$printer.' | awk \'{for (i=1; i<=NF; i++) {if ($i ~ /device-uri/) {print $i}}}\' |cut -d"/" -f3');
 				//convert
 				//brother_ql --red blabla 
 				}
