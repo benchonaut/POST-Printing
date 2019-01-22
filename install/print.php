@@ -91,14 +91,14 @@ if(isset($_POST) AND !empty($_POST))
 				}
 			if ( getLabelMode($config,$client) == 'WIFI_RED') {
 				$printerip=exec('lpoptions  -p '.$printer.' | awk \'{for (i=1; i<=NF; i++) {if ($i ~ /device-uri/) {print $i}}}\' |cut -d"/" -f3');
-				$convertres=exec('convert '.$filename.' -resize x1108 '.$filename.'.jpg');
+				$convertres=exec('convert '.$filename.' -resize 696x '.$filename.'.jpg');
 				$printres=exec('brother_ql -p tcp://'.$printerip.':9100 -m QL-810W -b network print -l 62 --red --lq '.$filename.'.jpg');
 				echo $printerip.'<br>'.$convertres.'<br>'.$printres ;//exec('rm '.$filename.'.jpg '.$filename);
 				}
 
 			if ( getLabelMode($config,$client) == 'WIFI_BLK') {
 				$printerip=exec('lpoptions  -p '.$printer.' | awk \'{for (i=1; i<=NF; i++) {if ($i ~ /device-uri/) {print $i}}}\' |cut -d"/" -f3');
-				$convertres=exec('convert '.$filename.' -resize x1108 '.$filename.'.jpg');
+				$convertres=exec('convert '.$filename.' -resize 696x '.$filename.'.jpg');
 				$printres=exec('brother_ql -p tcp://'.$printerip.':9100 -m QL-810W -b network print -l 62 --lq '.$filename.'.jpg');
 				echo $printerip.'<br>'.$convertres.'<br>'.$printres ;//exec('rm '.$filename.'.jpg '.$filename);
 				}
