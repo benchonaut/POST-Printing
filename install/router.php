@@ -199,6 +199,7 @@ print('<hr><table align=center><tr><th>Station<br>/Printer</th><th>Card<br>Print
 			else { print('<td >..</td>'); }	
 		print('<td ><form method="POST" action="'.curPageURL().'?action=labelmode" onchange="document.getElementById(\'labelmode_'.$station.'\').form.submit()"> <select id=labelmode_'.$station.'  name=labelmode_'.$station.'  required><option selected>'.getLabelMode($config,$station)); 
 				$opt = array('WIRE_BLK','WIRE_29x90','WIFI_BLK','WIFI_RED','WIFI_29x90');
+				$opt = array_diff($opt, array(getLabelMode($config,$station)));$opt = array_values($opt);
 				foreach ($opt as &$value){ print('<option>'.$value); }
 		print('</select></form></td>');	
 		print('</tr>');
