@@ -181,11 +181,13 @@ print('<hr><table align=center><tr><th>Station<br>/Printer</th><th>Card<br>Print
 		print('</select></form></td>');
 		print('<td ><form method="POST" action="'.curPageURL().'?action=cardmode" onchange="document.getElementById(\'cardmode_'.$station.'\').form.submit()"> <select id=cardmode_'.$station.'  name=cardmode_'.$station.'  required><option selected>'.getCardMode($config,$station)); 
 				$opt = array('SIMPLEX','DUPLEX_CC','DUPLEX_CM','DUPLEX_MM','DUPLEX_MC');
+				$opt = array_diff($opt, array(getCardMode($config,$station)));$opt = array_values($opt);
 				foreach ($opt as &$value){ print('<option>'.$value); }
 		print('</select></form></td>');
 
 		print('<td ><form method="POST" action="'.curPageURL().'?action=cardribbon" onchange="document.getElementById(\'cardribbon_'.$station.'\').form.submit()"> <select id=cardribbon_'.$station.'  name=cardribbon_'.$station.'  required><option selected>'.getCardRibbon($config,$station)); 
 				$opt = array('RC_YMCKO','RC_YMCKOS','RC_YMCKOK','RC_YMCKOKOS','RM_KO','RM_KBLACK','RM_KWHITE','RM_KRED','RM_KGREEN','RM_KBLUE','RM_KSCRATCH','RM_KMETALSILVER','RM_KMETALGOLD','RM_KSIGNATURE','RM_KWAX','RM_KPREMIUM','RM_HOLO');
+				$opt = array_diff($opt, array(getCardRibbon($config,$station)));$opt = array_values($opt);
 				foreach ($opt as &$value){ print('<option>'.$value); }
 		print('</select></form></td>');
 
