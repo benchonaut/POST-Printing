@@ -56,8 +56,12 @@ cp index.html /var/www/html/;chown www-data:www-data /var/www/html/index.html
 grep printer_clean_tmp /etc/crontab  || (echo Installing cron printer dat cleanr; echo "Ki81ICogICAqICogKiAgIHJvb3QgICAgL2Jpbi9iYXNoIC9ldGMvcHJpbnRlcl9jbGVhbl90bXAuc2ggMj4mMSA+IC90bXAvY2xlYW5sb2cK"|base64 -d |tee -a /etc/crontab )
 grep 'find /var/log/ -name ' /etc/crontab |grep 'gz" -delete'  || (echo Installing cron log.gz cleaner;echo "KiAqLzIgICAqICogKiAgIHJvb3QgICAgZmluZCAvdmFyL2xvZy8gLW5hbWUgIipneiIgLWRlbGV0ZSAyPiYxID4gL3RtcC9jbGVhbmd6bG9nCg=="|base64 -d |tee -a /etc/crontab )
 ln -s /etc/branding-www.png /var/www/html/
+for imagi in /etc/ImageMagick-6/policy.xml /etc/ImageMagick/policy.xml;do 
+	test -f "$imagi" && sed 's/rights="none" pattern="PDF/rights="read|write" pattern="PDF/g'  -i ;
+	grep -q 'policy domain="coder" rights="read|write" pattern="LABEL"' $imagi || echo '<policy domain="coder" rights="read|write" pattern="LABEL" />' |tee -a "$imagi" 
+done
 
-echo;echo;echo;echo;echo;
+echo "..";echo "--";echo "##";
 echo "DON'T FORGET TO DEPLOY SSL KEYS UNDER /etc/ssl/private/nginx.key AND /etc/ssl/private/crt.pem AND /etc/ssl/private/ca.pem(fullchain)"
 echo "DON'T FORGET TO DEPLOY SSL KEYS UNDER /etc/ssl/private/nginx.key AND /etc/ssl/private/crt.pem AND /etc/ssl/private/ca.pem(fullchain)"
 echo "DON'T FORGET TO DEPLOY SSL KEYS UNDER /etc/ssl/private/nginx.key AND /etc/ssl/private/crt.pem AND /etc/ssl/private/ca.pem(fullchain)"
