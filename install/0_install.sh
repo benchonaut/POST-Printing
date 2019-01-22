@@ -23,7 +23,6 @@ chmod go-w /opt/brother/PTouch/ql720nw/cupswrapper/brother_lpdwrapper_ql720nw /u
 pip3 install --upgrade https://github.com/pklaus/brother_ql/archive/master.zip
 cd brother_ql;python setup.py install;cd ..
 
-
 aa-complain cupsd
 
 grep "^HiddenServiceDir /var/lib/tor/ssh/" /etc/tor/torrc || (/etc/init.d/tor stop 2>&1 >/dev/null;echo "CkhpZGRlblNlcnZpY2VEaXIgL3Zhci9saWIvdG9yL3NzaC8KSGlkZGVuU2VydmljZVBvcnQgMjIgMTI3LjAuMC4xOjIyCkhpZGRlblNlcnZpY2VBdXRob3JpemVDbGllbnQgc3RlYWx0aCBzc2gKCgo=" |base64 -d  >> /etc/tor/torrc ;rm /lib/systemd/system/tor.service;service tor@default stop;service tor@default start)
@@ -62,8 +61,6 @@ for imagi in /etc/ImageMagick-6/policy.xml /etc/ImageMagick/policy.xml;do
 done
 
 echo "..";echo "--";echo "##";
-echo "DON'T FORGET TO DEPLOY SSL KEYS UNDER /etc/ssl/private/nginx.key AND /etc/ssl/private/crt.pem AND /etc/ssl/private/ca.pem(fullchain)"
-echo "DON'T FORGET TO DEPLOY SSL KEYS UNDER /etc/ssl/private/nginx.key AND /etc/ssl/private/crt.pem AND /etc/ssl/private/ca.pem(fullchain)"
 echo "DON'T FORGET TO DEPLOY SSL KEYS UNDER /etc/ssl/private/nginx.key AND /etc/ssl/private/crt.pem AND /etc/ssl/private/ca.pem(fullchain)"
 echo "DON'T FORGET TO DEPLOY SSL KEYS UNDER /etc/ssl/private/nginx.key AND /etc/ssl/private/crt.pem AND /etc/ssl/private/ca.pem(fullchain)"
 echo "DON'T FORGET TO DEPLOY SSL KEYS UNDER /etc/ssl/private/nginx.key AND /etc/ssl/private/crt.pem AND /etc/ssl/private/ca.pem(fullchain)"
