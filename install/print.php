@@ -1,8 +1,7 @@
 <?php 
-//TODO: state switch WIRE_BLK,WIFI_BLK,WIFI_RED
-// (int)$_POST['client'];
-// $_POST['type']; // card,label 
-// $_POST['file']; //base64 encoded pdf
+// (int)$_POST['client'];	// station number(not sanitized)
+// $_POST['type']; 			// card,label 
+// $_POST['file']; 			//base64 encoded pdf
 function getRealIpAddr()
 {
     if (!empty($_SERVER['HTTP_CLIENT_IP']))   //check ip from share internet
@@ -13,8 +12,6 @@ function getRealIpAddr()
     {      $ip=$_SERVER['REMOTE_ADDR'];    }
     return $ip;
 }
-
-
 
 function emptyPrinterConfig($count = 16) {	
 	$route = array_fill(1, $count ,array_fill_keys(array('card','label','labelmode','cardmode','cardribbon'),'1'));
@@ -85,18 +82,20 @@ if(isset($_POST) AND !empty($_POST))
 			if ( getLabelMode($config,$client) == 'WIRE_BLK') {
 				exec('lpadmin -p'.$printer.' -o PageSize=62x100 ;');
 				exec('lpr -o fit-to-page -P'.$printer.' -r '.$filename);
+				exec('rm '.$filename);
 				}
-//TODO time (convert label.pdf -resize 720x1108 /tmp/label.jpg ; brother_ql -p tcp://192.168.88.221:9100 -m QL-810W -b network  print -l 62 --lq   /tmp/label.jpg 2>&1 |grep "Sending instructions" -q && echo SENT) ## --red for DK-22251
 			if ( getLabelMode($config,$client) == 'WIFI_RED') {
 				$printerip=exec('lpoptions  -p '.$printer.' | awk \'{for (i=1; i<=NF; i++) {if ($i ~ /device-uri/) {print $i}}}\' |cut -d"/" -f3');
-				//convert
-				//brother_ql blabla
+				$convertres=exec('convert '.$filename.' -resize x1108 /tmp/'.$filename.'.jpg');
+				$printres=$('brother_ql -p tcp://'.$printerip.':9100 -m QL-810W -b network print -l 62 --red --lq /tmp/'.$filename.'.jpg');
+				exec('rm /tmp/'.$filename.'.jpg '.$filename);
 				}
-			
+
 			if ( getLabelMode($config,$client) == 'WIFI_BLK') {
 				$printerip=exec('lpoptions  -p '.$printer.' | awk \'{for (i=1; i<=NF; i++) {if ($i ~ /device-uri/) {print $i}}}\' |cut -d"/" -f3');
-				//convert
-				//brother_ql --red blabla 
+				$convertres=exec('convert '.$filename.' -resize x1108 /tmp/'.$filename.'.jpg');
+				$printres=$('brother_ql -p tcp://'.$printerip.':9100 -m QL-810W -b network print -l 62 --lq /tmp/'.$filename.'.jpg');
+				exec('rm /tmp/'.$filename.'.jpg '.$filename);
 				}
 			echo 'queued-client'.$client.' printer '.getLabelNum($config,$client);
 			header("Access-Control-Allow-Origin: *");
