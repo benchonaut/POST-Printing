@@ -46,7 +46,7 @@ chown -R root:lp /etc/cups
 adduser www-data lpadmin
 
 (test -e /etc/ssl/private/nginx.key && test -e /etc/ssl/private/crt.pem ) ||   openssl req -x509 -nodes -days 3650 -subj "/C=US/ST=Denial/L=Springfield/O=Dis/CN=printserver.local" -newkey rsa:4096 -keyout /etc/ssl/private/nginx.key -out /etc/ssl/private/crt.pem
-ln -s /etc/ssl/private/crt.pem /etc/ssl/private/ca.pem
+test -e /etc/ssl/private/ca.pem || ln -s /etc/ssl/private/crt.pem /etc/ssl/private/ca.pem
 /etc/init.d/cups start
 test -f /var/www/html/index.nginx-debian.html && rm /var/www/html/index.nginx-debian.html
 cp index.html /var/www/html/;chown www-data:www-data /var/www/html/index.html
@@ -55,7 +55,7 @@ cp index.html /var/www/html/;chown www-data:www-data /var/www/html/index.html
 
 grep printer_clean_tmp /etc/crontab  || (echo Installing cron printer dat cleanr; echo "Ki81ICogICAqICogKiAgIHJvb3QgICAgL2Jpbi9iYXNoIC9ldGMvcHJpbnRlcl9jbGVhbl90bXAuc2ggMj4mMSA+IC90bXAvY2xlYW5sb2cK"|base64 -d |tee -a /etc/crontab )
 grep 'find /var/log/ -name ' /etc/crontab |grep 'gz" -delete'  || (echo Installing cron log.gz cleaner;echo "KiAqLzIgICAqICogKiAgIHJvb3QgICAgZmluZCAvdmFyL2xvZy8gLW5hbWUgIipneiIgLWRlbGV0ZSAyPiYxID4gL3RtcC9jbGVhbmd6bG9nCg=="|base64 -d |tee -a /etc/crontab )
-ln -s /etc/branding-www.png /var/www/html/
+test -l /var/www/html/branding-www.png || ln -s /etc/branding-www.png /var/www/html/branding-www.png
 for imagi in /etc/ImageMagick-6/policy.xml /etc/ImageMagick/policy.xml;do 
 	test -f "$imagi" && ( sed 's/rights="none" pattern="PDF/rights="read|write" pattern="PDF/g' "$imagi" -i ;
 	  	grep -q 'policy domain="coder" rights="read|write" pattern="LABEL"' $imagi || echo '<policy domain="coder" rights="read|write" pattern="LABEL" />' |tee -a "$imagi"  )
