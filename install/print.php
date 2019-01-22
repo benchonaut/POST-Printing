@@ -84,6 +84,11 @@ if(isset($_POST) AND !empty($_POST))
 				exec('lpr -o fit-to-page -P'.$printer.' -r '.$filename);
 				exec('rm '.$filename);
 				}
+			if ( getLabelMode($config,$client) == 'WIRE_29x90') {
+				exec('lpadmin -p'.$printer.' -o PageSize=29x90 ;');
+				exec('lpr -o fit-to-page -P'.$printer.' -r '.$filename);
+				exec('rm '.$filename);
+				}
 			if ( getLabelMode($config,$client) == 'WIFI_RED') {
 				$printerip=exec('lpoptions  -p '.$printer.' | awk \'{for (i=1; i<=NF; i++) {if ($i ~ /device-uri/) {print $i}}}\' |cut -d"/" -f3');
 				$convertres=exec('convert '.$filename.' -resize x1108 /tmp/'.$filename.'.jpg');
@@ -95,6 +100,13 @@ if(isset($_POST) AND !empty($_POST))
 				$printerip=exec('lpoptions  -p '.$printer.' | awk \'{for (i=1; i<=NF; i++) {if ($i ~ /device-uri/) {print $i}}}\' |cut -d"/" -f3');
 				$convertres=exec('convert '.$filename.' -resize x1108 /tmp/'.$filename.'.jpg');
 				$printres=exec('brother_ql -p tcp://'.$printerip.':9100 -m QL-810W -b network print -l 62 --lq /tmp/'.$filename.'.jpg');
+				exec('rm /tmp/'.$filename.'.jpg '.$filename);
+				}
+			
+			if ( getLabelMode($config,$client) == 'WIFI_29x90') {
+				$printerip=exec('lpoptions  -p '.$printer.' | awk \'{for (i=1; i<=NF; i++) {if ($i ~ /device-uri/) {print $i}}}\' |cut -d"/" -f3');
+				$convertres=exec('convert '.$filename.' -resize 306x991 /tmp/'.$filename.'.jpg');
+				$printres=exec('brother_ql -p tcp://'.$printerip.':9100 -m QL-810W -b network print -l 29x90 --lq /tmp/'.$filename.'.jpg');
 				exec('rm /tmp/'.$filename.'.jpg '.$filename);
 				}
 			echo 'queued-client'.$client.' printer '.getLabelNum($config,$client);

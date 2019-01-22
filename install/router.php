@@ -52,6 +52,9 @@ function setCardRibbon($conf_obj , $station, $ribbon)
 
 function setLabelNum($conf_obj , $station,$num)
 		{ global $configfile;$conf_obj[$station]['label']=$num; file_put_contents($configfile,json_encode($conf_obj)); return $conf_obj; }
+		
+function setLabelMode($conf_obj , $station,$mode)
+		{ global $configfile;$conf_obj[$station]['labelmode']=$mode; file_put_contents($configfile,json_encode($conf_obj)); return $conf_obj; }
 
 
 if(isset($_POST) AND !empty($_POST)) 
@@ -60,6 +63,7 @@ if(isset($_POST) AND !empty($_POST))
 	foreach ($_POST as $action => $value) { 
 	$act=explode("_", $action);
 	if ($act[0] == 'label' ) 			{ $config=setLabelNum($config,$act[1],$value); 		header("HTTP/1.0 204 No Content");	exit; }
+	elseif ($act[0] == 'labelmode')		{ $config=setLabelMode($config,$act[1],$value);  	header("HTTP/1.0 204 No Content");	exit; }
 	elseif ($act[0] == 'cardmode')		{ $config=setCardMode($config,$act[1],$value);  	header("HTTP/1.0 204 No Content");	exit; }
 	elseif ($act[0] == 'cardribbon')	{ $config=setCardRibbon($config,$act[1],$value);  	header("HTTP/1.0 204 No Content");	exit; }
 	elseif ($act[0] == 'card')	{ $config=setCardNum($config,$act[1],$value);  header("HTTP/1.0 204 No Content");	exit; }
@@ -166,10 +170,10 @@ print('  </th><th><form method="POST" action="'.curPageURL().'?action=RotFront" 
 print('</th></tr></table>');
 print('<table><tr><th><form method="POST" action="'.curPageURL().'?action=NoRotBack"  onchange="document.getElementById(\'NoRotBack\').form.submit();history.go(0);"> <button name="NoRotate" id="NoRotBack" value="Back">Straight Back</button></form>');
 print('  </th><th><form method="POST" action="'.curPageURL().'?action=RotBack"    onchange="document.getElementById(\'RotBack\').form.submit();history.go(0);"> <button name="Rotate" id="RotBack" value="Back">Rotate Back 180°</button></form>');
-print('</th></tr></table>');
+print('</th></tr></table><b>Label Settings: WIFI_RED=DK22261 , WIFI_BLACK=22205,WIFI_THIN=DK1201( 29mmx90.3 Address) </b>');
 print('<hr><table align=center><tr><th>Station<br>/Printer</th><th>Card<br>Printer</th>
 <th>Card<br>Duplex</th><th>Card<br>Ribbon</th>
-<th>Card Status(Printer Number)</th><th>Label<br>Printer</th><th>Label Status(Printer Number)</th></tr><tr>');
+<th>Card Status(Printer Number)</th><th>Label<br>Printer</th><th>Label Status(Printer Number)</th><th>Label Mode</th></tr><tr>');
    for($station=1; $station < count((array)$config) + 1 ; $station++) {
 		print('<td>'.$station.'</td>');
 		print('<td ><form method="POST" action="'.curPageURL().'?action=card" onchange="document.getElementById(\'card_'.$station.'\').form.submit()"> <select id=card_'.$station.'  name=card_'.$station.'  required><option selected>'.getCardNum($config,$station)); 
@@ -193,8 +197,8 @@ print('<hr><table align=center><tr><th>Station<br>/Printer</th><th>Card<br>Print
 		
 		if (isset($status['label-'.sprintf("%02d",$station)])) { print('<td>'.$status['label-'.sprintf("%02d",$station)].'</td>'); }
 			else { print('<td >..</td>'); }	
-		print('<td ><form method="POST" action="'.curPageURL().'?action=cardmode" onchange="document.getElementById(\'cardmode_'.$station.'\').form.submit()"> <select id=cardmode_'.$station.'  name=cardmode_'.$station.'  required><option selected>'.getLabelMode($config,$station)); 
-				$opt = array('WIRE_BLK','WIFI_BLK','WIFI_RED');
+		print('<td ><form method="POST" action="'.curPageURL().'?action=labelmode" onchange="document.getElementById(\'labelmode_'.$station.'\').form.submit()"> <select id=labelmode_'.$station.'  name=labelmode_'.$station.'  required><option selected>'.getLabelMode($config,$station)); 
+				$opt = array('WIRE_BLK','WIRE_29x90','WIFI_BLK','WIFI_RED','WIFI_29x90');
 				foreach ($opt as &$value){ print('<option>'.$value); }
 		print('</select></form></td>');	
 		print('</tr>');
