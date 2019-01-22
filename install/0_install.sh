@@ -9,8 +9,8 @@ apt-get update && apt-get -y --force-yes install sshfs git pv socat snmp nginx c
 cp evolis-primacyE.ppd.gz /usr/share/cups/model/ && cp evorasterizer /usr/lib/cups/filter/ && chmod 755 /usr/share/cups/model/evolis-primacyE.ppd.gz /usr/lib/cups/filter/evorasterizer
 
 ##ql720 install is done below
-#dpkg -i --force-all ql720nwlpr-1.1.4-0.i386.deb && dpkg -i --force-all ql720nwcupswrapper-1.1.4-0.i386.deb
-
+### DO NOT ! dpkg -i --force-all ql720nwlpr-1.1.4-0.i386.deb && dpkg -i --force-all ql720nwcupswrapper-1.1.4-0.i386.deb
+echo "++ql720++"
 tar xzf ql720nw.tgz -C /
 rm /usr/lib/cups/filter/brother_lpdwrapper_ql720nw
 cp -aurv brother_lpdwrapper_ql720nw /opt/brother/PTouch/ql720nw/cupswrapper/brother_lpdwrapper_ql720nw
@@ -51,14 +51,17 @@ test -f /var/www/html/index.nginx-debian.html && rm /var/www/html/index.nginx-de
 cp index.html /var/www/html/;chown www-data:www-data /var/www/html/index.html
 /etc/init.d/nginx restart
 
+grep -q "www-data ALL=NOPASSWD: /usr/local/bin/brother_ql" /etc/sudoers || (echo "www-data ALL=NOPASSWD: /usr/local/bin/brother_ql" >> /etc/sudoers; echo "+ sudoers updated" )  && echo "→  sudoers modded already"
+grep printer_clean_tmp /etc/crontab  || (echo "++ Installing cron printer dat cleanr"; echo "Ki81ICogICAqICogKiAgIHJvb3QgICAgL2Jpbi9iYXNoIC9ldGMvcHJpbnRlcl9jbGVhbl90bXAuc2ggMj4mMSA+IC90bXAvY2xlYW5sb2cK"|base64 -d |tee -a /etc/crontab )
 
-grep printer_clean_tmp /etc/crontab  || (echo Installing cron printer dat cleanr; echo "Ki81ICogICAqICogKiAgIHJvb3QgICAgL2Jpbi9iYXNoIC9ldGMvcHJpbnRlcl9jbGVhbl90bXAuc2ggMj4mMSA+IC90bXAvY2xlYW5sb2cK"|base64 -d |tee -a /etc/crontab )
 grep 'find /var/log/ -name ' /etc/crontab |grep 'gz" -delete'  || (echo Installing cron log.gz cleaner;echo "KiAqLzIgICAqICogKiAgIHJvb3QgICAgZmluZCAvdmFyL2xvZy8gLW5hbWUgIipneiIgLWRlbGV0ZSAyPiYxID4gL3RtcC9jbGVhbmd6bG9nCg=="|base64 -d |tee -a /etc/crontab )
+
 test -e /var/www/html/branding-www.png || ln -s /etc/branding-www.png /var/www/html/branding-www.png
 for imagi in /etc/ImageMagick-6/policy.xml /etc/ImageMagick/policy.xml;do 
 	test -f "$imagi" && ( sed 's/rights="none" pattern="PDF/rights="read|write" pattern="PDF/g' "$imagi" -i ;
 	  	grep -q 'policy domain="coder" rights="read|write" pattern="LABEL"' $imagi || echo '<policy domain="coder" rights="read|write" pattern="LABEL" />' |tee -a "$imagi"  )
 done
+
 
 echo "..";echo "--";echo "##";
 echo "DON'T FORGET TO DEPLOY SSL KEYS UNDER /etc/ssl/private/nginx.key AND /etc/ssl/private/crt.pem AND /etc/ssl/private/ca.pem(fullchain)"
