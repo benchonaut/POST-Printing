@@ -20,7 +20,7 @@ chmod go-w /opt/brother/PTouch/ql720nw/cupswrapper/brother_lpdwrapper_ql720nw /u
 #cp -aurv brother_lpdwrapper_ql720nw /usr/lib/cups/filter/brother_lpdwrapper_ql720nw
 
 #QL810w needs some special attention
-pip install --upgrade https://github.com/pklaus/brother_ql/archive/master.zip
+pip3 install --upgrade https://github.com/pklaus/brother_ql/archive/master.zip
 cd brother_ql;python setup.py install;cd ..
 
 
