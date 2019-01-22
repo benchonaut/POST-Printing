@@ -193,7 +193,7 @@ print('<hr><table align=center><tr><th>Station<br>/Printer</th><th>Card<br>Print
 		
 		if (isset($status['label-'.sprintf("%02d",$station)])) { print('<td>'.$status['label-'.sprintf("%02d",$station)].'</td>'); }
 			else { print('<td >..</td>'); }	
-		print('<td ><form method="POST" action="'.curPageURL().'?action=cardmode" onchange="document.getElementById(\'cardmode_'.$station.'\').form.submit()"> <select id=cardmode_'.$station.'  name=cardmode_'.$station.'  required><option selected>'.getCardMode($config,$station)); 
+		print('<td ><form method="POST" action="'.curPageURL().'?action=cardmode" onchange="document.getElementById(\'cardmode_'.$station.'\').form.submit()"> <select id=cardmode_'.$station.'  name=cardmode_'.$station.'  required><option selected>'.getLabelMode($config,$station)); 
 				$opt = array('WIRE_BLK','WIFI_BLK','WIFI_RED');
 				foreach ($opt as &$value){ print('<option>'.$value); }
 		print('</select></form></td>');	
