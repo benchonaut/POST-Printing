@@ -3,7 +3,7 @@
 mkdir /var/spool/lpd/ -p
 
 dpkg --add-architecture i386;
-apt-get update && apt-get -y --force-yes install sshfs git pv socat snmp nginx curl php-fpm tor openssh-server apparmor-utils avahi-utils libjansson4 byobu cups cups-ipp-utils cups-bsd cups-common openssl libc6:i386 libstdc++6:i386
+apt-get update && apt-get -y --force-yes install sshfs git pv socat snmp nginx curl python3-pip php-fpm tor openssh-server apparmor-utils avahi-utils libjansson4 byobu cups cups-ipp-utils cups-bsd cups-common openssl libc6:i386 libstdc++6:i386
 
 #Evolis Primacy installation
 cp evolis-primacyE.ppd.gz /usr/share/cups/model/ && cp evorasterizer /usr/lib/cups/filter/ && chmod 755 /usr/share/cups/model/evolis-primacyE.ppd.gz /usr/lib/cups/filter/evorasterizer
