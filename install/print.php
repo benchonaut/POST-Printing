@@ -91,23 +91,23 @@ if(isset($_POST) AND !empty($_POST))
 				}
 			if ( getLabelMode($config,$client) == 'WIFI_RED') {
 				$printerip=exec('lpoptions  -p '.$printer.' | awk \'{for (i=1; i<=NF; i++) {if ($i ~ /device-uri/) {print $i}}}\' |cut -d"/" -f3');
-				$convertres=exec('convert '.$filename.' -resize x1108 /tmp/'.$filename.'.jpg');
-				$printres=exec('brother_ql -p tcp://'.$printerip.':9100 -m QL-810W -b network print -l 62 --red --lq /tmp/'.$filename.'.jpg');
-				echo $printerip.'<br>'.$convertres.'<br>'.$printres ;//exec('rm /tmp/'.$filename.'.jpg '.$filename);
+				$convertres=exec('convert '.$filename.' -resize x1108 '.$filename.'.jpg');
+				$printres=exec('brother_ql -p tcp://'.$printerip.':9100 -m QL-810W -b network print -l 62 --red --lq '.$filename.'.jpg');
+				echo $printerip.'<br>'.$convertres.'<br>'.$printres ;//exec('rm '.$filename.'.jpg '.$filename);
 				}
 
 			if ( getLabelMode($config,$client) == 'WIFI_BLK') {
 				$printerip=exec('lpoptions  -p '.$printer.' | awk \'{for (i=1; i<=NF; i++) {if ($i ~ /device-uri/) {print $i}}}\' |cut -d"/" -f3');
-				$convertres=exec('convert '.$filename.' -resize x1108 /tmp/'.$filename.'.jpg');
-				$printres=exec('brother_ql -p tcp://'.$printerip.':9100 -m QL-810W -b network print -l 62 --lq /tmp/'.$filename.'.jpg');
-				echo $printerip.'<br>'.$convertres.'<br>'.$printres ;//exec('rm /tmp/'.$filename.'.jpg '.$filename);
+				$convertres=exec('convert '.$filename.' -resize x1108 '.$filename.'.jpg');
+				$printres=exec('brother_ql -p tcp://'.$printerip.':9100 -m QL-810W -b network print -l 62 --lq '.$filename.'.jpg');
+				echo $printerip.'<br>'.$convertres.'<br>'.$printres ;//exec('rm '.$filename.'.jpg '.$filename);
 				}
 			
 			if ( getLabelMode($config,$client) == 'WIFI_29x90') {
 				$printerip=exec('lpoptions  -p '.$printer.' | awk \'{for (i=1; i<=NF; i++) {if ($i ~ /device-uri/) {print $i}}}\' |cut -d"/" -f3');
-				$convertres=exec('convert '.$filename.' -resize 306x991 /tmp/'.$filename.'.jpg');
-				$printres=exec('brother_ql -p tcp://'.$printerip.':9100 -m QL-810W -b network print -l 29x90 --lq /tmp/'.$filename.'.jpg');
-				echo $printerip.'<br>'.$convertres.'<br>'.$printres ;//exec('rm /tmp/'.$filename.'.jpg '.$filename);
+				$convertres=exec('convert '.$filename.' -resize 306x991 '.$filename.'.jpg');
+				$printres=exec('brother_ql -p tcp://'.$printerip.':9100 -m QL-810W -b network print -l 29x90 --lq '.$filename.'.jpg');
+				echo $printerip.'<br>'.$convertres.'<br>'.$printres ;//exec('rm '.$filename.'.jpg '.$filename);
 				}
 			echo 'queued-client'.$client.' printer '.getLabelNum($config,$client);
 			header("Access-Control-Allow-Origin: *");
