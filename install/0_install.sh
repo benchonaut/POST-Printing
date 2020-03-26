@@ -44,6 +44,10 @@ chown -R www-data:www-data /var/www/
 chown -R root:lp /etc/cups
 adduser www-data lpadmin
 
+echo  "MAKE SURE PHP_FPM is RUNNING BEFORE YOU START INSTALLER OR START AGAIN"
+test -f $(find /var/run/ -name "*fpm.sock" |tail -n1 ) || ( echo "NO FPM SOCK .. EXITING" ; exit 0 ) 
+ln -s  $(find /var/run/ -name "*fpm.sock" |tail -n1 )  /etc/php-fpm.sock
+
 (test -e /etc/ssl/private/nginx.key && test -e /etc/ssl/private/crt.pem ) ||   openssl req -x509 -nodes -days 3650 -subj "/C=US/ST=Denial/L=Springfield/O=Dis/CN=printserver.local" -newkey rsa:4096 -keyout /etc/ssl/private/nginx.key -out /etc/ssl/private/crt.pem
 test -e /etc/ssl/private/ca.pem || ln -s /etc/ssl/private/crt.pem /etc/ssl/private/ca.pem
 /etc/init.d/cups start
