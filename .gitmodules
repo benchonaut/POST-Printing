@@ -1,0 +1,3 @@
+[submodule "install/brother_ql"]
+	path = install/brother_ql
+	url = https://github.com/benchonaut/brother_ql.git

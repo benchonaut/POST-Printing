@@ -1,0 +1,20 @@
+
+<Printer CARDCARDNUMBERZEROED>
+UUID urn:uuid:133f8ae1-7a8a-3955-41fb-db8c1a07d1CARDNUMBERZEROED
+Info Evolis Primacy CARDNUMBER
+MakeModel EVOLIS Primacy CUPS 6.5.2.95 English
+DeviceURI socket://192.168.88.2CARDNUMBERZEROED
+State Idle
+StateTime 1510760029
+ConfigTime 1508842846
+Type 4236
+Accepting Yes
+Shared No
+JobSheets none none
+QuotaPeriod 0
+PageLimit 0
+KLimit 0
+OpPolicy default
+ErrorPolicy retry-job
+</Printer>
+
