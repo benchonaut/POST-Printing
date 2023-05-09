@@ -203,11 +203,25 @@ echo REMOTE: $(cat /var/lib/tor/ssh/hostname |sed 's/$/-'$(hostname)'-/g;s/$/'$(
 for file in $(ls -1 /etc/init.d/php-fpm* /etc/init.d/php*fpm );do $file start;done & 
 wait
 
+## disable ubuntu/debian power saving "features" , enable shutdown by power button
+
+
+which hostnamectl && hostnamectl set-chassis vm
+which systemctl && (
+systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target
+dpkg-divert --no-rename /etc/systemd/system/sleep.target
+dpkg-divert --no-rename /etc/systemd/system/suspend.target
+dpkg-divert --no-rename /etc/systemd/system/hibernate.target
+dpkg-divert --no-rename /etc/systemd/system/hybrid-sleep.target
+)
+
 
 
 
 echo
 echo DONE
+
+
 
 test -e /var/www/.htpasswd || ( 
     rm -f /etc/.printadminpass 
