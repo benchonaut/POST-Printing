@@ -44,25 +44,37 @@ function getLabelNum($config , $station)           { return sprintf("%02d",$conf
 function getLabelMode($config , $station)          { return $config[$station]['labelmode']; }
 
 
+
 if(isset($_GET['id'])) { 
     $client=0;
     //$station=$_GET['id'];
         $lastOctet=intval($_GET['id']);
-		// 51..66 , 101..116 ,151..166 GET A STRAIGHT 1:1 MAPPING
+        // 51..66 , 101..116 ,151..166 GET A STRAIGHT 1:1 MAPPING
 
-		if (($lastOctet > 50) && ($lastOctet<200))
-		{
-	         $client=$lastOctet % 10 ;
-		}
-	
+        if (($lastOctet > 50) && ($lastOctet<200))
+        {
+             $client=$lastOctet % 50 ;
+        }
+        if ($client > 16 )
+        {
+             $client=$client % 50 ;
+        }
+    if($client==0){
+        exit(0);
+    }
     $station=$client;
     if(isset($_GET['type'])) { 
+        exec('/bin/bash /etc/printer_status.sh '.$statusfile);
+        $status=json_decode(file_get_contents($statusfile),1);
         if($_GET['type']=="CARD") {
-            print(exec(  '/bin/bash -c "lpstat -p CARD'.sprintf("%02d",getCardNum($config,$station)).' "',$output));
+            if (isset($status['card-'.sprintf("%02d",getCardNum($config,$station)))])) { print('STATUS_CARD'.getCardNum($config,$station)).":".$status['card-'.sprintf("%02d",getCardNum($config,$station)))].' '); }
+            else { print('STATUS_CARD'.getCardNum($config,$station)).": NOT_DETECTABLE"); }      
+            //print(exec(  '/bin/bash -c "lpstat -p CARD'.sprintf("%02d",getCardNum($config,$station)).' "',$output));
             }
         if($_GET['type']=="LABEL") {
-            print(exec( '/bin/bash -c "lpstat -p LABEL'.sprintf("%02d",getCardNum($config,$station)).' "',$output));
+            if (isset($status['label-'.sprintf("%02d",getLabelNum($config,$station))])) { print('STATUS_LABEL'.getLabelNum($config,$station)).":".$status['label-'.sprintf("%02d",getLabelNum($config,$station))].' '); }
+            else { print('STATUS_LABEL'.getLabelMode($config,$station)).": NOT_DETECTABLE"); }    
+            //print(exec( '/bin/bash -c "lpstat -p LABEL'.sprintf("%02d",getLabelNum($config,$station)).' "',$output));
             }            
-        
     }
 }

@@ -19,11 +19,12 @@ function full_url( $s, $use_forwarded_host = false )
 function curPageURL() {    
     return strtok(full_url( $_SERVER ), '?'); //return url_origin( $_SERVER ) . strtok( $s['REQUEST_URI'], '\?');
     }
-    
+
 $configfile=getenv("HOME").'/.printroute.json';
 $statusfile='/tmp/.status.json';
 $config=array();
 $status=array();
+
 function emptyPrinterConfig($count = 16) {    
     $route = array_fill(1, $count ,array_fill_keys(array('card','label','labelmode','cardmode','cardribbon'),'1'));
     foreach ($route as $key => $value)
@@ -49,20 +50,18 @@ if(isset($_GET['id'])) {
     //$station=$_GET['id'];
         $lastOctet=intval($_GET['id']);
         // 101..116 GET A STRAIGHT 1:1 MAPPING
-        if (($lastOctet > 100) && ($lastOctet<200))
+        if (($lastOctet > 50) && ($lastOctet<200))
         {
-             $client=$lastOctet % 100 ;
+             $client=$lastOctet % 50 ;
         }
-
-        if (($lastOctet > 50) && ($lastOctet<100))
+        if ($client > 16 )
         {
-             $client=$lastOctet % 10 ;
-        }
-        if ($lastOctet<50)
-        {
-             $client=$lastOctet ;
+             $client=$client % 50 ;
         }
     $station=$client;
+    if($station==0){
+        exit(0);
+        }
     if(isset($_GET['type'])) { 
         if($_GET['type']=="CARD") {
             print('CARD'.sprintf("%02d",getCardNum($config,$station)));

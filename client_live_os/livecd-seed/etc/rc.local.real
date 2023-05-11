@@ -6,6 +6,8 @@ echo "SYS:BOOT"
 /bin/bash -c 'dhclient ; hostname client-$(ifconfig |grep inet |grep -v inet6|grep -v "127\." |cut -dt -f2|cut -d\. -f4|sed "s/ .\+//g;s/\t.\+//g") ' > /dev/shm/log.boot.1.dhcp &
 
 /bin/bash /etc/wait-for-ping.sh
+echo "I SAW MY PRINTSERVER.. WILL NOW BOOT"
+sleep 0.5
 echo -n "STARTING:"
 echo -n "+chrome:"
 
@@ -24,6 +26,9 @@ echo -n "+randpass:"
 # set random root pass
 rpa=$(for rounds in $(seq 1 24);do (tr -cd '[:alnum:]_\-.' 2>/dev/null < /dev/urandom  |head -c48 2>/dev/null) 2>/dev/null;echo ;done|grep -v ^$|grep -e "_" -e "\-" -e "\."|grep "^[a-zA-Z0-9]"|grep "[a-zA-Z0-9]$"|tail -n1)
 echo "root:$rpa" |chpasswd &
+# set random guest pass
+rpa=$(for rounds in $(seq 1 24);do (tr -cd '[:alnum:]_\-.' 2>/dev/null < /dev/urandom  |head -c48 2>/dev/null) 2>/dev/null;echo ;done|grep -v ^$|grep -e "_" -e "\-" -e "\."|grep "^[a-zA-Z0-9]"|grep "[a-zA-Z0-9]$"|tail -n1)
+echo "guest:$rpa" |chpasswd &
 
 
 ## hide terminal

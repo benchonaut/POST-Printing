@@ -6,6 +6,25 @@ filter_msg() { grep -v  -e 'state changed to processing' -e 'state changed to id
 #get num from last non 127. ipv4 octet
 clientnum=$(ifconfig |grep inet |grep -v inet6|grep -v "127\." |cut -dn -f2|cut -d\. -f4|sed 's/ //g;s/\t//g')
 
+
+## exit codes: 
+##   10 empty or 0  clientnum
+##   11 client_num under 50
+##   12 client_num over 200
+
+[[ -z "$clientnum" ]] && echo "client num empty not accepted, detection failed"
+[[ -z "$clientnum" ]] && exit 10
+
+[[ "$clientnum" =  "0" ]] && echo "client num 0 not accepted, detection failed"
+[[ "$clientnum" =  "0" ]] && exit
+
+[[ "$clientnum" -le 50 ]] && echo "client_num under 51 is considered an error ( IPv4 printer address range )"
+[[ "$clientnum" -le 50 ]] && exit 11
+
+
+[[ "$clientnum" -gt 200 ]] && echo "client_num over 200 is considered an error ( IPv4 printer address range )"
+[[ "$clientnum" -gt 200 ]] && exit 12
+
 # clients 51+ ( e.g. 51= sta 1 , 51=sta2) ,clients 151+ ( e.g. 151= sta 1 , 151=sta2),clients 101+ ( e.g. 101= sta 1 , 101=sta2)
 [[ "$clientnum" -le 200 ]] && [[ "$clientnum" -ge 51 ]] && clientnum=$(($clientnum%50))
 
