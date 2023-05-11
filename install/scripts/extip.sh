@@ -9,7 +9,7 @@ echo "ext_IPv4=$ip"
 ##ip was found
 
 target=$(echo $ip|awk -F. '{print $4"."$3"." $2"."$1}');
-          (  timeout 10 host -t txt $target.sa.senderbase.org   || timeout 5 host -t txt $target.sa.senderbase.org 1.1.1.1 ) |sed 's/|/\n/g;s/senderbase.org descriptive text.\+|//g'|grep -e ^1= -e 20= -e 53= -e 54= -e 55= -e 50= |sed 's/50=/CITY=/g;s/54=/LAT=/g;s/55=/LON=/g;s/53=/CC=/g;s/^20=/0000=/g;s/^1=/0005=/g;s/^26=/0002=/g;s/^47=/0001=/g'|sort|grep -v 0000=|sed 's/0000=//g;s/0002=/SCORE_DOMAIN=/g;s/0001=/SCORE_IP=/g;s/0005=/ORG=/g;s/^/|/g'|tr -d '\n'|sed 's/||/|/g' |sed 's/|CC=/\nCC=/g;s/|LAT=/\nLAT=/g';  
+           ( timeout 10 host -t txt $target.sa.senderbase.org   || timeout 5 host -t txt $target.sa.senderbase.org 1.1.1.1 ) |sed 's/|/\n/g;s/senderbase.org descriptive text.\+|//g'|grep -e ^1= -e 20= -e 53= -e 54= -e 55= -e 50= |sed 's/50=/CITY=/g;s/54=/LAT=/g;s/55=/LON=/g;s/53=/CC=/g;s/^20=/0000=/g;s/^1=/0005=/g;s/^26=/0002=/g;s/^47=/0001=/g'|sort|grep -v 0000=|sed 's/0000=//g;s/0002=/SCORE_DOMAIN=/g;s/0001=/SCORE_IP=/g;s/0005=/ORG=/g;s/^/|/g'|tr -d '\n'|sed 's/||/|/g' |sed 's/|CC=/\nCC=/g;s/|LAT=/\nLAT=/g';  
 echo "|"$( ( timeout 10 host    $target.score.senderscore.com   || timeout 5 host    $target.score.senderscore.com 1.1.1.1 ) |grep 127.0.4.|grep -v NXDOMAIN|sed 's/.\+127\.0\.4\.//g;s/^/senderscore: /g' 2>&1 )"|" ;
 
         ) |sed 's/^|//g;s/|$//g'
