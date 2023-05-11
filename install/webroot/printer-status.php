@@ -66,13 +66,15 @@ if(isset($_GET['id'])) {
         $status=json_decode(file_get_contents($statusfile),1);
         
         if($_GET['type']=="CARD") {
-            if (isset($status['card-'.sprintf("%02d",getCardNum($config,$station))])) { print('STATUS_CARD'.getCardNum($config,$station)).":".$status['card-'.sprintf("%02d",getCardNum($config,$station))].' '); }
-            else { print('STATUS_CARD'.getCardNum($config,$station)).": NOT_DETECTABLE"); }      
+            if (isset($status['card-'.sprintf("%02d",getCardNum($config,$station))])) { 
+                     print('STATUS_CARD'.getCardNum($config,$station).":".$status['card-'.sprintf("%02d",getCardNum($config,$station))].' '); 
+            } else { print('STATUS_CARD'.getCardNum($config,$station).": NOT_DETECTABLE"); }      
             //print(exec(  '/bin/bash -c "lpstat -p CARD'.sprintf("%02d",getCardNum($config,$station)).' "',$output));
             }
         if($_GET['type']=="LABEL") {
-            if (isset($status['label-'.sprintf("%02d",getLabelNum($config,$station))])) { print('STATUS_LABEL'.getLabelNum($config,$station)).":".$status['label-'.sprintf("%02d",getLabelNum($config,$station))].' '); }
-            else { print('STATUS_LABEL'.getLabelMode($config,$station)).": NOT_DETECTABLE"); }    
+            if (isset($status['label-'.sprintf("%02d",getLabelNum($config,$station))])) { 
+                   print('STATUS_LABEL'.getLabelNum($config,$station).":".$status['label-'.sprintf("%02d",getLabelNum($config,$station))].' '); }
+            else { print('STATUS_LABEL'.getLabelNum($config,$station).": NOT_DETECTABLE"); }    
             //print(exec( '/bin/bash -c "lpstat -p LABEL'.sprintf("%02d",getLabelNum($config,$station)).' "',$output));
             }            
     } else { print("FAIL: missing GET_PARAM:type"); }
