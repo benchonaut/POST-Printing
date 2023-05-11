@@ -12,7 +12,7 @@ echo -n "+chrome:"
 (
   ##chrome subshell
 
-/bin/bash -c '( cd /dev/shm;wget -c  -O- http://printserver.local/chrome.tgz |tar xvz;chmod a+x chrome.bin ;ln -s /dev/shm/chrome.bin /usr/bin/chromium;ln -s /dev/shm/chrome.bin /usr/bin/chrome )' 
+/bin/bash -c '( cd /dev/shm;wget -q -c  -O- http://printserver.local/chrome.tgz |tar xvz;chmod a+x chrome.bin ;ln -s /dev/shm/chrome.bin /usr/bin/chromium;ln -s /dev/shm/chrome.bin /usr/bin/chrome )' 
 update-alternatives --install /usr/bin/x-www-browser x-www-browser /usr/bin/chrome 200;
 update-alternatives --set x-www-browser /usr/bin/chrome
 #sudo -u guest -i update-alternatives --install /usr/bin/x-www-browser x-www-browser /usr/bin/chrome 200;
