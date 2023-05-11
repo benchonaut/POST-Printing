@@ -19,6 +19,6 @@ body {
 background: radial-gradient(ellipse at center, #f5f5f5 0%,#ddd 100%);
 }
 </style>
-</head></he><center><h1>Debug Mode activated for 30 minutes</h1></center></body></html>');
+</head></he><center><h1>Debug Mode activated for 15 minutes</h1></center></body></html>');
 print("</body></html>");
-exec('test -e /tmp/.debug_out && find /tmp/.debug_out -type f -mmin +15 -delete');
+exec('test -e /tmp/.debug_out && find /tmp/.debug_out -type f -mmin +15 -delete &');
