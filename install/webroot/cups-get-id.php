@@ -54,10 +54,10 @@ if(isset($_GET['id'])) {
         {
              $client=$lastOctet % 50 ;
         }
-        if ($client > 16 )
-        {
-             $client=$client % 50 ;
-        }
+        //if ($client > 16 )
+        //{
+        //     $client=$client % 50 ;
+        //}
     $station=$client;
     if($station==0){
         echo "STATION 0 NOT ACCEPTED , you sent id: ".$lastOctet;
