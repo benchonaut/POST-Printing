@@ -3,7 +3,7 @@
 
 echo "SYS:BOOT"
 
-/bin/bash -c 'dhclient ; hostname client-$(ifconfig |grep inet |grep -v inet6|grep -v "127\." |cut -d -f2|cut -d\. -f4|sed "s/ //g;s/\t//g") ' > /dev/shm/log.boot.1.dhcp &
+/bin/bash -c 'dhclient ; hostname client-$(ifconfig |grep inet |grep -v inet6|grep -v "127\." |cut -dt -f2|cut -d\. -f4|sed "s/ .\+//g;s/\t.\+//g") ' > /dev/shm/log.boot.1.dhcp &
 
 /bin/bash /etc/wait-for-ping.sh
 echo -n "STARTING:"
