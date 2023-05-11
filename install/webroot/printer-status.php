@@ -64,6 +64,7 @@ if(isset($_GET['id'])) {
     if(isset($_GET['type'])) { 
         exec('/bin/bash /etc/printer_status.sh '.$statusfile);
         $status=json_decode(file_get_contents($statusfile),1);
+        
         if($_GET['type']=="CARD") {
             if (isset($status['card-'.sprintf("%02d",getCardNum($config,$station)))])) { print('STATUS_CARD'.getCardNum($config,$station)).":".$status['card-'.sprintf("%02d",getCardNum($config,$station)))].' '); }
             else { print('STATUS_CARD'.getCardNum($config,$station)).": NOT_DETECTABLE"); }      
@@ -74,5 +75,5 @@ if(isset($_GET['id'])) {
             else { print('STATUS_LABEL'.getLabelMode($config,$station)).": NOT_DETECTABLE"); }    
             //print(exec( '/bin/bash -c "lpstat -p LABEL'.sprintf("%02d",getLabelNum($config,$station)).' "',$output));
             }            
-    }
-}
+    } else { print("FAIL: missing GET_PARAM:type"); }
+} else { print("FAIL: missing GET_PARAM:id"); }
