@@ -64,29 +64,35 @@ wait
 sleep 0.2;
 done &
 
-## curl -N -H 'Upgrade: websocket' -H "Sec-WebSocket-Key: `openssl rand -base64 16`" -H 'Sec-WebSocket-Version: 13' -H "Connection: Upgrade" --http1.1 -sS http://192.168.88.254:11111|while read a ;do notify-send --expire-time=4444 "$(echo $a|tail -c+3 )" ;done
+## curl -N -H 'Upgrade: websocket' -H "Sec-WebSocket-Key: `openssl rand -base64 16`" -H 'Sec-WebSocket-Version: 13' -H "Connection: Upgrade" --http1.1 -sS http://printserver.local:11111|while read a ;do notify-send --expire-time=4444 "$(echo $a|tail -c+3 )" ;done
 #|sed 's/is idle/is ready/g;s/^printer //g;s/\r//g'
 
 
 while (true);do 
 
 for type in LABEL CARD;do 
+(
     test -e /dev/shm/.curtarget_$type &&  mv /dev/shm/.curtarget_$type /dev/shm/.oldtarget_$type
     test -e /dev/shm/.oldtarget_$type || (echo "$type"XX > /dev/shm/.oldtarget_$type)
-  (
+  
+  ( ## start fork
     (curl -s "http://printserver.local/cups-get-id.php?id=$clientnum&type=$type" |sed 's/\r//g' ) > /dev/shm/.curtarget_$type
-   # suma=$(cat /dev/shm/.curtarget_$type|md5sum| cut -d" " -f1 )
-   # sumb=$(cat /dev/shm/.oldtarget_$type|md5sum| cut -d" " -f1 )
-   #[[ "$suma" = "$sumb" ]] || (
-    diff -q  "/dev/shm/.curtarget_$type" "/dev/shm/.oldtarget_$type" 2>&1 |grep -q differ && (
-        notify-send --expire-time=4235 "PRINTER ROUTING CHANGED TO $(cat /dev/shm/.curtarget_$type)"
+    diff -q  /dev/shm/.curtarget_$type /dev/shm/.oldtarget_$type  || (
+        notify_send --expire-time=4235 "PRINTER ROUTING CHANGED TO $(cat /dev/shm/.curtarget_$type)"
         kpid=$(cat /dev/shm/.incoming.printer.PID.grep)
         [[ -z "$kpid" ]] || ( 
               grep -q -e tail -e grep /proc/"$kpid"/cmdline && ( kill -9 "$kpid" )
         )
         sleep 2
-    )
-  ) 
+    ) &
+    (curl -s "http://printserver.local/printer-status.php?id=$clientnum&type=$type" |sed 's/\r//g' ) > /dev/shm/.curstatus_$type
+    diff -q  /dev/shm/.curstatus_$type /dev/shm/.oldstatus_$type  || (
+        notify_send --expire-time=4235 "PRINTER STATUS CHANGED TO $(cat /dev/shm/.curstatus_$type)"
+        sleep 1
+    ) &
+  ) & ## end fork 
+) 
 done
-    sleep 7
+    sleep 15
 done 
+
