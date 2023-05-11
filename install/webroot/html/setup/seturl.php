@@ -10,6 +10,24 @@ if (file_exists($configfile))  {                  $config=json_decode(file_get_c
         else { initPrinterConfig($configfile);    $config=json_decode(file_get_contents($configfile),1); }
 
 
+if (!function_exists("get_http_code")) {
+  function get_http_code($url) {
+    $handle = curl_init($url);
+    curl_setopt($handle,  CURLOPT_RETURNTRANSFER, TRUE);
+    $response = curl_exec($handle);
+    $httpCode = curl_getinfo($handle, CURLINFO_HTTP_CODE);
+    curl_close($handle);
+    return $httpCode;         
+  }    
+}
+
+if (!function_exists('str_starts_with')) {
+  function str_starts_with($str, $start) {
+    return (@substr_compare($str, $start, 0, strlen($start))==0);
+  }
+}
+
+
 $file = '/var/www/.starturl';
 
 if(!is_file($file)){
