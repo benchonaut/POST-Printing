@@ -66,7 +66,7 @@ if(isset($_GET['id'])) {
         $status=json_decode(file_get_contents($statusfile),1);
         
         if($_GET['type']=="CARD") {
-            if (isset($status['card-'.sprintf("%02d",getCardNum($config,$station)))])) { print('STATUS_CARD'.getCardNum($config,$station)).":".$status['card-'.sprintf("%02d",getCardNum($config,$station)))].' '); }
+            if (isset($status['card-'.sprintf("%02d",getCardNum($config,$station))])) { print('STATUS_CARD'.getCardNum($config,$station)).":".$status['card-'.sprintf("%02d",getCardNum($config,$station))].' '); }
             else { print('STATUS_CARD'.getCardNum($config,$station)).": NOT_DETECTABLE"); }      
             //print(exec(  '/bin/bash -c "lpstat -p CARD'.sprintf("%02d",getCardNum($config,$station)).' "',$output));
             }
