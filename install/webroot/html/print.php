@@ -3,110 +3,15 @@
 // $_POST['type'];             // card,label
 // $_POST['file'];             //base64 encoded pdf
 // https://gist.github.com/magnetikonline/650e30e485c0f91f2f40
+require_once("/var/www/printserver-functions.php");
+$configfile=getenv("HOME").'/.printroute.json';
+$statusfile='/tmp/.status.json';
+$config=array();
+$status=array();
 
-class DumpHTTPRequestToFile {
-    public function execute($targetFile) {
-        $data = sprintf(
-            "%s %s %s\n\nHTTP headers:\n",
-            $_SERVER['REQUEST_METHOD'],
-            $_SERVER['REQUEST_URI'],
-            $_SERVER['SERVER_PROTOCOL']
-        );
+if (file_exists($configfile))  {                  $config=json_decode(file_get_contents($configfile),1); }
+        else { initPrinterConfig($configfile);    $config=json_decode(file_get_contents($configfile),1); }
 
-
-        foreach ($this->getHeaderList() as $name => $value) {
-            $data .= $name . ': ' . $value . "\n";
-        }
-
-        $data .= "\nRequest body:\n";
-
-        file_put_contents(
-            $targetFile,
-            $data . file_get_contents('php://input') . "\n"
-        );
-
-        //echo("Done!\n\n");
-    }
-
-    private function getHeaderList() {
-        $headerList = [];
-        foreach ($_SERVER as $name => $value) {
-            if (preg_match('/^HTTP_/',$name)) {
-                // convert HTTP_HEADER_NAME to Header-Name
-                $name = strtr(substr($name,5),'_',' ');
-                $name = ucwords(strtolower($name));
-                $name = strtr($name,' ','-');
-
-                // add to list
-                $headerList[$name] = $value;
-            }
-        }
-
-        return $headerList;
-    }
-}
-function numbersOfString($string) {
-    preg_match_all('!\d+!', $string, $matches);
-    return implode("",$matches[0]);
-}
-
-function what_did_they_really_send() {
-  /*$req_dump = print_r($_REQUEST, TRUE);
-  $fp = fopen('/tmp/.debug_out/dump_request.log', 'w');
-  fwrite($fp, $req_dump);
-  fclose($fp);*/
-    (new DumpHTTPRequestToFile)->execute('/tmp/.debug_out/dump_request.log');
-}
-function is_JSON($string) {
-  json_decode($string);
-  return (json_last_error() == JSON_ERROR_NONE);
-}
-
-function getRealIpAddr()
-{
-    if (!empty($_SERVER['HTTP_CLIENT_IP']))             //check ip from shared internet
-    {      $ip=$_SERVER['HTTP_CLIENT_IP'];    }
-    elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR']))   //to check ip is passed from proxy
-    {      $ip=$_SERVER['HTTP_X_FORWARDED_FOR'];    }
-    else
-    {      $ip=$_SERVER['REMOTE_ADDR'];    }            //both missing , use remote address
-    return $ip;
-}
-
- // generate an default n(default 16) slot  array with straight 1:1 routing and default black&white duplex for cards, black/white for label printers
-function emptyPrinterConfig($count = 16) {
-    $route = array_fill(1, $count ,array_fill_keys(array('card','label','labelmode','cardmode','cardribbon'),'1'));
-    foreach ($route as $key => $value)
-            { $route[$key]['label'] = $key;
-              $route[$key]['card']  = $key;
-              $route[$key]['cardmode']='DUPLEX_MM';
-        $route[$key]['cardribbon']='RM_KBLACK';
-              $route[$key]['labelmode']='WIRE_BLK'; }
-          return $route;
-         }
-// generate an default n(default 16) slot json with straight 1:1 routing and default black&white duplex for cards, black/white for label printers
-function initPrinterConfig($configfile , $count = 16)
-    { //    echo INIT;
-        file_put_contents($configfile,json_encode(emptyPrinterConfig($count)));     }
-
-//$configfile='/var/www/.printroute.json';
-    $configfile=getenv("HOME").'/.printroute.json';
-    $config=array();
-
-if (file_exists($configfile))  {
-    $config=json_decode(file_get_contents($configfile),1); }
-else {
-    initPrinterConfig($configfile);
-    $config=json_decode(file_get_contents($configfile),1);
-     }
-        //print_r($config);
-
-
-function getCardNum($config , $station)            { return sprintf("%02d",$config[$station]['card']);   }
-function getCardMode($config , $station)        { return $config[$station]['cardmode'];               }
-function getCardRibbon($config ,$station)        { return $config[$station]['cardribbon'];             }
-function getLabelNum($config , $station)        { return sprintf("%02d",$config[$station]['label']);  }
-function getLabelMode($config , $station)        { return $config[$station]['labelmode'];              }
 
 try {
        // perform potentially breakable parts

@@ -1,24 +1,14 @@
 <?php
 
-function url_origin( $s, $use_forwarded_host = false )
-{
-    $ssl      = ( ! empty( $s['HTTPS'] ) && $s['HTTPS'] == 'on' );
-    $sp       = strtolower( $s['SERVER_PROTOCOL'] );
-    $protocol = substr( $sp, 0, strpos( $sp, '/' ) ) . ( ( $ssl ) ? 's' : '' );
-    $port     = $s['SERVER_PORT'];
-    $port     = ( ( ! $ssl && $port=='80' ) || ( $ssl && $port=='443' ) ) ? '' : ':'.$port;
-    $host     = ( $use_forwarded_host && isset( $s['HTTP_X_FORWARDED_HOST'] ) ) ? $s['HTTP_X_FORWARDED_HOST'] : ( isset( $s['HTTP_HOST'] ) ? $s['HTTP_HOST'] : null );
-    $host     = isset( $host ) ? $host : $s['SERVER_NAME'] . $port;
-    return $protocol . '://' . $host;
-}
+require_once("/var/www/printserver-functions.php");
+$configfile=getenv("HOME").'/.printroute.json';
+$statusfile='/tmp/.status.json';
+$config=array();
+$status=array();
 
-function full_url( $s, $use_forwarded_host = false )
-    {    return url_origin( $s, $use_forwarded_host ) . $s['REQUEST_URI']; } //$absolute_url = full_url( $_SERVER );
+if (file_exists($configfile))  {                  $config=json_decode(file_get_contents($configfile),1); }
+        else { initPrinterConfig($configfile);    $config=json_decode(file_get_contents($configfile),1); }
 
-function curPageURL() {    
-    return strtok(full_url( $_SERVER ), '?'); //return url_origin( $_SERVER ) . strtok( $s['REQUEST_URI'], '\?');
-    }
-    
 
 $file = '/var/www/.starturl';
 
@@ -36,23 +26,6 @@ if(isset($_POST) AND !empty($_POST)) {
             $changemsg="changed URL to ".file_get_contents($file);
             }
         }
-}
-
-if (!function_exists("get_http_code")) {
-  function get_http_code($url) {
-    $handle = curl_init($url);
-    curl_setopt($handle,  CURLOPT_RETURNTRANSFER, TRUE);
-    $response = curl_exec($handle);
-    $httpCode = curl_getinfo($handle, CURLINFO_HTTP_CODE);
-    curl_close($handle);
-    return $httpCode;         
-  }    
-}
-
-if (!function_exists('str_starts_with')) {
-  function str_starts_with($str, $start) {
-    return (@substr_compare($str, $start, 0, strlen($start))==0);
-  }
 }
 
 print('<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html><head><title>Printer Selector '.curPageURL().'</title>');

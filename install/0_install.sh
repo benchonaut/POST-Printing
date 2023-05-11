@@ -135,7 +135,7 @@ test -e /var/www/html/lib/test.print.assets || mkdir -p /var/www/html/lib/test.p
 cp -aurv ../tests/*.pdf /var/www/html/lib/test.print.assets/
 
 cp -arv scripts/extip.sh scripts/printer_status.sh scripts/printer_clean_tmp.sh /etc/
-cp -arv webroot/index.html webroot/*.php webroot/setup /var/www/html/
+cp -arv webroot/*.php webroot/html /var/www/html/
 #cp -arv print.php router.php /var/www/html/
 #cp -arv printer-status.php router.php /var/www/html/
 cp -arv assets/supervisor-cups-notification.ini /etc/supervisor.d/cups-websocket-server.ini

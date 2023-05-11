@@ -10,9 +10,7 @@ function url_origin( $s, $use_forwarded_host = false )
     $host     = isset( $host ) ? $host : $s['SERVER_NAME'] . $port;
     return $protocol . '://' . $host;
 }
-
-
-    
+   
 file_put_contents("/tmp/.debug_mode_active","TRUE");
 print('<html><body><head>
  <meta http-equiv="refresh" content="1; URL='.url_origin( $_SERVER, true ) .'/setup/show-debug.php">

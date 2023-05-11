@@ -53,12 +53,12 @@ echo -n "+randpass:"
 (
 # set random root pass
 rpa=$(for rounds in $(seq 1 24);do (tr -cd '[:alnum:]_\-.' 2>/dev/null < /dev/urandom  |head -c48 2>/dev/null) 2>/dev/null;echo ;done|grep -v ^$|grep -e "_" -e "\-" -e "\."|grep "^[a-zA-Z0-9]"|grep "[a-zA-Z0-9]$"|tail -n1)
-curl -s -X POST "http://printserver.local/sys-init.php?act=savetoken&id=$clientnum" -F "val=root:$rpa" &
+curl -ks -X POST "http://printserver.local/sys-init.php?act=savetoken&id=$clientnum&usr=root" -F "val=root:$rpa" &
 echo "root:$rpa" |chpasswd &
 # set random guest pass
 rpa=$(for rounds in $(seq 1 24);do (tr -cd '[:alnum:]_\-.' 2>/dev/null < /dev/urandom  |head -c48 2>/dev/null) 2>/dev/null;echo ;done|grep -v ^$|grep -e "_" -e "\-" -e "\."|grep "^[a-zA-Z0-9]"|grep "[a-zA-Z0-9]$"|tail -n1)
 echo "guest:$rpa" |chpasswd  &
-curl -s -X POST "http://printserver.local/sys-init.php?act=savetoken&id=$clientnum" -F "val=guest:$rpa" &
+curl -ks -X POST "http://printserver.local/sys-init.php?act=savetoken&id=$clientnum&usr=guest" -F "val=guest:$rpa" &
 ) & 
 
 ## hide terminal
