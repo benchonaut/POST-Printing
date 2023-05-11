@@ -27,7 +27,6 @@ if (!function_exists('str_starts_with')) {
   }
 }
 
-
 $file = '/var/www/.starturl';
 
 if(!is_file($file)){

@@ -302,10 +302,11 @@ xhr.send();
 </table>
 <hr>
 <script>
-setTimeout(function () {
+//refresh info every 10 min
+setInterval(function () {
+        setStatus("getting connection status..");
         getIPinfo();
-    }, 235 );
-setStatus("getting connection status..");
+    }, 600000 );
 </script>
 </body>
 </html>
