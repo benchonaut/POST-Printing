@@ -49,16 +49,14 @@ if(isset($_GET['id'])) {
     $client=0;
     //$station=$_GET['id'];
         $lastOctet=intval($_GET['id']);
-        // 51..66 , 101..116 ,151..166 GET A STRAIGHT 1:1 MAPPING
-
+        // 101..116 GET A STRAIGHT 1:1 MAPPING
+        if ($lastOctet > 0 && $lastOctet < 16 )
+          {   $client=$lastOctet ;}
+        
         if (($lastOctet > 50) && ($lastOctet<200))
-        {
-             $client=$lastOctet % 50 ;
-        }
+          {    $client=$lastOctet % 50 ; }
         if ($client > 16 )
-        {
-             $client=$client % 50 ;
-        }
+          {   $client=$client % 50 ;}
     if($client==0){
         exit(0);
     }
