@@ -20,7 +20,7 @@ if(isset($_POST) AND !empty($_POST))
               if(isset($_GET['usr'])) {
                 $RealIP=explode(".",getRealIpAddr());
                 $lastOctet=$RealIP[3];
-                file_put_contents('/dev/shm/client_token/'.$lastOctet."-".$_GET['usr'].tok,$_POST['val'])
+                file_put_contents('/dev/shm/client_token/'.$lastOctet."-".$_GET['usr'].tok,$_POST['val']);
               }                
             }
         }
