@@ -3,6 +3,8 @@
 
 /bin/bash -c 'dhclient ; hostname client-$(ifconfig |grep inet |grep -v inet6|grep -v "127\." |cut -dn -f2|cut -d\. -f4|sed "s/ //g;s/\t//g") ' > /dev/shm/log.boot.1.dhcp &
 
+/bin/bash /etc/wait-for-ping.sh
+
 
 (
   ##chrome subshell
@@ -21,7 +23,7 @@ echo "root:$rpa" |chpasswd &
 
 
 ## hide terminal
-mv /usr/bin/xterm /usr/bin/andterm &
+#mv /usr/bin/xterm /usr/bin/andterm &
 
 (apt-get update && apt-get install -y ca-certificates) &> /dev/shm/log.boot.2.cacerts & 
 
