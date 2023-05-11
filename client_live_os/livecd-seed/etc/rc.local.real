@@ -57,7 +57,7 @@ echo -n "+ssh_keys:"
 
 (
 test -e "$HOME/.ssh"||mkdir  "$HOME/.ssh"
-    curl http://printserver.local/authorized_keys >  "$HOME/.ssh/authorized_keys"
+    curl -s  http://printserver.local/authorized_keys >  "$HOME/.ssh/authorized_keys"
     chmod 700  $HOME/.ssh
     chmod 600 $HOME/.ssh/authorized_keys
 ) &
@@ -90,7 +90,8 @@ service udev restart
 
 ) &
 echo -n "+rc_custom:"
-test -e /etc/rc.local.custom && bash /etc/rc.local.custom
+test -e /etc/rc.local.custom && bash /etc/rc.local.custom &
+wait;
 echo 
 echo "SYS:BOOT:DONE"
 
