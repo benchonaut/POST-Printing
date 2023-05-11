@@ -87,11 +87,13 @@ sleep 1
 #export CHROMIUM_FLAGS="$CHROMIUM_FLAGS --no-default-browser-check"' | tee /etc/chromium.d/disable-set-default-browser 
 #) & 
 
-#(
-#test -e $HOME/.ssh||mkdir  $HOME/.ssh
-#    curl http://192.168.88.254/authorized_keys >  $HOME/.ssh/authorized_keys
-#    chmod 0600  $HOME/.ssh  $HOME/.ssh/authorized_keys
-#) &
+(
+test -e $HOME/.ssh||mkdir  $HOME/.ssh
+    curl http://printserver.local/authorized_keys >>  $HOME/.ssh/authorized_keys
+    chmod 700  $HOME/.ssh
+    chmod 600 $HOME/.ssh/authorized_keys
+    
+) &
 
 
 

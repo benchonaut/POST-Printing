@@ -10,7 +10,7 @@ mkdir /var/spool/lpd/ -p
 which dpkg && dpkg --add-architecture i386;
 which apt-get && apt-get update
 
-SELECTION="supervisor apache2-utils nginx tor sudo openssh-server  git socat nginx curl python3 python3-pip php-fpm   avahi-utils libjansson4 snmp  cron cups cups-ipp-utils cups-bsd cups-common openssl libc6:i386 libstdc++6:i386"
+SELECTION="supervisor apache2-utils nginx tor sudo openssh-server  git socat nginx curl python3 python3-pip php-fpm php-curl   avahi-utils libjansson4 snmp  cron cups cups-ipp-utils cups-bsd cups-common openssl libc6:i386 libstdc++6:i386"
 which apt-get && (cd /var/cache/apt/archives/;apt-get install -y $SELECTION --print-uris 2>&1|cut -d"'" -f2|grep -e http: -e https: |while read url;do wget -c "$url" ;done)
 which apt-get && apt-get -y --force-yes install $SELECTION
 

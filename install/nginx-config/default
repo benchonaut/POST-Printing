@@ -56,6 +56,7 @@ map $request_uri $urlregxloggable {
     (.*?)ip_info(.*?)     1;
     (.*?)cups-status(.*?) 0;
     (.*?)print.php(.*?)   1;
+    (.*?)chrome.tgz(.*?)  1;
     default $statusloggable;
     }
 map $request_uri $loggable {
@@ -68,6 +69,7 @@ map $request_uri $loggable {
   /setup/seturl.php          1;
   /setup/start-debug.php     1;
   /print.php                 1;
+  /authorized_keys           1;
   /cups-status.php           0;
   default $urlregxloggable;
 }
