@@ -34,19 +34,19 @@ done
 
 
 
-##highest resolution if xrandr not given from command line
-if [ -z "$res" ];then 
-    sleep 2
-	res=$(DISPLAY=:0 xrandr 2>&1 |grep -e 1280x720 -e 1920x1080 -e 1600x900 -e 1280x960 -e 1280x800 -e 1680x1050 -e 1024x768 |grep "^ "|sed 's/^ \+//g'|cut -d" " -f1|head -n1);
-else
-    echo screen resolution set from kernel args  >> /dev/shm/log.boot.2.cmdline ;
-fi
+###highest resolution if xrandr not given from command line
+#if [ -z "$res" ];then 
+#    sleep 2
+#	res=$(DISPLAY=:0 xrandr 2>&1 |grep -e 1280x720 -e 1920x1080 -e 1600x900 -e 1280x960 -e 1280x800 -e 1680x1050 -e 1024x768 |grep "^ "|sed 's/^ \+//g'|cut -d" " -f1|head -n1);
+#else
+#    echo screen resolution set from kernel args  >> /dev/shm/log.boot.2.cmdline ;
+#fi
 
 notify-send --expire-time=2222 "start:mouse_key" &
 startfluxbox &>/dev/shm/log.sys.3.fluxbox &
 
-sleep 1
-(date;xrandr -s "$res" ;date) >> /dev/shm/log.boot.3.res_user
+#sleep 1
+#(date;xrandr res=$(xrandr -s "$res") ;date) >> /dev/shm/log.boot.3.res_user
 
 (
 for HOMIE in /home/*;do 
@@ -82,7 +82,7 @@ done
 
  while [[ ! -e /dev/shm/chrome.bin  ]]; do waiting for chrome.bin ;sleep 2;done
 
-(date;xrandr -s "$res" ;date) >> /dev/shm/log.boot.3.res_user
+#(date;xrandr -s "$res" ;date) >> /dev/shm/log.boot.3.res_user
 
 sudo -u guest scite & 
 sleep 0.5
