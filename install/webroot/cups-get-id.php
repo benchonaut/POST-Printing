@@ -60,6 +60,7 @@ if(isset($_GET['id'])) {
         }
     $station=$client;
     if($station==0){
+        echo "STATION 0 NOT ACCEPTED , you sent id: ".$lastOctet;
         exit(0);
         }
     if(isset($_GET['type'])) { 
