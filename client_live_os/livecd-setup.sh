@@ -33,7 +33,7 @@ dpkg-reconfigure -f noninteractive tzdata
 
 [Install]
  WantedBy=multi-user.target' > /etc/systemd/system/rc-local.service
- (echo '#!/bin/bash';echo  'bash /etc/rc.local.real';echo  'exit 0' )| tee  /etc/rc.local
+ (echo '#!/bin/bash';echo  'bash /etc/rc.local.real 2>&1 |tee  /dev/shm/system.init.1.rc_local.log';echo  'exit 0' )| tee  /etc/rc.local
  chmod +x /etc/rc.local
  systemctl enable rc-local
  
