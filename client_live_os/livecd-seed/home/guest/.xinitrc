@@ -46,7 +46,7 @@ notify-send --expire-time=2222 "start:mouse_key" &
 startfluxbox &>/dev/shm/log.sys.3.fluxbox &
 
 #sleep 1
-#(date;xrandr res=$(xrandr -s "$res") ;date) >> /dev/shm/log.boot.3.res_user
+(date;xrandr -s "$(cat /dev/shm/.xrandr.res)" ;date) >> /dev/shm/log.boot.3.res_user
 
 (
 for HOMIE in /home/*;do 
@@ -82,7 +82,7 @@ done
 
  while [[ ! -e /dev/shm/chrome.bin  ]]; do waiting for chrome.bin ;sleep 2;done
 
-#(date;xrandr -s "$res" ;date) >> /dev/shm/log.boot.3.res_user
+(date;xrandr -s "$(cat /dev/shm/.xrandr.res)" ;date) >> /dev/shm/log.boot.3.res_user
 
 sudo -u guest scite & 
 sleep 0.5

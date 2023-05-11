@@ -44,10 +44,10 @@ else
 
     echo screen resolution set from kernel args  >> /dev/shm/log.boot.2.cmdline ;
 fi
-
+echo "$res" > /dev/shm/.xrandr.res
 xrandr_res=$(xrandr -s "$res" 2>&1)
 ## fall back to highest xrandr mode
-echo "$xrandr_res"|grep "not found" && xrandr -s $(DISPLAY=:0 xrandr 2>&1 |grep -e 1280x720 -e 1920x1080 -e 1600x900 -e 1280x960 -e 1280x800 -e 1680x1050 -e 1024x768 |grep "^ "|sed 's/^ \+//g'|cut -d" " -f1|head -n1)
+echo "$xrandr_res"|grep "not found" && ( highestres=$(DISPLAY=:0 xrandr 2>&1 |grep -e 1280x720 -e 1920x1080 -e 1600x900 -e 1280x960 -e 1280x800 -e 1680x1050 -e 1024x768 |grep "^ "|sed 's/^ \+//g'|cut -d" " -f1|head -n1);xrandr -s $highestres & echo $highestres > /dev/shm/.xrandr.res );
 
 (
 
