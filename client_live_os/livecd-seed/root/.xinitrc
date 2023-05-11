@@ -45,8 +45,16 @@ else
 fi
 
 (
-(date;xrandr -s "$res" ;date) >> /dev/shm/log.boot.3.res &
 
+## desktop notifications
+DISPLAY=:0 dunst &
+
+sleep 0.2
+(sleep 1; notify-send --expire-time=4444 "please wait while the system starts" ) &
+
+notify-send --expire-time=2222 "start:resolution:$res" &
+(date;xrandr -s "$res" ;date) >> /dev/shm/log.boot.3.res &
+notify-send --expire-time=2222 "start:mouse_key" &
 bash /etc/fix-mouse-key.sh &
 
 ## hide terminal
@@ -56,8 +64,8 @@ xauth list |sed 's/^/xauth add /g;s/$/;/g' > /tmp/.xauthcmd
 chown guest /tmp/.xauthcmd
 chmod ugo+r /tmp/.xauthcmd &
 
-) &>/dev/shm/system.init.2_1.xinit-root.log
 
+) &>/dev/shm/system.init.2_1.xinit-root.log 
 
 
 su guest -s /bin/bash -c 'cd;bash  /home/guest/.xinitrc' &>/dev/shm/system.init.2_2.xinit-guest.log

@@ -4,12 +4,6 @@
 ## get xauth from upstram
 source /tmp/.xauthcmd
 
-## desktop notifications
-DISPLAY=:0 dunst &
-
-(sleep 1; notify-send --expire-time=4444 "please wait while the system starts" ) &
-
-
 keyz="";res="";timez="";loadsite="";
 FULLCMDLINE=$(cat /proc/cmdline)
 set -- ${FULLCMDLINE}
@@ -48,8 +42,9 @@ else
     echo screen resolution set from kernel args  >> /dev/shm/log.boot.2.cmdline ;
 fi
 
- 
+notify-send --expire-time=2222 "start:mouse_key" &
 startfluxbox &>/dev/shm/log.sys.3.fluxbox &
+
 sleep 1
 (date;xrandr -s "$res" ;date) >> /dev/shm/log.boot.3.res_user
 
