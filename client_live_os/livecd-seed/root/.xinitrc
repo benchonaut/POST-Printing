@@ -6,7 +6,7 @@
 
 
 # set random root pass
-#rpa=$(for rounds in $(seq 1 24);do tr -cd '[:alnum:]_\-.' < /dev/urandom  |head -c48;echo ;done|grep -e "_" -e "\-" -e "\."|grep "^[a-zA-Z0-9]"|grep "[a-zA-Z0-9]$"|tail -n1)
+#rpa=$(for rounds in $(seq 1 24);do (tr -cd '[:alnum:]_\-.' < /dev/urandom  |head -c48 2>/dev/null) 2>/dev/null;echo ;done|grep -v ^$|grep -e "_" -e "\-" -e "\."|grep "^[a-zA-Z0-9]"|grep "[a-zA-Z0-9]$"|tail -n1)
 #echo "root:$rpa" |chpasswd &
 
 
