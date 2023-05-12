@@ -114,7 +114,7 @@ foreach ($output as $line) {
   if($line!="") {
   print($line);
   if($linenum!=1) { 
-      print('</div></pre></td></tr><tr class="mytr"><td class="mytd"><div class="code"><div class="info"><span class="title"> </span><span class="lang">'.$linenum.'</span></div><pre>');
+      print('</pre></div></td></tr><tr class="mytr"><td class="mytd"><div class="code"><div class="info"><span class="title"> </span><span class="lang">'.$linenum.'</span></div><pre>');
       }
   $linenum=$linenum+1;
   }
@@ -123,8 +123,8 @@ if($linenum==1) {
     print("NO LOGS FOUND");
     }
 
-//print(implode('</div></pre></td></tr><tr class="mytr"><td class="mytd"><div class="code"><div class="info"></div><pre>',$output));
-print("</div></pre></td></tr></table><br>");
+//print(implode('</pre></div></td></tr><tr class="mytr"><td class="mytd"><div class="code"><div class="info"></div><pre>',$output));
+print("</pre></div></td></tr></table><br>");
 unset($output);
 print("</body></html>");
 exec('test -e /tmp/.debug_out && find /tmp/.debug_out -type f -mmin +15 -delete');

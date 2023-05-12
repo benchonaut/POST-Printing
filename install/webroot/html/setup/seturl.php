@@ -204,7 +204,8 @@ $failedarray=true;
 unset($array);
 if ( $failedarray==false &&  gethostbyname($curdomain) != $curdomain ) {
   $curstatus="DNS Record found<br>";
-  $curcode=get_http_code($cururl);
+  //$curcode=get_http_code($cururl);
+  $curcode=exec('curl -Ls -o /dev/null -w "%{http_code}" '.file_get_contents($file));
   if($curcode != 200 && $curcode != 301 && $curcode != 302) {
     print('<div><h3>Warning: Return code of current Start-URL is <code>'.$curcode.'</code> from Printserver</h2></div>');
   }
