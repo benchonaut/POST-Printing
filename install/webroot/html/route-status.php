@@ -97,7 +97,7 @@ livestatus=livestatus+"+"+cardid
    target="cardstatus"+padWithLeadingZeros(i, 2);
    status=data[cardid];
    status=status.replace('."'".'/(^\|)/gi'."'".', "");
-   document.getElementById(target).innerHTML=status.replace("/\|/g", "<br>");
+   document.getElementById(target).innerHTML=status.replace('."'".'/\|/g'."'".', "<br>");
 }
 if (labelid in data) {
 livestatus=livestatus+"+"+labelid
@@ -105,7 +105,7 @@ livestatus=livestatus+"+"+labelid
    target="labelstatus"+padWithLeadingZeros(i, 2);
    status=data[labelid];
    status=status.replace('."'".'/(^\|)/gi'."'".', "");
-   document.getElementById(target).innerHTML=status.replace("/\|/g", "<br>");
+   document.getElementById(target).innerHTML=status.replace('."'".'/\|/g'."'".', "<br>");
 }
 
 }  

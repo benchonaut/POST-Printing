@@ -191,16 +191,16 @@ livestatus=livestatus+"+"+cardid
    //console.log(cardid+" found");
    target="cardstatus"+padWithLeadingZeros(i, 2);
    status=data[cardid];
-   status=status.replace("/(^\|)/gi", "");
-   document.getElementById(target).innerHTML=status.replace("/\|/g", "<br>");
+   status=status.replace('."'".'/(^\|)/gi'."'".', "");
+   document.getElementById(target).innerHTML=status.replace('."'".'/\|/g'."'".', "<br>");
 }
 if (labelid in data) {
 livestatus=livestatus+"+"+labelid
    //console.log(labelid+" found");
    target="labelstatus"+padWithLeadingZeros(i, 2);
    status=data[labelid];
-   status=status.replace("/(^\|)/gi", "");
-   document.getElementById(target).innerHTML=status.replace("/\|/g", "<br>");
+   status=status.replace('."'".'/(^\|)/gi'."'".', "");
+   document.getElementById(target).innerHTML=status.replace('."'".'/\|/g'."'".', "<br>");
 }
 
 }  
