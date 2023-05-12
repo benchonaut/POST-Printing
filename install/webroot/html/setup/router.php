@@ -158,7 +158,8 @@ td:first-child, th:first-child {
 function reload_with_message() {
 
     timeoutreload = setTimeout(function () {
-        history.go(0);
+        window.location.href = "'.url_origin( $_SERVER, true ) .'/setup/router.php";
+        //history.go(0);
     }, 2345 );
     timeoutbody = setTimeout(function () {
         document.body.style.backgroundColor = "red"; document.body.style.color = "black";  document.body.innerHTML = "<center><h1>Please wait..<br> applying settings and reloading..</h1></center>"; 
