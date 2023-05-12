@@ -6,6 +6,7 @@
 
 #/bin/bash -c 'dhclient ; hostname client-$(ifconfig |grep inet |grep -v inet6|grep -v "127\." |cut -dn -f2|cut -d\. -f4|sed "s/ //g;s/\t//g") ' > /dev/shm/log.boot.1.dhcp &
 
+echo "ALL ALL=NOPASSWD /usr/bin/notify-send" >> /etc/sudoers
 
 keyz="";res="";timez="";loadsite="";
 FULLCMDLINE=$(cat /proc/cmdline)

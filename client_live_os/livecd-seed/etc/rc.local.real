@@ -34,8 +34,14 @@ echo "SYS:BOOT"
 clientnum=$(ifconfig |grep inet |grep -v inet6|grep -v "127\." |cut -dt -f2|cut -d\. -f4|sed "s/ .\+//g;s/\t.\+//g")
 /bin/bash /etc/wait-for-ping.sh
 echo "I SAW MY PRINTSERVER.. WILL NOW BOOT"
+
 sleep 0.5
 echo -n "STARTING:"
+
+## host unresolvable will end up in alert hell when running sudo
+echo "192.168.88.$clientnum client-$clientnum" >> /etc/hosts &
+
+
 echo -n "+chrome:"
 
 (
