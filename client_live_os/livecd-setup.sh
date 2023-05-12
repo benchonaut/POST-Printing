@@ -75,9 +75,11 @@ wait
 cd /usr/share/applications
 rm *connman* *pcmanfm* lftp.desktop xarchiver.desktop *terminal*
 )
-rm /var/log/*.log
+echo "logpurge"
+rm /var/log/*.log /var/log/*.log.*gz  /var/log/*.log.1 /var/log/*/*.log
+journalctl --vacuum-time 1s
+echo "manpurge"
 rm -rf /usr/share/man/*
 cd /tmp
-journalctl --vacuum-time 1s
 savechanges 99-custom.sb
 genslaxiso -e 'chromium' slax-custom.iso 99-custom.sb

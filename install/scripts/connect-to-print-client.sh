@@ -10,7 +10,7 @@ echo "TOK:"$(cut -d: -f2 $file);
 done;
 
 echo; 
-ssh-keygen -f /root/.ssh/known_hosts -R 192.168.88.$client
+ssh-keygen -f /root/.ssh/known_hosts -R 192.168.88.$client 2>&1 |sed 's/$/|/g' |tr -d '\n'
 ( ssh-keyscan -H 192.168.88.$client >>/root/.ssh/known_hosts ) 2>&1 |sed 's/$/|/g' |tr -d '\n'
 echo "use su for root access"
 ssh guest@192.168.88.$client
