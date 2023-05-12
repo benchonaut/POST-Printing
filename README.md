@@ -7,6 +7,8 @@ A batte-tested printserver to print with
 * *evolis primacy* for Cards
 * *brother label printers* ( tested with `ql720nw` and `ql810w` )
 
+![POST-Printing diagram](screenshots/diagram.png)
+ 
 ## Features
 
 * supports  printing from `1`-`16` print stations to 1-16 `CARD` and/or `LABEL` printers via POST-Requests
