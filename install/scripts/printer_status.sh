@@ -19,11 +19,11 @@ replace() { sed 's/^/'$1'/g;s///g' ; } ;
 cupsprinters=$(cat /etc/cups/printers.conf|grep '^<Printer')
 curlpstat=$(lpstat -s)
 
-for CARD in $(echo "$cupsprinters"|grep CARD|cut -d" " -f2|cut -d'>' -f1|sed 's/CARD//g');do
+for CARD in $(echo {01..16});do
 
     #i=$(echo $CARD |cut -d":" -f1) ; IP=$(echo $CARD |cut -d"/" -f3); 
     i=$CARD;
-    find /tmp/.printerstatus/ -mindepth 1 -maxdepth 1 -newermt '7 seconds ago' -type f -name "status_card.$i"|grep -q "status_card.$i"|| (
+    find /tmp/.printerstatus/ -mindepth 1 -maxdepth 1 -newermt '10 seconds ago' -type f -name "status_card.$i"|grep -q "status_card.$i"|| (
       cardinfo=$(lpoptions -p "CARD$i" -l)
       IP=""
       IP=$(echo "$curlpstat"|grep "CARD$i"|grep socket|sed 's~.\+socket://~~g')
@@ -42,7 +42,7 @@ for LABEL in $(echo {01..16});do
     i=$LABEL;
     ( echo "$cupsprinters" |grep -q  "LABEL$i")  && IP=$(echo "$curlpstat"|grep "LABEL$i"|grep lpd|sed 's~.\+lpd://~~g'|cut -d"/" -f1)
     ( echo "$cupsprinters" |grep -q  "LABEL$i")  || IP="192.168.88."$((220+$LABEL))
-    find /tmp/.printerstatus/ -mindepth 1 -maxdepth 1 -newermt '7 seconds ago' -type f -name "status_label.$i"|grep -q "status_label.$i"|| (
+    find /tmp/.printerstatus/ -mindepth 1 -maxdepth 1 -newermt '10 seconds ago' -type f -name "status_label.$i"|grep -q "status_label.$i"|| (
         (echo -n '"label-'$i'":"';
         [[ -z "IP" ]] && echo "NO IP FOUND"
         [[ -z "IP" ]] || (ql720_stat $IP|sed 's/"//g');
