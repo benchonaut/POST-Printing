@@ -177,6 +177,7 @@ function padWithLeadingZeros(num, totalLength) {
 }
 
 function status_parse(data) { 
+var livestatus="GOT STATUS JSON:"
 //console.log("GOT STATUS JSON: | ", data);
 var cardid="none"
 var labelid="none"
@@ -186,6 +187,7 @@ cardid="card-"+padWithLeadingZeros(i, 2);
 labelid="label-"+padWithLeadingZeros(i, 2);
 
 if (cardid in data) {
+livestatus=livestatus+"+"+cardid
    //console.log(cardid+" found");
    target="cardstatus"+padWithLeadingZeros(i, 2);
    status=data[cardid];
@@ -193,12 +195,14 @@ if (cardid in data) {
    document.getElementById(target).innerHTML=status.replace("/\|/g", "<br>");
 }
 if (labelid in data) {
+livestatus=livestatus+"+"+labelid
    //console.log(labelid+" found");
    target="labelstatus"+padWithLeadingZeros(i, 2);
    status=data[labelid];
    status=status.replace(/(^\|)/gi, "");
    document.getElementById(target).innerHTML=status.replace("/\|/g", "<br>");
 }
+console.log(livestatus)
 
 }  
 
