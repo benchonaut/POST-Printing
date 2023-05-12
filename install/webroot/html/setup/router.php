@@ -23,16 +23,16 @@ if(isset($_POST) AND !empty($_POST))
      if(isset($_POST['Rotate']))
         {
         if ($_POST['Rotate'] == 'Front')
-            { $execute='/bin/bash -c "';for ($a=1;$a< count((array)$config) + 1;$a++ ) { $num=sprintf("%02d",$a);$execute=$execute.'lpadmin -p CARD'.$num.' -o FPageRotate180=ON & ' ; } ;$execute=$execute.' wait " '; exec($execute);  } 
+            { $execute='/bin/bash -c "';for ($a=1;$a< count((array)$config) + 1;$a++ ) { $num=sprintf("%02d",$a);$execute=$execute.'lpadmin -p CARD'.$num.' -o FPageRotate180=ON & ' ; } ;$execute=$execute.' wait " >/tmp/rotate.log '; exec($execute);  } 
         elseif ($_POST['Rotate'] == 'Back')
-            { $execute='/bin/bash -c "';for ($a=1;$a< count((array)$config) + 1;$a++ ) { $num=sprintf("%02d",$a);$execute=$execute.'lpadmin -p CARD'.$num.' -o BPageRotate180=ON & ' ; } ;$execute=$execute.' wait " '; exec($execute); } 
+            { $execute='/bin/bash -c "';for ($a=1;$a< count((array)$config) + 1;$a++ ) { $num=sprintf("%02d",$a);$execute=$execute.'lpadmin -p CARD'.$num.' -o BPageRotate180=ON & ' ; } ;$execute=$execute.' wait " >/tmp/rotate.log '; exec($execute); } 
         }
     if(isset($_POST['NoRotate']))
         {            
         if ($_POST['NoRotate'] == 'Front')     
-            { $execute='/bin/bash -c "';for ($a=1;$a< count((array)$config) + 1;$a++ ) { $num=sprintf("%02d",$a);$execute=$execute.'lpadmin -p CARD'.$num.' -o FPageRotate180=OFF & ' ; } ;$execute=$execute.' wait " '; exec($execute); } 
+            { $execute='/bin/bash -c "';for ($a=1;$a< count((array)$config) + 1;$a++ ) { $num=sprintf("%02d",$a);$execute=$execute.'lpadmin -p CARD'.$num.' -o FPageRotate180=OFF & ' ; } ;$execute=$execute.' wait " >/tmp/rotate.log '; exec($execute); } 
         elseif ($_POST['NoRotate'] == 'Back')     
-            { $execute='/bin/bash -c "';for ($a=1;$a< count((array)$config) + 1;$a++ ) { $num=sprintf("%02d",$a);$execute=$execute.'lpadmin -p CARD'.$num.' -o BPageRotate180=OFF &' ; } ;$execute=$execute.' wait " '; exec($execute); } 
+            { $execute='/bin/bash -c "';for ($a=1;$a< count((array)$config) + 1;$a++ ) { $num=sprintf("%02d",$a);$execute=$execute.'lpadmin -p CARD'.$num.' -o BPageRotate180=OFF &' ; } ;$execute=$execute.' wait " >/tmp/rotate.log '; exec($execute); } 
         }
         //header("HTTP/1.0 204 No Content");    exit;
     // $action = $_GET['action']; 
