@@ -192,6 +192,12 @@ exec('/bin/bash /etc/printer_status.sh '.$statusfile);
 $status=json_decode(file_get_contents($statusfile),1);
 //print_r(file_get_contents($statusfile),1);
 
+     if(isset($_GET['action'])) {
+        if ($_GET['action'] == 'RotFront'|| $_GET['action'] == 'NoRotFront') {
+            print(' <meta http-equiv="refresh" content="2; URL='.url_origin( $_SERVER, true ) .'/setup/router.php"></head><body><center><h1>Reloading</h1></center><br><script>reload_with_message()</script></body>');
+        }
+    }
+
 print('</head><body><h3>Printer Routing</h3>');
 print("\n");
 print('<hr>GLobal Card Rotation(all printers):<br><table align=center><tr><th>');
@@ -204,7 +210,7 @@ print('</th></tr></table>');
 print("\n");
 print('<table><tr><th><form method="POST" action="'.curPageURL().'?action=NoRotBack"  onchange="document.getElementById(\'NoRotBack\').form.submit();reload_with_message();"> <button name="NoRotate" id="NoRotBack" value="Back">Straight Back</button></form>');
 print("\n");
-print('  </th><th><form method="POST" action="'.curPageURL().'?action=RotBack"    onchange="document.getElementById(\'RotBack\').form.submit();reload_with_message();"> <button name="Rotate" id="RotBack" value="Back">Rotate Back 180°</button></form>');
+print('</th><th><form method="POST" action="'.curPageURL().'?action=RotBack"    onchange="document.getElementById(\'RotBack\').form.submit();reload_with_message();"> <button name="Rotate" id="RotBack" value="Back">Rotate Back 180°</button></form>');
 print("\n");
 print('</th></tr></table><b>Label Settings: WIFI_RED=DK22261 , WIFI_BLACK=22205,WIFI_THIN=DK1201( 29mmx90.3 Address) </b>');
 print("\n");
