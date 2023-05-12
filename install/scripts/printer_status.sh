@@ -2,12 +2,12 @@
 
 test -e /tmp/.printerstatus || mkdir /tmp/.printerstatus
 primacy_stat()    { 
-    pingres=$(ping -c1 -w2  $1 2>&1 )
+    pingres=$(ping -c1 -w1  $1 2>&1 )
     echo "$pingres"|grep -q "bytes from" || echo -n "OFFLINE"
     echo "$pingres"|grep -q "bytes from" && (res=$(wget -q -O- http://$1/info.htm);echo -n "$res"|grep "Printer status"|cut -d">" -f5|cut -d"<" -f1 ;
                     res=$(echo "$res"|grep Firmware|cut -d">" -f3,5) ; res=${res//td/} ; res=${res/\<\//} ;res=${res/\//}; echo "|"$res;) |tr -d '\n' ;  } ; 
 ql720_stat()    { 
-    pingres=$(ping -c1 -w2  $1 2>&1 )
+    pingres=$(ping -c1 -w1  $1 2>&1 )
     echo "$pingres"|grep -q "bytes from" || echo -n "OFFLINE"
     echo "$pingres"|grep -q "bytes from" && (echo -n $(snmpwalk -v2c -c public $1 iso.3.6.1.2.1.43.16.5.1.2.1.1|cut -d":" -f2 ; echo "|";
                     #echo "|TotalPages:" ;snmpwalk -v2c -c public $1 iso.3.6.1.2.1.43.10.2.1.4.1.1|cut -d":" -f2  ;
@@ -16,19 +16,37 @@ ql720_stat()    {
                     echo "Paper:";snmpwalk -v2c -c public $1 iso.3.6.1.2.1.43.8.2.1.12.1.1 |cut -d":" -f2|sed 's/"//g;s/\\//g;s/iso.3.6.1.2.1.43.8.2.1.12.1.1 =//g' ) ) ;  } ; 
 replace() { sed 's/^/'$1'/g;s///g' ; } ;
 
-for CARD in $(lpstat -s|grep CARD|cut -d: -f1,3|sed 's/^.\+CARD//g');do
-    i=$(echo $CARD |cut -d":" -f1) ; IP=$(echo $CARD |cut -d"/" -f3); 
-    find /tmp/.printerstatus/ -mindepth 1 -maxdepth 1 -newermt '10 seconds ago' -type f -name "status_card.$i"|grep -q "status_card.$i"|| (
-      (echo -n '"card-'$i'":"';primacy_stat $IP;
-      echo -n "|↻Front:" ;lpoptions -p CARD$i -l  |grep FPageRotate |cut -d ":" -f2|sed 's/ ON//;s/ OFF//g' |tr -d '\n';    
-      echo -n "|↻Back:" ; lpoptions -p CARD$i -l  |grep BPageRotate |cut -d ":" -f2|sed 's/ ON//;s/ OFF//g' |tr -d '\n';
+cupsprinters=$(cat /etc/cups/printers.conf|grep '^<Printer')
+curlpstat=$(lpstat -s)
+
+for CARD in $(echo "$cupsprinters"|grep CARD|cut -d" " -f2|cut -d'>' -f1|sed 's/CARD//g');do
+
+    #i=$(echo $CARD |cut -d":" -f1) ; IP=$(echo $CARD |cut -d"/" -f3); 
+    i=$CARD;
+    find /tmp/.printerstatus/ -mindepth 1 -maxdepth 1 -newermt '7 seconds ago' -type f -name "status_card.$i"|grep -q "status_card.$i"|| (
+      cardinfo=$(lpoptions -p "CARD$i" -l)
+      IP=""
+      IP=$(echo "$curlpstat"|grep "CARD$i"|grep socket|sed 's~.\+socket://~~g')
+      (echo -n '"card-'$i'":"';
+      [[ -z "IP" ]] && echo "NO IP FOUND"
+      [[ -z "IP" ]] || primacy_stat $IP;
+      echo -n "|↻Front:" ; echo "$cardinfo" |grep FPageRotate |cut -d ":" -f2|sed 's/ ON//;s/ OFF//g' |tr -d '\n';    
+      echo -n "|↻Back:"  ; echo "$cardinfo" |grep BPageRotate |cut -d ":" -f2|sed 's/ ON//;s/ OFF//g' |tr -d '\n';
       echo -n '",' ;) | sed 's/.\+"".\+//g' > /tmp/.printerstatus/status_card.$i ) &
     done
 
-for LABEL in $(lpstat -s|grep LABEL|cut -d: -f1,3|sed 's/^.\+LABEL//g');do
-    i=$(echo $LABEL |cut -d":" -f1) ; IP=$(echo $LABEL |cut -d"/" -f3);
-    find /tmp/.printerstatus/ -mindepth 1 -maxdepth 1 -newermt '10 seconds ago' -type f -name "status_label.$i"|grep -q "status_label.$i"|| (
-        (echo -n '"label-'$i'":"';ql720_stat $IP|sed 's/"//g';echo -n '",'     ) | sed 's/"\+/"/g' > /tmp/.printerstatus/status_label.$i ) &
+#for LABEL in $(echo "$cupsprinters"|grep LABEL|cut -d" " -f2|cut -d'>' -f1|sed 's/LABEL//g');do
+for LABEL in $(echo {01..16});do
+    ## CARD PRINTERS CAN ALSO BE NON_CUPS( via python)
+    #i=$(echo $LABEL |cut -d":" -f1) ; IP=$(echo $LABEL |cut -d"/" -f3);
+    i=$LABEL;
+    ( echo "$CUPSPRINTERS" |grep -q  "LABEL$i")  && IP=$(echo "$curlpstat"|grep "LABEL$i"|grep lpd|sed 's~.\+lpd://~~g'|cut -d"/" -f1)
+    ( echo "$CUPSPRINTERS" |grep -q  "LABEL$i")  || IP="192.168.88."$((220+$LABEL))
+    find /tmp/.printerstatus/ -mindepth 1 -maxdepth 1 -newermt '7 seconds ago' -type f -name "status_label.$i"|grep -q "status_label.$i"|| (
+        (echo -n '"label-'$i'":"';
+        [[ -z "IP" ]] && echo "NO IP FOUND"
+        [[ -z "IP" ]] || (ql720_stat $IP|sed 's/"//g');
+        echo -n '",'     ) | sed 's/"\+/"/g' > /tmp/.printerstatus/status_label.$i ) &
     done
 wait
 ( echo -n "{";cat /tmp/.printerstatus/status_{card,label}.* |sed 's/,$//g';echo -n "}" ) |tee $1
