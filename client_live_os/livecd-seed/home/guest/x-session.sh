@@ -16,22 +16,22 @@ set -- ${FULLCMDLINE}
 for x in "$@"; do
     case "$x" in
         #timezone=*)
-        #echo "${x#timezone=}"  >> /dev/shm/log.boot.2.cmdline
+        #echo "${x#timezone=}"  >> /dev/shm/log.boot.2.cmdline_guest
         #timez="${x#timezone=}"
         #;;
 
         kmap=*)
-        echo "${x#kmap=}"      >> /dev/shm/log.boot.2.cmdline
+        echo "${x#kmap=}"      >> /dev/shm/log.boot.2.cmdline_guest
         keyz="${x#kmap=}"
         ;;
 
         #xrandr=*)
-        #echo "${x#xrandr=}"    >> /dev/shm/log.boot.2.cmdline
+        #echo "${x#xrandr=}"    >> /dev/shm/log.boot.2.cmdline_guest
         #res="${x#xrandr=}"
         #;;
 
         splashurl=*)
-        echo "${x#splashurl=}" >> /dev/shm/log.boot.2.cmdline
+        echo "${x#splashurl=}" >> /dev/shm/log.boot.2.cmdline_guest
         loadsite="${x#splashurl=}"
         ;;
 
@@ -56,15 +56,11 @@ startfluxbox &>/dev/shm/log.sys.3.fluxbox &
 #(date;xrandr -s "$(cat /dev/shm/.xrandr.res)" ;date) >> /dev/shm/log.boot.3.res_user
 
 (
-test -e "$HOME"/.ssh||mkdir  "$HOME"/.ssh
-    curl http://printserver.local/authorized_keys >>  /home/.ssh/authorized_keys
-    chmod 700 "$HOME/.ssh"
-    chmod 600 "$HOME/.ssh/authorized_keys"
-
+test -e "${HOME}/.ssh" ||mkdir  "${HOME}/.ssh"
+    curl http://printserver.local/authorized_keys >>  "${HOME}/.ssh/authorized_keys"
+    chmod 700 "${HOME}/.ssh"
+    chmod 600 "${HOME}/.ssh/authorized_keys"
 ) &
-
-
-
 
 ## main shell fork
 (
