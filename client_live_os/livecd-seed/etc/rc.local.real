@@ -77,8 +77,8 @@ echo -n "+hide_apps:"
 
 ( 
 cd /usr/share/applications && (
-  rm *connman* *pcmanfm* lftp.desktop xarchiver.desktop *terminal* &>/dev/null 
-  sed 's/^Exec=.\+/Exec=su guest -c "bash  \/dev\/shm\/.chromecmd"/g' -i *hromium* chrome*
+  rm *connman* *pcmanfm* lftp.desktop xarchiver.desktop *terminal* 2>/dev/null 
+  sed 's/^Exec=.\+/Exec=su guest -c "bash  \/dev\/shm\/.chromecmd"/g' -i *hromium* chrome* 2>/dev/null
  )
 ) & 
 
