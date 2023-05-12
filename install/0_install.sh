@@ -1,9 +1,9 @@
 #!/bin/bash
 
 
-
 #get http://releases.ubuntu.com/16.04/ubuntu-16.04.3-desktop-amd64.iso #>install (e.g. unetbootin, tftp)
 pwd
+
 [[ -z "$CRONUSER" ]] && CRONUSER=root
 mkdir /var/spool/lpd/ -p
 #echo Europe/Berlin >/etc/timezone
@@ -138,7 +138,9 @@ cp -arv scripts/extip.sh scripts/printer_status.sh scripts/printer_clean_tmp.sh 
 cp -arv webroot/*.php webroot/html /var/www/html/
 #cp -arv print.php router.php /var/www/html/
 #cp -arv printer-status.php router.php /var/www/html/
-cp -arv assets/supervisor-cups-notification.ini /etc/supervisor.d/cups-websocket-server.ini
+cp -arv assets/supervisor-cups-notification.ini /etc/supervisor.d/cups-websocket-server.conf
+systemctl enable supervisor
+
 cp -arv assets/avahi-daemon.conf /etc/avahi/avahi-daemon.conf
 ln -s /var/www/html/setup/select-arrows.svg /var/www/html/
 tar xvzf assets/favicon.tgz -C /var/www/html/

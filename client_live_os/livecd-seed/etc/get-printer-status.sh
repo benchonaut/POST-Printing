@@ -74,21 +74,21 @@ for type in LABEL CARD;do
 (
     test -e /dev/shm/.curtarget_$type &&  mv /dev/shm/.curtarget_$type /dev/shm/.oldtarget_$type
     test -e /dev/shm/.oldtarget_$type || (echo "$type"XX > /dev/shm/.oldtarget_$type)
-  
+    test -e /dev/shm/.curstatus_$type &&  mv /dev/shm/.curstatus_$type /dev/shm/.oldstatus_$type
+    test -e /dev/shm/.oldstatus_$type || (echo "$type"XX > /dev/shm/.oldstatus_$type)
+
   ( ## start fork
     (curl -s "http://printserver.local/cups-get-id.php?id=$clientnum&type=$type" |sed 's/\r//g' ) > /dev/shm/.curtarget_$type
     diff -q  /dev/shm/.curtarget_$type /dev/shm/.oldtarget_$type  || (
-        notify-send --expire-time=4235 "PRINTER ROUTING CHANGED TO $(cat /dev/shm/.curtarget_$type)"
+        notify-send --expire-time=6423 "PRINTER ROUTING CHANGED TO $(cat /dev/shm/.curtarget_$type)"
         kpid=$(cat /dev/shm/.incoming.printer.PID.grep)
         [[ -z "$kpid" ]] || ( 
               grep -q -e tail -e grep /proc/"$kpid"/cmdline && ( kill -9 "$kpid" )
         )
-        sleep 2
     ) &
     (curl -s "http://printserver.local/printer-status.php?id=$clientnum&type=$type" |sed 's/\r//g' ) > /dev/shm/.curstatus_$type
     diff -q  /dev/shm/.curstatus_$type /dev/shm/.oldstatus_$type  || (
-        notify-send --expire-time=4235 "PRINTER STATUS CHANGED TO $(cat /dev/shm/.curstatus_$type)"
-        sleep 1
+        notify-send --expire-time=6423 "PRINTER STATUS CHANGED TO $(cat /dev/shm/.curstatus_$type)"
     ) &
   ) & ## end fork 
 ) 
