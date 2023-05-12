@@ -44,6 +44,13 @@ exec('/bin/bash /etc/printer_status.sh '.$statusfile);
 $status=json_decode(file_get_contents($statusfile),1);
 //print_r(file_get_contents($statusfile),1);
 
+header("Expires: Tue, 03 Jul 2001 06:00:00 GMT");
+header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
+header("Connection: close");
+
 print('<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html><head><title>Printer Route Status '.curPageURL().'</title>');
 
 print('<style>
