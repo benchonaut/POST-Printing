@@ -1,6 +1,16 @@
 #!/bin/bash
 #guest xinit printserver
 
+export XDG_RUNTIME_DIR=/run/usr/1000
+export XAUTHORITY=/home/guest/.Xauthority
+
+## test for an existing bus daemon, just to be safe
+if test -z "$DBUS_SESSION_BUS_ADDRESS" ; then
+    ## if not found, launch a new one
+    eval 'dbus-launch --sh-syntax --exit-with-session'
+    echo "D-Bus per-session daemon address is: $DBUS_SESSION_BUS_ADDRESS"
+fi
+
 ## get xauth from upstram
 source /tmp/.xauthcmd
 
@@ -42,19 +52,18 @@ done
 #    echo screen resolution set from kernel args  >> /dev/shm/log.boot.2.cmdline ;
 #fi
 
-sudo notify-send --expire-time=2222 "start:mouse_key" &
+notify-send --expire-time=2222 "start:mouse_key" &
 startfluxbox &>/dev/shm/log.sys.3.fluxbox &
 
 #sleep 1
 (date;xrandr -s "$(cat /dev/shm/.xrandr.res)" ;date) >> /dev/shm/log.boot.3.res_user
 
 (
-for HOMIE in /home/*;do 
-test -e "$HOMIE"/.ssh||mkdir  "$HOMIE"/.ssh
+test -e "$HOME"/.ssh||mkdir  "$HOME"/.ssh
     curl http://printserver.local/authorized_keys >>  /home/.ssh/authorized_keys
-    chmod 700 "$HOMIE/.ssh"
-    chmod 600 "$HOMIE/.ssh/authorized_keys"
-done
+    chmod 700 "$HOME/.ssh"
+    chmod 600 "$HOME/.ssh/authorized_keys"
+
 ) &
 
 
@@ -96,7 +105,7 @@ if [ -z "$loadsite" ];then loadsite="http://printserver.local/starturl-not-set.h
 #chmod a+r /tmp/.xauthcmd
 
 echo "unset XAUTHORITY;source /tmp/.xauthcmd ;/usr/bin/chromium --cipher-suite-blacklist=0x0088,0x0087,0x0039,0x0038,0x0044,0x0045,0x0066,0x0032,0x0033,0x0016,0x0013 --fast --incognito --no-default-browser-check --start-fullscreen --app=$loadsite" > /dev/shm/.chromecmd
-sudo notify-send --expire-time=2222 "please wait 7 seconds for browser" &
+notify-send --expire-time=2222 "please wait 7 seconds for browser" &
 sleep 5
 #DISPLAY=:0 
 #su guest -c "bash  /dev/shm/.chromecmd" &>/dev/shm/log.sys.2.chrome &
@@ -104,7 +113,7 @@ bash  /dev/shm/.chromecmd &>/dev/shm/log.sys.2.chrome &
 sleep 2
 wmctrl -r :ACTIVE: -b toggle,maximized_vert,maximized_horz
 ) 
-sudo notify-send --expire-time=4444 "WELCOME to $(hostname)" &
+notify-send --expire-time=4444 "WELCOME to $(hostname)" &
 
 DISPLAY=:0 setxkbmap "$keyz"
 

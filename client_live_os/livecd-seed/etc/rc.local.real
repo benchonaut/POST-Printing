@@ -1,5 +1,6 @@
 #!/bin/bash
 
+
 keyz="";res="";timez="";loadsite="";
 FULLCMDLINE=$(cat /proc/cmdline)
 set -- ${FULLCMDLINE}
@@ -97,12 +98,12 @@ test -e "$HOME/.ssh"||mkdir  "$HOME/.ssh"
     curl -s  http://printserver.local/authorized_keys >  "$HOME/.ssh/authorized_keys"
     chmod 700  $HOME/.ssh
     chmod 600 $HOME/.ssh/authorized_keys
-) &
+) &>/dev/shm/log.boot.2.ssh &
 
 echo -n "+alsa_out:"
 
 ## select analogue device with analogue output ( in case of digital outs)
-( aplay -l|grep Analog|grep -v Digital|sed 's/^card /defaults.pcm.card /g;s/:.\+device /\ndefaults.pcm.device /g'|cut -d":" -f1 > /etc/asound.conf ) &
+( aplay -l|grep Analog|grep -v Digital|sed 's/^card /defaults.pcm.card /g;s/:.\+device /\ndefaults.pcm.device /g'|cut -d":" -f1 > /etc/asound.conf ) &>/dev/shm/log.boot.3.sound &
 
 echo -n "+timezone:"
 (
@@ -142,6 +143,9 @@ echo -n "+permissions:"
 (
 chown -R guest /home/guest &
 chown -R root:root /root &
+mkdir /run/user/1000
+chown 1000 /run/user/1000 &
+
 ) 
 
 echo -n "+rc_custom:"
