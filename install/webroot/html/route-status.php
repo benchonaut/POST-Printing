@@ -107,9 +107,9 @@ livestatus=livestatus+"+"+labelid
    status=status.replace(/(^\|)/gi, "");
    document.getElementById(target).innerHTML=status.replace("/\|/g", "<br>");
 }
-console.log(livestatus)
 
 }  
+console.log(livestatus)
 
 }
 
