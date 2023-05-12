@@ -8,7 +8,7 @@ A batte-tested printserver to print with
 * *brother label printers* ( tested with `ql720nw` and `ql810w` )
 
 ![POST-Printing diagram](screenshots/diagram.png)
- 
+
 ## Features
 
 * supports  printing from `1`-`16` print stations to 1-16 `CARD` and/or `LABEL` printers via POST-Requests
@@ -119,6 +119,7 @@ curl --header "Content-Type: application/json"   --request POST   --data '{"clie
 * Eventlog
    ![Event log](screenshots/eventlog.png)
 ## Client
+
 * Desktop Notifications
    ![Desktop Notifications](screenshots/client_notification.png)
 * Generation of live-cd-iso via `livecd-setup.sh`
