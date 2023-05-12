@@ -187,11 +187,6 @@ function reload_with_message() {
 
 ');
 
-//file_put_contents('/tmp/printrouterCONF.log', print_r(count((array)$config))); //DEBUG...DUMP config object count
-//station id is determined by last number of ipv4
-exec('/bin/bash /etc/printer_status.sh '.$statusfile);
-$status=json_decode(file_get_contents($statusfile),1);
-//print_r(file_get_contents($statusfile),1);
 
      if(isset($_GET['action'])) {
         if ($_GET['action'] == 'RotFront'|| $_GET['action'] == 'NoRotFront'|| $_GET['action'] == 'NoRotBack'|| $_GET['action'] == 'RotBack') {
@@ -199,19 +194,25 @@ $status=json_decode(file_get_contents($statusfile),1);
         }
     }
 
+//file_put_contents('/tmp/printrouterCONF.log', print_r(count((array)$config))); //DEBUG...DUMP config object count
+//station id is determined by last number of ipv4
+exec('/bin/bash /etc/printer_status.sh '.$statusfile);
+$status=json_decode(file_get_contents($statusfile),1);
+//print_r(file_get_contents($statusfile),1);
+
 print('</head><body><h3>Printer Routing</h3>');
 print("\n");
 print('<hr>GLobal Card Rotation(all printers):<br><table align=center><tr><th>');
 print("\n");
-print('           <form method="POST" action="'.curPageURL().'?action=NoRotFront" onchange="document.getElementById(\'NoRotFront\').form.submit();reload_with_message();"> <button name="NoRotate" id="NoRotFront" value="Front">Straight Front</button></form>');
+print('           <form method="POST" action="'.curPageURL().'?action=NoRotFront" onchange="document.getElementById(\'NoRotFront\').form.submit();"> <button name="NoRotate" id="NoRotFront" value="Front">Straight Front</button></form>');
 print("\n");
-print('  </th><th><form method="POST" action="'.curPageURL().'?action=RotFront"   onchange="document.getElementById(\'RotFront\').form.submit();reload_with_message();"> <button name="Rotate" id="RotFront" value="Front">Rotate Front 180°</button></form>');
+print('  </th><th><form method="POST" action="'.curPageURL().'?action=RotFront"   onchange="document.getElementById(\'RotFront\').form.submit();"> <button name="Rotate" id="RotFront" value="Front">Rotate Front 180°</button></form>');
 print("\n");
 print('</th></tr></table>');
 print("\n");
-print('<table><tr><th><form method="POST" action="'.curPageURL().'?action=NoRotBack"  onchange="document.getElementById(\'NoRotBack\').form.submit();reload_with_message();"> <button name="NoRotate" id="NoRotBack" value="Back">Straight Back</button></form>');
+print('<table><tr><th><form method="POST" action="'.curPageURL().'?action=NoRotBack"  onchange="document.getElementById(\'NoRotBack\').form.submit();"> <button name="NoRotate" id="NoRotBack" value="Back">Straight Back</button></form>');
 print("\n");
-print('</th><th><form method="POST" action="'.curPageURL().'?action=RotBack"    onchange="document.getElementById(\'RotBack\').form.submit();reload_with_message();"> <button name="Rotate" id="RotBack" value="Back">Rotate Back 180°</button></form>');
+print('</th><th><form method="POST" action="'.curPageURL().'?action=RotBack"    onchange="document.getElementById(\'RotBack\').form.submit();"> <button name="Rotate" id="RotBack" value="Back">Rotate Back 180°</button></form>');
 print("\n");
 print('</th></tr></table><b>Label Settings: WIFI_RED=DK22261 , WIFI_BLACK=22205,WIFI_THIN=DK1201( 29mmx90.3 Address) </b>');
 print("\n");
