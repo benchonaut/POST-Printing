@@ -127,8 +127,6 @@ curl --header "Content-Type: application/json"   --request POST   --data '{"clie
 ### TREE ( may change ) :
 
 ```
-
-
 .
 ├── client_live_os
 │   ├── livecd-seed
@@ -136,7 +134,12 @@ curl --header "Content-Type: application/json"   --request POST   --data '{"clie
 │   │   │   ├── fix-mouse-key.sh
 │   │   │   ├── get-printer-status-OLD.sh
 │   │   │   ├── get-printer-status.sh
-│   │   │   └── rc.local.real
+│   │   │   ├── issue
+│   │   │   ├── rc.local.real
+│   │   │   └── wait-for-ping.sh
+│   │   ├── home
+│   │   │   └── guest
+│   │   │       └── x-session.sh
 │   │   ├── root
 │   │   └── usr
 │   │       └── share
@@ -144,10 +147,16 @@ curl --header "Content-Type: application/json"   --request POST   --data '{"clie
 │   │               └── slax_wallpaper.jpg
 │   ├── livecd-setup.sh
 │   └── server-side-preparation.sh
+├── _COMMIT_HISTORY.log
+├── git_reset.sh
 ├── install
 │   ├── 0_1_default-branding.sh
 │   ├── 0_install.sh
+│   ├── 99_dummy-printers.cups-pdf.sh
+│   ├── 99_dummy-printers.custompdf.sh
+│   ├── 99_dummy-printers.file.sh
 │   ├── assets
+│   │   ├── avahi-daemon.conf
 │   │   ├── favicon.tgz
 │   │   └── supervisor-cups-notification.ini
 │   ├── brother_ql
@@ -170,17 +179,57 @@ curl --header "Content-Type: application/json"   --request POST   --data '{"clie
 │   ├── nginx-config
 │   │   └── default
 │   ├── scripts
+│   │   ├── connect-to-print-client.sh
+│   │   ├── extip.sh
 │   │   ├── printer_clean_tmp.sh
-│   │   └── printer_status.sh
-│   └── webroot
-│       ├── cups-get-id.php
-│       ├── cups-status.php
-│       ├── index.html
-│       ├── print.php
-│       ├── route-status.php
-│       └── setup
-│           └── router.php
+│   │   ├── printer_status.sh
+│   │   └── run.cups.notify.sh
+│   ├── webroot
+│   │   ├── html
+│   │   │   ├── cups-get-id.php
+│   │   │   ├── debug-active.php
+│   │   │   ├── event.php
+│   │   │   ├── extip.php
+│   │   │   ├── img
+│   │   │   │   └── Caret_down_font_awesome_whitevariation.svg
+│   │   │   ├── index.html
+│   │   │   ├── lib
+│   │   │   │   └── pdf.js
+│   │   │   │       ├── build
+│   │   │   │       │   ├── pdf.js
+│   │   │   │       │   ├── pdf.js.map
+│   │   │   │       │   ├── pdf.sandbox.js
+│   │   │   │       │   ├── pdf.sandbox.js.map
+│   │   │   │       │   ├── pdf.worker.js
+│   │   │   │       │   └── pdf.worker.js.map
+│   │   │   │       └── LICENSE
+│   │   │   ├── printer-status.php
+│   │   │   ├── print.php
+│   │   │   ├── route-status.php
+│   │   │   ├── setup
+│   │   │   │   ├── debug-fileget.php
+│   │   │   │   ├── router.php
+│   │   │   │   ├── select-arrows.svg
+│   │   │   │   ├── seturl.php
+│   │   │   │   ├── show-debug.php
+│   │   │   │   ├── showlog.php
+│   │   │   │   ├── start-debug.php
+│   │   │   │   └── test-print.php
+│   │   │   ├── starturl-not-set.html
+│   │   │   ├── status.json.php
+│   │   │   └── sys-init.php
+│   │   └── printserver-functions.php
+│   └── wordlist
+│       ├── gen.sh
+│       └── words.list
 ├── README.md
+├── screenshots
+│   ├── cd-gen.png
+│   ├── client_notification.png
+│   ├── debug.png
+│   ├── eventlog.png
+│   ├── starturl.png
+│   └── test-print.png
 └── tests
     ├── card-2side_merged.xcf.tgz
     ├── card.pdf
@@ -188,6 +237,9 @@ curl --header "Content-Type: application/json"   --request POST   --data '{"clie
     ├── card-portrait.pdf
     ├── card-portrait.xcf
     ├── card.xcf
+    ├── in_progress
+    │   ├── post-send-card-curl.sh
+    │   └── post-send-label-curl.sh
     ├── label.pdf
     ├── label.xcf
     ├── pagesize_pdfinfo.php
@@ -197,5 +249,5 @@ curl --header "Content-Type: application/json"   --request POST   --data '{"clie
     ├── send-json.sh
     └── show-results.php
 
-17 directories, 49 files
+27 directories, 93 files
 ```
