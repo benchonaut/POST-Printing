@@ -58,7 +58,7 @@ for LABEL in $(echo {01..16});do
         [[ -z "IP" ]] || (ql720_stat $IP|sed 's/"//g');
         echo -n '",'     ) | sed 's/"\+/"/g' > /tmp/.printerstatus/status_label.$i ) &
     done
-sleep 1.5
+sleep 0.5
 wait
 ( echo -n "{";cat /tmp/.printerstatus/status_{card,label}.* |sed 's/,$//g';echo -n "}" ) |tee $1
 bash /etc/printer_clean_tmp.sh &>/dev/null & 
