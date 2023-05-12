@@ -20,5 +20,5 @@ header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
 header("Connection: close");
-php header("Content-Type: application/json"); 
+header("Content-Type: application/json"); 
 print(json_encode(json_decode(file_get_contents($statusfile)), JSON_PRETTY_PRINT));
