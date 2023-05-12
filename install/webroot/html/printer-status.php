@@ -31,7 +31,11 @@ if(isset($_GET['id'])) {
         if($_GET['type']=="CARD") {
             if (isset($status['card-'.sprintf("%02d",getCardNum($config,$station))])) { 
                      print('STATUS_CARD'.getCardNum($config,$station).":".$status['card-'.sprintf("%02d",getCardNum($config,$station))].' '); 
-            } else { print('STATUS_CARD'.getCardNum($config,$station).": NOT_DETECTABLE"); }      
+            } else { 
+                
+                 //print('STATUS_CARD'.getCardNum($config,$station).": NOT_DETECTABLE"); 
+                 print('STATUS_CARD'.getCardNum($config,$station).":"); 
+                 }      
             //print(exec(  '/bin/bash -c "lpstat -p CARD'.sprintf("%02d",getCardNum($config,$station)).' "',$output));
             }
         if($_GET['type']=="LABEL") {
