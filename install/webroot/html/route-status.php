@@ -212,14 +212,14 @@ print("\n");
         print("\n");
         print('<td >RIBBON:'.getCardRibbon($config,$station).'</td>');
         print("\n");
-        if (isset($status['card-'.sprintf("%02d",$station)])) { print('<td id="cardstatus'.sprintf("%02d",$station).'" ><div class="code"><div class="info"><span class="title"> status </span><span class="lang">CARD'.sprintf("%02d",$station).'</span></div><pre>'.str_replace("|","<br>",ltrim($status['card-'.sprintf("%02d",$station)],"|")).'</pre></div></td>'); }
-            else { print('<td id="cardstatus'.sprintf("%02d",$station).'" >..</td>'); }
+        if (isset($status['card-'.sprintf("%02d",$station)])) { print('<td style="background:black" id="cardstatus'.sprintf("%02d",$station).'" ><div class="code"><div class="info"><span class="title"> status </span><span class="lang">CARD'.sprintf("%02d",$station).'</span></div><pre>'.str_replace("|","<br>",ltrim($status['card-'.sprintf("%02d",$station)],"|")).'</pre></div></td>'); }
+            else { print('<td style="background:black" id="cardstatus'.sprintf("%02d",$station).'" >..</td>'); }
         print("\n");
         print("\n");
         print('<td>LABEL'.$station.'</td>');
         print("\n");
-        if (isset($status['label-'.sprintf("%02d",$station)])) { print('<td id="labelstatus'.sprintf("%02d",$station).'" ><div class="code"><div class="info"><span class="title"> status </span><span class="lang">LABEL'.sprintf("%02d",$station).'</span></div><pre>'.str_replace("|","<br>",ltrim($status['label-'.sprintf("%02d",$station)], "|")).'</pre></div></td>'); }
-            else { print('<td id="labelstatus'.sprintf("%02d",$station).'" >..</td>'); }
+        if (isset($status['label-'.sprintf("%02d",$station)])) { print('<td style="background:black" id="labelstatus'.sprintf("%02d",$station).'" ><div class="code"><div class="info"><span class="title"> status </span><span class="lang">LABEL'.sprintf("%02d",$station).'</span></div><pre>'.str_replace("|","<br>",ltrim($status['label-'.sprintf("%02d",$station)], "|")).'</pre></div></td>'); }
+            else { print('<td style="background:black"  id="labelstatus'.sprintf("%02d",$station).'" >..</td>'); }
         print("\n");
         print('<td >LMODE:'.getLabelMode($config,$station).'</td>');    
         print("\n");

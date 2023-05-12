@@ -349,13 +349,13 @@ print("\n");
                 foreach ($opt as &$value){ print('<option>'.$value);        print("\n"); }
         print('</select></form></td>');
         print("\n");
-        if (isset($status['card-'.sprintf("%02d",$station)])) { print('<td id="cardstatus'.sprintf("%02d",$station).'" ><div class="code"><div class="info"><span class="title"> status </span><span class="lang">CARD'.sprintf("%02d",$station).'</span></div><pre>'.str_replace("|","<br>",ltrim($status['card-'.sprintf("%02d",$station)],"|")).'</pre></div></td>'); }
-            else { print('<td id="cardstatus'.sprintf("%02d",$station).'" >..</td>'); }
+        if (isset($status['card-'.sprintf("%02d",$station)])) { print('<td style="background:black" id="cardstatus'.sprintf("%02d",$station).'" ><div class="code"><div class="info"><span class="title"> status </span><span class="lang">CARD'.sprintf("%02d",$station).'</span></div><pre>'.str_replace("|","<br>",ltrim($status['card-'.sprintf("%02d",$station)],"|")).'</pre></div></td>'); }
+            else { print('<td style="background:black" id="cardstatus'.sprintf("%02d",$station).'" >..</td>'); }
         print("\n");
         print('<td>LABEL'.$station.'</td>');
         print("\n");
-        if (isset($status['label-'.sprintf("%02d",$station)])) { print('<td id="labelstatus'.sprintf("%02d",$station).'" ><div class="code"><div class="info"><span class="title"> status </span><span class="lang">LABEL'.sprintf("%02d",$station).'</span></div><pre>'.str_replace("|","<br>",ltrim($status['label-'.sprintf("%02d",$station)], "|")).'</pre></div></td>'); }
-            else { print('<td id="labelstatus'.sprintf("%02d",$station).'" >..</td>'); }    
+        if (isset($status['label-'.sprintf("%02d",$station)])) { print('<td style="background:black" id="labelstatus'.sprintf("%02d",$station).'" ><div class="code"><div class="info"><span class="title"> status </span><span class="lang">LABEL'.sprintf("%02d",$station).'</span></div><pre>'.str_replace("|","<br>",ltrim($status['label-'.sprintf("%02d",$station)], "|")).'</pre></div></td>'); }
+            else { print('<td style="background:black"  id="labelstatus'.sprintf("%02d",$station).'" >..</td>'); }   
         print("\n");
         print('<td ><form method="POST" action="'.curPageURL().'?action=labelmode" onchange="document.getElementById(\'labelmode_'.$station.'\').form.submit()"> <select class="noncustom-select" id=labelmode_'.$station.'  name=labelmode_'.$station.'  required><option selected>'.getLabelMode($config,$station)); 
                 $opt = array('WIRE_BLK','WIRE_29x90','WIFI_BLK','WIFI_RED','WIFI_29x90');
