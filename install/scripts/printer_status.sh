@@ -5,12 +5,18 @@ primacy_stat()    {
     pingres=$(ping -c1 -w2 "$1" &>/dev/null && echo "YES" )
     echo "$pingres"|grep -q "YES" || echo -n "OFFLINE @ $1"
     echo "$pingres"|grep -q "YES" && (
-                                      res=$(wget -q -O- http://$1/info.htm);echo -n "$res"|grep "Printer status"|cut -d">" -f5|cut -d"<" -f1 ;
-                                      res=$(echo "$res"|grep Firmware|cut -d">" -f3,5) ; 
+                                      rawres=$(wget -q -O- http://$1/info.htm);
+                                      res=$(echo "$rawres"|grep Firmware|cut -d">" -f3,5) ; 
                                       res=${res//td/} ; 
                                       res=${res/\<\//} ;
                                       res=${res/\//}; 
-                                      echo "|"$res;) |tr -d '\n' ;  } ; 
+                                      echo -n "$res"|grep "Printer status"|cut -d">" -f5|cut -d"<" -f1 ;
+                                      echo "|"$res;
+                                      echo "$rawres"|grep -q "Kit nb:" && (
+                                           echo "|Kit-NB:";echo -n "$rawres"|grep "Kit nb:"|cut -d">" -f5|cut -d"<" -f1 ;
+                                      )
+                                      
+                                      ) |tr -d '\n' ;  } ; 
 ql720_stat()    { 
     pingres=$(ping -c1 -w2 "$1" &>/dev/null && echo "YES" )
     echo "$pingres"|grep -q "YES" || echo -n "OFFLINE @ $1"
