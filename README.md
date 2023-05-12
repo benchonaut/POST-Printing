@@ -111,7 +111,7 @@ curl --header "Content-Type: application/json"   --request POST   --data '{"clie
 * Start-Page Setup
   ![Start-Page Setup](screenshots/starturl.png)  
 * Test-Printing
-  ![Test-Printing](screenshots/test-pring.png)
+  ![Test-Printing](screenshots/test-print.png)
 * Debug Site
    ![Debug Site](screenshots/debug.png)
 * Eventlog
