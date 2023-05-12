@@ -70,9 +70,8 @@ xauth list |sed 's/^/xauth add /g;s/$/;/g' > /tmp/.xauthcmd
 chown guest /tmp/.xauthcmd
 chmod ugo+r /tmp/.xauthcmd &
 
-
 ) &>/dev/shm/system.init.2_1.xinit-root.log 
 
 test -e /run/usr/1000|| (mkdir /run/usr/1000;chown 1000 /run/usr/1000)
 
-su guest -s /bin/bash -c 'cd;bash  /home/guest/.xinitrc' &>/dev/shm/system.init.2_2.xinit-guest.log
+su guest -s /bin/bash -c 'cd;bash /home/guest/.xinitrc' &>/dev/shm/system.init.2_2.xinit-guest.log

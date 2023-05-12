@@ -143,8 +143,6 @@ echo -n "+permissions:"
 (
 chown -R guest /home/guest &
 chown -R root:root /root &
-mkdir /run/user/1000
-chown 1000 /run/user/1000 &
 
 ) 
 
