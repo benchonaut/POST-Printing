@@ -76,6 +76,54 @@ td:first-child, th:first-child {
 }
 
 </style>
+<script>
+function padWithLeadingZeros(num, totalLength) {
+  return String(num).padStart(totalLength, "0");
+}
+
+function status_parse(data) { 
+//console.log("GOT STATUS JSON: | ", data);
+var cardid="none"
+var labelid="none"
+
+for (let i = 1; i < 17; i++) {
+cardid="card-"+padWithLeadingZeros(i, 2);
+labelid="label-"+padWithLeadingZeros(i, 2);
+
+if (cardid in data) {
+   //console.log(cardid+" found");
+   target="cardstatus"+padWithLeadingZeros(i, 2);
+   status=data[cardid];
+   status=status.replace(/(^\|)/gi, "");
+   document.getElementById(target).innerHTML=status.replace("/\|/g", "<br>");
+}
+if (labelid in data) {
+   //console.log(labelid+" found");
+   target="labelstatus"+padWithLeadingZeros(i, 2);
+   status=data[labelid];
+   status=status.replace(/(^\|)/gi, "");
+   document.getElementById(target).innerHTML=status.replace("/\|/g", "<br>");
+}
+
+}  
+
+}
+
+//var url = "http://127.0.0.1:8888/status.json.php";
+
+
+setTimeout(function () {
+        var jsonurl = "'.url_origin( $_SERVER, true ) .'/status.json.php";
+        
+        fetch(jsonurl)
+        .then(res => res.json())
+        .then(out =>
+        status_parse(out))
+        .catch(err => { throw err });
+                    }, 15000);
+    }, 235 );
+    
+</script>
 <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
 <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
 <link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
@@ -93,9 +141,9 @@ td:first-child, th:first-child {
 <meta name="msapplication-TileColor" content="#ffffff">
 <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
 <meta name="theme-color" content="#ffffff">
-<meta http-equiv="refresh" content="30; " />
+<meta http-equiv="refresh" content="42; " />
 </head><body><h3>Printer Routing Status</h3><br>
-This page will reload every 30 seconds<br>
+This page will reload every 42 seconds, printer status will be updated every 15 seconds<br>
 ');
 print("\n");
 print('<hr><table align=center><thead><th>Station<br>Number</th><th>Card<br>Printer</th><th>Label<br>Printer</th><td bgcolor="black">.</td><th>Printer<br>Number</th>
