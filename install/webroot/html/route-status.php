@@ -165,13 +165,13 @@ print("\n");
         print("\n");
         print('<td >RIBBON:'.getCardRibbon($config,$station).'</td>');
         print("\n");
-        if (isset($status['card-'.sprintf("%02d",$station)])) { print('<td id="cardstatus'.sprintf("%02d",$station).'" >'.str_replace("|","<br>",ltrim($status['card-'.sprintf("%02d",$station)]), "|").'</td>'); }
+        if (isset($status['card-'.sprintf("%02d",$station)])) { print('<td id="cardstatus'.sprintf("%02d",$station).'" >'.str_replace("|","<br>",ltrim($status['card-'.sprintf("%02d",$station)],"|")).'</td>'); }
             else { print('<td id="cardstatus'.sprintf("%02d",$station).'" >..</td>'); }
         print("\n");
         print("\n");
         print('<td>LABEL'.$station.'</td>');
         print("\n");
-        if (isset($status['label-'.sprintf("%02d",$station)])) { print('<td id="labelstatus'.sprintf("%02d",$station).'" >'.str_replace("|","<br>",ltrim($status['label-'.sprintf("%02d",$station)]), "|").'</td>'); }
+        if (isset($status['label-'.sprintf("%02d",$station)])) { print('<td id="labelstatus'.sprintf("%02d",$station).'" >'.str_replace("|","<br>",ltrim($status['label-'.sprintf("%02d",$station)], "|")).'</td>'); }
             else { print('<td id="labelstatus'.sprintf("%02d",$station).'" >..</td>'); }
         print("\n");
         print('<td >LMODE:'.getLabelMode($config,$station).'</td>');    
