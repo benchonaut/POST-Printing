@@ -14,36 +14,31 @@ if(isset($_POST) AND !empty($_POST))
     //file_put_contents('/tmp/printrouterPOST.log', print_r($_POST, true)); //DEBUG...DUMP POST REQUEST
     foreach ($_POST as $action => $value) { 
     $act=explode("_", $action);
-    if ($act[0] == 'label' )             { $config=setLabelNum($config,$act[1],$value);         header("HTTP/1.0 204 No Content");    exit; }
-    elseif ($act[0] == 'labelmode')        { $config=setLabelMode($config,$act[1],$value);      header("HTTP/1.0 204 No Content");    exit; }
-    elseif ($act[0] == 'cardmode')        { $config=setCardMode($config,$act[1],$value);      header("HTTP/1.0 204 No Content");    exit; }
-    elseif ($act[0] == 'cardribbon')    { $config=setCardRibbon($config,$act[1],$value);      header("HTTP/1.0 204 No Content");    exit; }
-    elseif ($act[0] == 'card')    { $config=setCardNum($config,$act[1],$value);  header("HTTP/1.0 204 No Content");    exit; }
+    if ($act[0] == 'label' )            { $config=setLabelNum($config,$act[1],$value);      header("HTTP/1.0 204 No Content");    exit; }
+    elseif ($act[0] == 'labelmode')     { $config=setLabelMode($config,$act[1],$value);     header("HTTP/1.0 204 No Content");    exit; }
+    elseif ($act[0] == 'cardmode')      { $config=setCardMode($config,$act[1],$value);      header("HTTP/1.0 204 No Content");    exit; }
+    elseif ($act[0] == 'cardribbon')    { $config=setCardRibbon($config,$act[1],$value);    header("HTTP/1.0 204 No Content");    exit; }
+    elseif ($act[0] == 'card')          { $config=setCardNum($config,$act[1],$value);       header("HTTP/1.0 204 No Content");    exit; }
      } 
      if(isset($_POST['Rotate']))
         {
         if ($_POST['Rotate'] == 'Front')
-            { $execute='';for ($a=1;$a< count((array)$config) + 1;$a++ ) { $num=sprintf("%02d",$a);$execute=$execute.'lpadmin -p CARD'.$num.' -o FPageRotate180=ON;' ; } ; exec($execute);  } 
+            { $execute='';for ($a=1;$a< count((array)$config) + 1;$a++ ) { $num=sprintf("%02d",$a);$execute=$execute.'lpadmin -p CARD'.$num.' -o FPageRotate180=ON & ' ; } ; exec($execute);  } 
         elseif ($_POST['Rotate'] == 'Back')
-            { $execute='';for ($a=1;$a< count((array)$config) + 1;$a++ ) { $num=sprintf("%02d",$a);$execute=$execute.'lpadmin -p CARD'.$num.' -o BPageRotate180=ON;' ; } ; exec($execute); } 
+            { $execute='';for ($a=1;$a< count((array)$config) + 1;$a++ ) { $num=sprintf("%02d",$a);$execute=$execute.'lpadmin -p CARD'.$num.' -o BPageRotate180=ON & ' ; } ; exec($execute); } 
         }
     if(isset($_POST['NoRotate']))
         {            
         if ($_POST['NoRotate'] == 'Front')     
-            { $execute='';for ($a=1;$a< count((array)$config) + 1;$a++ ) { $num=sprintf("%02d",$a);$execute=$execute.'lpadmin -p CARD'.$num.' -o FPageRotate180=OFF;' ; } ; exec($execute); } 
+            { $execute='';for ($a=1;$a< count((array)$config) + 1;$a++ ) { $num=sprintf("%02d",$a);$execute=$execute.'lpadmin -p CARD'.$num.' -o FPageRotate180=OFF & ' ; } ; exec($execute); } 
         elseif ($_POST['NoRotate'] == 'Back')     
-            { $execute='';for ($a=1;$a< count((array)$config) + 1;$a++ ) { $num=sprintf("%02d",$a);$execute=$execute.'lpadmin -p CARD'.$num.' -o BPageRotate180=OFF;' ; } ; exec($execute); } 
+            { $execute='';for ($a=1;$a< count((array)$config) + 1;$a++ ) { $num=sprintf("%02d",$a);$execute=$execute.'lpadmin -p CARD'.$num.' -o BPageRotate180=OFF &' ; } ; exec($execute); } 
         }
         //header("HTTP/1.0 204 No Content");    exit;
     // $action = $_GET['action']; 
     // $agent_id = $_POST['agent_id']; 
     }
 
-//file_put_contents('/tmp/printrouterCONF.log', print_r(count((array)$config))); //DEBUG...DUMP config object count
-//station id is determined by last number of ipv4
-exec('/bin/bash /etc/printer_status.sh '.$statusfile);
-$status=json_decode(file_get_contents($statusfile),1);
-//print_r(file_get_contents($statusfile),1);
 
 print('<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html><head><title>Printer Selector '.curPageURL().'</title>');
 
@@ -159,6 +154,18 @@ td:first-child, th:first-child {
      border-left: none;
 }
 </style>
+<script>
+function reload_with_message() {
+
+    timeoutreload = setTimeout(function () {
+        history.go(0);
+    }, 2345 );
+    timeoutbody = setTimeout(function () {
+        document.body.style.backgroundColor = "red"; document.body.style.color = "black";  document.body.innerHTML = "<center><h1>Please wait..<br> applying settings and reloading..</h1></center>"; 
+    }, 235 );
+}
+
+</script>
 <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
 <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
 <link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
@@ -176,20 +183,28 @@ td:first-child, th:first-child {
 <meta name="msapplication-TileColor" content="#ffffff">
 <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
 <meta name="theme-color" content="#ffffff">
-</head><body><h3>Printer Routing</h3>
+
 ');
+
+//file_put_contents('/tmp/printrouterCONF.log', print_r(count((array)$config))); //DEBUG...DUMP config object count
+//station id is determined by last number of ipv4
+exec('/bin/bash /etc/printer_status.sh '.$statusfile);
+$status=json_decode(file_get_contents($statusfile),1);
+//print_r(file_get_contents($statusfile),1);
+
+print('</head><body><h3>Printer Routing</h3>');
 print("\n");
 print('<hr>GLobal Card Rotation(all printers):<br><table align=center><tr><th>');
 print("\n");
-print('           <form method="POST" action="'.curPageURL().'?action=NoRotFront" onchange="document.getElementById(\'NoRotFront\').form.submit();history.go(0);"> <button name="NoRotate" id="NoRotFront" value="Front">Straight Front</button></form>');
+print('           <form method="POST" action="'.curPageURL().'?action=NoRotFront" onchange="document.getElementById(\'NoRotFront\').form.submit();reload_with_message();"> <button name="NoRotate" id="NoRotFront" value="Front">Straight Front</button></form>');
 print("\n");
-print('  </th><th><form method="POST" action="'.curPageURL().'?action=RotFront"   onchange="document.getElementById(\'RotFront\').form.submit();history.go(0);"> <button name="Rotate" id="RotFront" value="Front">Rotate Front 180°</button></form>');
+print('  </th><th><form method="POST" action="'.curPageURL().'?action=RotFront"   onchange="document.getElementById(\'RotFront\').form.submit();reload_with_message();"> <button name="Rotate" id="RotFront" value="Front">Rotate Front 180°</button></form>');
 print("\n");
 print('</th></tr></table>');
 print("\n");
-print('<table><tr><th><form method="POST" action="'.curPageURL().'?action=NoRotBack"  onchange="document.getElementById(\'NoRotBack\').form.submit();history.go(0);"> <button name="NoRotate" id="NoRotBack" value="Back">Straight Back</button></form>');
+print('<table><tr><th><form method="POST" action="'.curPageURL().'?action=NoRotBack"  onchange="document.getElementById(\'NoRotBack\').form.submit();reload_with_message();"> <button name="NoRotate" id="NoRotBack" value="Back">Straight Back</button></form>');
 print("\n");
-print('  </th><th><form method="POST" action="'.curPageURL().'?action=RotBack"    onchange="document.getElementById(\'RotBack\').form.submit();history.go(0);"> <button name="Rotate" id="RotBack" value="Back">Rotate Back 180°</button></form>');
+print('  </th><th><form method="POST" action="'.curPageURL().'?action=RotBack"    onchange="document.getElementById(\'RotBack\').form.submit();reload_with_message();"> <button name="Rotate" id="RotBack" value="Back">Rotate Back 180°</button></form>');
 print("\n");
 print('</th></tr></table><b>Label Settings: WIFI_RED=DK22261 , WIFI_BLACK=22205,WIFI_THIN=DK1201( 29mmx90.3 Address) </b>');
 print("\n");

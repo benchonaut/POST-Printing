@@ -44,7 +44,7 @@ exec('/bin/bash /etc/printer_status.sh '.$statusfile);
 $status=json_decode(file_get_contents($statusfile),1);
 //print_r(file_get_contents($statusfile),1);
 
-print('<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html><head><title>Printer Selector '.curPageURL().'</title>');
+print('<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html><head><title>Printer Route Status '.curPageURL().'</title>');
 
 print('<style>
 body {

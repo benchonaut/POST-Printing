@@ -45,7 +45,7 @@ if(isset($_POST) AND !empty($_POST)) {
         }
 }
 
-print('<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html><head><title>Printer Selector '.curPageURL().'</title>');
+print('<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html><head><title>URL Setup '.curPageURL().'</title>');
 
 print('<style>
 body {
