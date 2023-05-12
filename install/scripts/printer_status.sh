@@ -10,7 +10,7 @@ primacy_stat()    {
                                       res=${res//td/} ; 
                                       res=${res/\<\//} ;
                                       res=${res/\//}; 
-                                      echo -n "$res"|grep "Printer status"|cut -d">" -f5|cut -d"<" -f1 ;
+                                      echo -n "$rawres"|grep "Printer status"|cut -d">" -f5|cut -d"<" -f1 ;
                                       echo "|"$res;
                                       echo "$rawres"|grep -q "Kit nb:" && (
                                            echo "|Kit-NB:";echo -n "$rawres"|grep "Kit nb:"|cut -d">" -f5|cut -d"<" -f1 ;
