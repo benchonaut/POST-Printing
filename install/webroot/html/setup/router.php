@@ -23,16 +23,16 @@ if(isset($_POST) AND !empty($_POST))
      if(isset($_POST['Rotate']))
         {
         if ($_POST['Rotate'] == 'Front')
-            { $execute='';for ($a=1;$a< count((array)$config) + 1;$a++ ) { $num=sprintf("%02d",$a);$execute=$execute.'lpadmin -p CARD'.$num.' -o FPageRotate180=ON & ' ; } ; exec($execute);  } 
+            { $execute='/bin/bash -c "';for ($a=1;$a< count((array)$config) + 1;$a++ ) { $num=sprintf("%02d",$a);$execute=$execute.'lpadmin -p CARD'.$num.' -o FPageRotate180=ON & ' ; } ;$execute=$execute.' wait " '; exec($execute);  } 
         elseif ($_POST['Rotate'] == 'Back')
-            { $execute='';for ($a=1;$a< count((array)$config) + 1;$a++ ) { $num=sprintf("%02d",$a);$execute=$execute.'lpadmin -p CARD'.$num.' -o BPageRotate180=ON & ' ; } ; exec($execute); } 
+            { $execute='/bin/bash -c "';for ($a=1;$a< count((array)$config) + 1;$a++ ) { $num=sprintf("%02d",$a);$execute=$execute.'lpadmin -p CARD'.$num.' -o BPageRotate180=ON & ' ; } ;$execute=$execute.' wait " '; exec($execute); } 
         }
     if(isset($_POST['NoRotate']))
         {            
         if ($_POST['NoRotate'] == 'Front')     
-            { $execute='';for ($a=1;$a< count((array)$config) + 1;$a++ ) { $num=sprintf("%02d",$a);$execute=$execute.'lpadmin -p CARD'.$num.' -o FPageRotate180=OFF & ' ; } ; exec($execute); } 
+            { $execute='/bin/bash -c "';for ($a=1;$a< count((array)$config) + 1;$a++ ) { $num=sprintf("%02d",$a);$execute=$execute.'lpadmin -p CARD'.$num.' -o FPageRotate180=OFF & ' ; } ;$execute=$execute.' wait " '; exec($execute); } 
         elseif ($_POST['NoRotate'] == 'Back')     
-            { $execute='';for ($a=1;$a< count((array)$config) + 1;$a++ ) { $num=sprintf("%02d",$a);$execute=$execute.'lpadmin -p CARD'.$num.' -o BPageRotate180=OFF &' ; } ; exec($execute); } 
+            { $execute='/bin/bash -c "';for ($a=1;$a< count((array)$config) + 1;$a++ ) { $num=sprintf("%02d",$a);$execute=$execute.'lpadmin -p CARD'.$num.' -o BPageRotate180=OFF &' ; } ;$execute=$execute.' wait " '; exec($execute); } 
         }
         //header("HTTP/1.0 204 No Content");    exit;
     // $action = $_GET['action']; 
@@ -194,7 +194,7 @@ $status=json_decode(file_get_contents($statusfile),1);
 //print_r(file_get_contents($statusfile),1);
 
      if(isset($_GET['action'])) {
-        if ($_GET['action'] == 'RotFront'|| $_GET['action'] == 'NoRotFront') {
+        if ($_GET['action'] == 'RotFront'|| $_GET['action'] == 'NoRotFront'|| $_GET['action'] == 'NoRotBack'|| $_GET['action'] == 'RotBack') {
             print(' <meta http-equiv="refresh" content="2; URL='.url_origin( $_SERVER, true ) .'/setup/router.php"></head><body><center><h1>Reloading</h1></center><br><script>reload_with_message()</script></body>');
         }
     }
