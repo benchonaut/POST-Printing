@@ -11,8 +11,8 @@ primacy_stat()    {
                                       res=${res/\<\//} ;
                                       res=${res/\//}; 
                                       printerstatus=$(echo -n "$rawres"|grep "Printer status"|cut -d">" -f5|cut -d"<" -f1 )
-                                      [[ "printerstatus" = "                " ]] && echo "   POWER OFF    "
-                                      [[ "printerstatus" = "                " ]] || echo "$printerstatus"
+                                      [[ "$printerstatus" = "                " ]] && echo "   POWER OFF    "
+                                      [[ "$printerstatus" = "                " ]] || echo "$printerstatus"
                                       echo "|"$res;
                                       echo "$rawres"|grep -q "Kit nb:" && (
                                            echo "|Kit-NB:";echo -n "$rawres"|grep "Kit nb:"|cut -d">" -f5|cut -d"<" -f1 ;
