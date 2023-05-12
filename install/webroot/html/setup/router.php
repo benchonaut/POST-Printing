@@ -160,7 +160,7 @@ function reload_with_message() {
     timeoutreload = setTimeout(function () {
         window.location.href = "'.url_origin( $_SERVER, true ) .'/setup/router.php";
         //history.go(0);
-    }, 2345 );
+    }, 4235 );
     timeoutbody = setTimeout(function () {
         document.body.style.backgroundColor = "red"; document.body.style.color = "black";  document.body.innerHTML = "<center><h1>Please wait..<br> applying settings and reloading..</h1></center>"; 
     }, 235 );
@@ -195,7 +195,7 @@ $status=json_decode(file_get_contents($statusfile),1);
 
      if(isset($_GET['action'])) {
         if ($_GET['action'] == 'RotFront'|| $_GET['action'] == 'NoRotFront'|| $_GET['action'] == 'NoRotBack'|| $_GET['action'] == 'RotBack') {
-            print(' <meta http-equiv="refresh" content="2; URL='.url_origin( $_SERVER, true ) .'/setup/router.php"></head><body><center><h1>Reloading</h1></center><br><script>reload_with_message()</script></body>');
+            print(' <meta http-equiv="refresh" content="4; URL='.url_origin( $_SERVER, true ) .'/setup/router.php"></head><body><center><h1>Reloading</h1></center><br><script>reload_with_message()</script></body>');
         }
     }
 
