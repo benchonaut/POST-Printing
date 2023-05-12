@@ -4,8 +4,13 @@ test -e /tmp/.printerstatus || mkdir /tmp/.printerstatus
 primacy_stat()    { 
     pingres=$(ping -c1 -w2 "$1" &>/dev/null && echo "YES" )
     echo "$pingres"|grep -q "YES" || echo -n "OFFLINE @ $1"
-    echo "$pingres"|grep -q "YES" && (res=$(wget -q -O- http://$1/info.htm);echo -n "$res"|grep "Printer status"|cut -d">" -f5|cut -d"<" -f1 ;
-                    res=$(echo "$res"|grep Firmware|cut -d">" -f3,5) ; res=${res//td/} ; res=${res/\<\//} ;res=${res/\//}; echo "|"$res;) |tr -d '\n' ;  } ; 
+    echo "$pingres"|grep -q "YES" && (
+                                      res=$(wget -q -O- http://$1/info.htm);echo -n "$res"|grep "Printer status"|cut -d">" -f5|cut -d"<" -f1 ;
+                                      res=$(echo "$res"|grep Firmware|cut -d">" -f3,5) ; 
+                                      res=${res//td/} ; 
+                                      res=${res/\<\//} ;
+                                      res=${res/\//}; 
+                                      echo "|"$res;) |tr -d '\n' ;  } ; 
 ql720_stat()    { 
     pingres=$(ping -c1 -w2 "$1" &>/dev/null && echo "YES" )
     echo "$pingres"|grep -q "YES" || echo -n "OFFLINE @ $1"
