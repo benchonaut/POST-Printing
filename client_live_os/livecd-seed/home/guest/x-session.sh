@@ -1,3 +1,4 @@
+#!/bin/bash 
 
 ## test for an existing bus daemon, just to be safe
 if test -z "$DBUS_SESSION_BUS_ADDRESS" ; then
@@ -7,25 +8,27 @@ fi
 echo "D-Bus per-session daemon address is: $DBUS_SESSION_BUS_ADDRESS"
 
 
-keyz="";res="";timez="";loadsite="";
+keyz="";
+loadsite="";
+#res="";timez="";
 FULLCMDLINE=$(cat /proc/cmdline)
 set -- ${FULLCMDLINE}
 for x in "$@"; do
     case "$x" in
-        timezone=*)
-        echo "${x#timezone=}"  >> /dev/shm/log.boot.2.cmdline
-        timez="${x#timezone=}"
-        ;;
+        #timezone=*)
+        #echo "${x#timezone=}"  >> /dev/shm/log.boot.2.cmdline
+        #timez="${x#timezone=}"
+        #;;
 
         kmap=*)
         echo "${x#kmap=}"      >> /dev/shm/log.boot.2.cmdline
         keyz="${x#kmap=}"
         ;;
 
-        xrandr=*)
-        echo "${x#xrandr=}"    >> /dev/shm/log.boot.2.cmdline
-        res="${x#xrandr=}"
-        ;;
+        #xrandr=*)
+        #echo "${x#xrandr=}"    >> /dev/shm/log.boot.2.cmdline
+        #res="${x#xrandr=}"
+        #;;
 
         splashurl=*)
         echo "${x#splashurl=}" >> /dev/shm/log.boot.2.cmdline
@@ -80,7 +83,7 @@ test -e "$HOME"/.ssh||mkdir  "$HOME"/.ssh
 
 notify-send --expire-time=4444 "waiting for chrome" &
 
- while [[ ! -e /dev/shm/chrome.bin  ]]; do echo $(date)" still waiting for chrome.bin ";sleep 2;done
+ while [[ ! -e /dev/shm/chrome.bin  ]]; do echo "$(date) still waiting for chrome.bin ";sleep 2;done
 
 (date;xrandr -s "$(cat /dev/shm/.xrandr.res)" ;date) >> /dev/shm/log.boot.3.res_user
 
