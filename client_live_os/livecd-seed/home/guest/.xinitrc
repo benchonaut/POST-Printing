@@ -15,5 +15,5 @@ fi
 echo "D-Bus per-session daemon address is: $DBUS_SESSION_BUS_ADDRESS"
 
 #bash /home/guest/x-session.sh
-source /home/guest/x-session.sh
+dbus-run-session bash /home/guest/x-session.sh
 

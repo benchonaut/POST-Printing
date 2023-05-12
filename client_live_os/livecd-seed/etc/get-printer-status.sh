@@ -28,7 +28,7 @@ clientnum=$(ifconfig |grep inet |grep -v inet6|grep -v "127\." |cut -dn -f2|cut 
 # clients 51+ ( e.g. 51= sta 1 , 51=sta2) ,clients 151+ ( e.g. 151= sta 1 , 151=sta2),clients 101+ ( e.g. 101= sta 1 , 101=sta2)
 [[ "$clientnum" -le 200 ]] && [[ "$clientnum" -ge 51 ]] && clientnum=$(($clientnum%50))
 
-which notify-send || notify-send() { echo "$@" > /dev/shm/notify_send_out ; } ;
+which notify-send || notify-send() { echo "$@" > /dev/shm/notify-send_out ; } ;
 test -e /dev/shm/.incoming.printer.notifications  ||  mkfifo /dev/shm/.incoming.printer.notifications
 chmod 0600  /dev/shm/.incoming.printer.notifications
 WSPORT=$2
@@ -78,7 +78,7 @@ for type in LABEL CARD;do
   ( ## start fork
     (curl -s "http://printserver.local/cups-get-id.php?id=$clientnum&type=$type" |sed 's/\r//g' ) > /dev/shm/.curtarget_$type
     diff -q  /dev/shm/.curtarget_$type /dev/shm/.oldtarget_$type  || (
-        notify_send --expire-time=4235 "PRINTER ROUTING CHANGED TO $(cat /dev/shm/.curtarget_$type)"
+        notify-send --expire-time=4235 "PRINTER ROUTING CHANGED TO $(cat /dev/shm/.curtarget_$type)"
         kpid=$(cat /dev/shm/.incoming.printer.PID.grep)
         [[ -z "$kpid" ]] || ( 
               grep -q -e tail -e grep /proc/"$kpid"/cmdline && ( kill -9 "$kpid" )
@@ -87,7 +87,7 @@ for type in LABEL CARD;do
     ) &
     (curl -s "http://printserver.local/printer-status.php?id=$clientnum&type=$type" |sed 's/\r//g' ) > /dev/shm/.curstatus_$type
     diff -q  /dev/shm/.curstatus_$type /dev/shm/.oldstatus_$type  || (
-        notify_send --expire-time=4235 "PRINTER STATUS CHANGED TO $(cat /dev/shm/.curstatus_$type)"
+        notify-send --expire-time=4235 "PRINTER STATUS CHANGED TO $(cat /dev/shm/.curstatus_$type)"
         sleep 1
     ) &
   ) & ## end fork 
