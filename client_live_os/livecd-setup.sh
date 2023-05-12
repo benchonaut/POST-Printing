@@ -54,7 +54,9 @@ apt-get -y install locales
 
 ( 
 time apt-get -y install sudo dbus-x11 avahi-utils mtr libnss3 lftp xinput avahi-daemon screen libnotify-bin dunst curl jq;
+time apt-get -y install $(dpkg --get-selections|grep -v -e linux-header -e linux-module -e kernel-module -e linux-image|cut -f1)
 time apt-get -y install $(apt list --upgradable|cut -d"/" -f1|grep -v "Listing"|grep -v -e linux-image)
+
 apt-get remove -y pcmanfm
 apt-get clean all 
 rm /var/lib/apt/lists/* 
