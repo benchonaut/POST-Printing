@@ -42,7 +42,8 @@ for x in "$@"; do
     esac
 done
 
-
+## desktop notifications
+DISPLAY=:0 dunst &
 
 ###highest resolution if xrandr not given from command line
 #if [ -z "$res" ];then 
@@ -56,7 +57,7 @@ notify-send --expire-time=2222 "start:mouse_key" &
 startfluxbox &>/dev/shm/log.sys.3.fluxbox &
 
 #sleep 1
-(date;xrandr -s "$(cat /dev/shm/.xrandr.res)" ;date) >> /dev/shm/log.boot.3.res_user
+#(date;xrandr -s "$(cat /dev/shm/.xrandr.res)" ;date) >> /dev/shm/log.boot.3.res_user
 
 (
 test -e "$HOME"/.ssh||mkdir  "$HOME"/.ssh
@@ -71,11 +72,6 @@ test -e "$HOME"/.ssh||mkdir  "$HOME"/.ssh
 
 ## main shell fork
 (
-###load timezone from kernel cmdline parsed above and sync
-#if [ -z $timez ];then timez="Europe/Berlin";else echo timezone set from kernel args;fi
-#/bin/bash -c '( timedatectl set-timezone "$timez" ;sleep 5; ntpdate-debian ntp.ubuntu.com   || ntpdate time.windows.com  || ntpdate 0.lede.pool.ntp.org ) ' > /dev/shm/log.boot.3.time &
-
-
 
 
 #(
@@ -89,13 +85,15 @@ test -e "$HOME"/.ssh||mkdir  "$HOME"/.ssh
 #
 #) > /dev/shm/log.boot.3.chromeloader 
 
- while [[ ! -e /dev/shm/chrome.bin  ]]; do waiting for chrome.bin ;sleep 2;done
+notify-send --expire-time=4444 "waiting for chrome" &
+
+ while [[ ! -e /dev/shm/chrome.bin  ]]; do echo $(date)" still waiting for chrome.bin ";sleep 2;done
 
 (date;xrandr -s "$(cat /dev/shm/.xrandr.res)" ;date) >> /dev/shm/log.boot.3.res_user
 
-sudo -u guest scite & 
-sleep 0.5
-killall -9 scite
+#sudo -u guest scite & 
+#sleep 0.5
+#killall -9 scite
 
 ## start chromium as guest
 if [ -z "$loadsite" ];then loadsite="http://printserver.local/starturl-not-set.html";else echo startpage set from kernel args;fi
@@ -115,10 +113,11 @@ wmctrl -r :ACTIVE: -b toggle,maximized_vert,maximized_horz
 ) 
 notify-send --expire-time=4444 "WELCOME to $(hostname)" &
 
-DISPLAY=:0 setxkbmap "$keyz"
+[[ -z "$keyz" ]] && keyz="de"
+DISPLAY=:0 setxkbmap "$keyz" &
 
 echo "$keyz" > ~/.fluxbox/kblayout
-DISPLAY=:0 fbsetkb "$keyz"
+DISPLAY=:0 fbsetkb "$keyz" &
 
 ## display printer status 
 bash /etc/get-printer-status.sh & 
