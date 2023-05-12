@@ -40,8 +40,8 @@ for LABEL in $(echo {01..16});do
     ## CARD PRINTERS CAN ALSO BE NON_CUPS( via python)
     #i=$(echo $LABEL |cut -d":" -f1) ; IP=$(echo $LABEL |cut -d"/" -f3);
     i=$LABEL;
-    ( echo "$CUPSPRINTERS" |grep -q  "LABEL$i")  && IP=$(echo "$curlpstat"|grep "LABEL$i"|grep lpd|sed 's~.\+lpd://~~g'|cut -d"/" -f1)
-    ( echo "$CUPSPRINTERS" |grep -q  "LABEL$i")  || IP="192.168.88."$((220+$LABEL))
+    ( echo "$cupsprinters" |grep -q  "LABEL$i")  && IP=$(echo "$curlpstat"|grep "LABEL$i"|grep lpd|sed 's~.\+lpd://~~g'|cut -d"/" -f1)
+    ( echo "$cupsprinters" |grep -q  "LABEL$i")  || IP="192.168.88."$((220+$LABEL))
     find /tmp/.printerstatus/ -mindepth 1 -maxdepth 1 -newermt '7 seconds ago' -type f -name "status_label.$i"|grep -q "status_label.$i"|| (
         (echo -n '"label-'$i'":"';
         [[ -z "IP" ]] && echo "NO IP FOUND"
