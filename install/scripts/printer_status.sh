@@ -40,8 +40,8 @@ for CARD in $(echo {01..16});do
       (echo -n '"card-'$i'":"';
       [[ -z "IP" ]] && echo "NO IP FOUND"
       [[ -z "IP" ]] || primacy_stat $IP;
-      echo -n "|↻Front:" ; echo "$cardinfo" |grep FPageRotate |cut -d ":" -f2|sed 's/ ON//;s/ OFF//g|s/*//' |tr -d '\n';    
-      echo -n "|↻Back:"  ; echo "$cardinfo" |grep BPageRotate |cut -d ":" -f2|sed 's/ ON//;s/ OFF//g|s/*//' |tr -d '\n';
+      echo -n "|↻Front:" ; echo "$cardinfo" |grep FPageRotate |cut -d ":" -f2|sed 's/ ON//;s/ OFF//g;s/*//g' |tr -d '\n';    
+      echo -n "|↻Back:"  ; echo "$cardinfo" |grep BPageRotate |cut -d ":" -f2|sed 's/ ON//;s/ OFF//g;s/*//g' |tr -d '\n';
       echo -n '",' ;) | sed 's/.\+"".\+//g' > /tmp/.printerstatus/status_card.$i ) &
     done
 
