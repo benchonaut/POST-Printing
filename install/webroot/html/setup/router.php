@@ -248,13 +248,13 @@ print("\n");
                 foreach ($opt as &$value){ print('<option>'.$value);        print("\n"); }
         print('</select></form></td>');
         print("\n");
-        if (isset($status['card-'.sprintf("%02d",$station)])) { print('<td>'.$status['card-'.sprintf("%02d",$station)].'</td>'); }
+        if (isset($status['card-'.sprintf("%02d",$station)])) { print('<td>'.str_replace("|","<br>",$status['card-'.sprintf("%02d",$station)]).'</td>'); }
             else { print('<td >..</td>'); }
         print("\n");
         print('<td>LABEL'.$station.'</td>');
         print("\n");
 
-        if (isset($status['label-'.sprintf("%02d",$station)])) { print('<td>'.$status['label-'.sprintf("%02d",$station)].'</td>'); }
+        if (isset($status['label-'.sprintf("%02d",$station)])) { print('<td>'.str_replace("|","<br>",$status['label-'.sprintf("%02d",$station)]).'</td>'); }
             else { print('<td >..</td>'); }    
         print("\n");
         print('<td ><form method="POST" action="'.curPageURL().'?action=labelmode" onchange="document.getElementById(\'labelmode_'.$station.'\').form.submit()"> <select class="noncustom-select" id=labelmode_'.$station.'  name=labelmode_'.$station.'  required><option selected>'.getLabelMode($config,$station)); 

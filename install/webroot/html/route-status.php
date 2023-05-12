@@ -141,13 +141,13 @@ print("\n");
         print("\n");
         print('<td >RIBBON:'.getCardRibbon($config,$station).'</td>');
         print("\n");
-        if (isset($status['card-'.sprintf("%02d",$station)])) { print('<td>'.$status['card-'.sprintf("%02d",$station)].'</td>'); }
+        if (isset($status['card-'.sprintf("%02d",$station)])) { print('<td>'.str_replace("|","<br>",$status['card-'.sprintf("%02d",$station)]).'</td>'); }
             else { print('<td >..</td>'); }
         print("\n");
         print("\n");
         print('<td>LABEL'.$station.'</td>');
         print("\n");
-        if (isset($status['label-'.sprintf("%02d",$station)])) { print('<td>'.$status['label-'.sprintf("%02d",$station)].'</td>'); }
+        if (isset($status['label-'.sprintf("%02d",$station)])) { print('<td>'.str_replace("|","<br>",$status['label-'.sprintf("%02d",$station)]).'</td>'); }
             else { print('<td >..</td>'); }    
         print("\n");
         print('<td >LMODE:'.getLabelMode($config,$station).'</td>');    
