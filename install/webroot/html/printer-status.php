@@ -7,7 +7,6 @@ $status=array();
 
 if (file_exists($configfile))  {                  $config=json_decode(file_get_contents($configfile),1); }
         else { initPrinterConfig($configfile);    $config=json_decode(file_get_contents($configfile),1); }
-
 if(isset($_GET['id'])) { 
     $client=0;
     //$station=$_GET['id'];

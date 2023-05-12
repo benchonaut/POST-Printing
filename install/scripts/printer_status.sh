@@ -5,7 +5,7 @@ primacy_stat()    {
     pingres=$(ping -c1 -w2 "$1" &>/dev/null && echo "YES" )
     echo "$pingres"|grep -q "YES" || echo -n "OFFLINE @ $1"
     echo "$pingres"|grep -q "YES" && (
-                                      rawres=$(wget -q -O- http://$1/info.htm);
+                                      rawres=$(curl --connect-timeout 3 --retry 1 --retry-connrefused --retry-delay 1 --retry-max-time 3 -s  "http://$1/info.htm");
                                       res=$(echo "$rawres"|grep Firmware|cut -d">" -f3,5) ; 
                                       res=${res//td/} ; 
                                       res=${res/\<\//} ;
@@ -24,9 +24,9 @@ ql720_stat()    {
     echo "$pingres"|grep -q "YES" && (echo -n $(
                     #echo "|TotalPages:" ;snmpwalk -v2c -c public $1 iso.3.6.1.2.1.43.10.2.1.4.1.1|cut -d":" -f2  ;
                     #^^^oldschool SNMP
-                    cgiinfo=$(curl -s "http://"$1"/cgi/host/viewinfo.csv?M1=1&M2=1&M3=1&M4=1&M5=1&M6=1&M7=1&M8=1&M9=1&M10=1&M11=1&M12=1&M13=1&M14=1&M15=1&M16=1&M17=1&M18=1&M19=1&M20=1&M21=1&M22=1&M23=1&M24=1&M25=1&M26=1&M27=1&M28=1&M29=1&M30=1&M31=1&M32=1&M33=1&M34=1&M35=1&M36=1&M37=1&M38=1&M39=1&M40=1&M41=1&M42=1&M43=1&M44=1&M45=1&M46=1&M47=1&M48=1&M49=1&M50=1&M51=1")
+                    cgiinfo=$(curl --connect-timeout 3 --retry 1 --retry-connrefused --retry-delay 1 --retry-max-time 3 -s "http://"$1"/cgi/host/viewinfo.csv?M1=1&M2=1&M3=1&M4=1&M5=1&M6=1&M7=1&M8=1&M9=1&M10=1&M11=1&M12=1&M13=1&M14=1&M15=1&M16=1&M17=1&M18=1&M19=1&M20=1&M21=1&M22=1&M23=1&M24=1&M25=1&M26=1&M27=1&M28=1&M29=1&M30=1&M31=1&M32=1&M33=1&M34=1&M35=1&M36=1&M37=1&M38=1&M39=1&M40=1&M41=1&M42=1&M43=1&M44=1&M45=1&M46=1&M47=1&M48=1&M49=1&M50=1&M51=1")
+                    snmpwalk -v2c -c public $1 iso.3.6.1.2.1.43.16.5.1.2.1.1 |grep -v Hex-STRING|cut -d":" -f2 ; echo "|";
                     [[ -z "$cgiinfo" ]] || ( 
-                      snmpwalk -v2c -c public $1 iso.3.6.1.2.1.43.16.5.1.2.1.1|cut -d":" -f2 ; echo "|";
                       echo "$cgiinfo" |(read a;read b;cnt=1;echo -e ${a//,/'\n'}|while read c;do echo $c":"$(echo $b|cut -d"," -f$cnt ) ;let cnt+=1 ;done)|sed 's/Total Print Length/Total/g;s/Total Page Count/PageSUM/g;s/Total Cut Count/CutSUM/g;s/Printer Firmware Version/Firmware/g;s/Memory Size/Mem-MB/g;s/IP Address/IP/g;s/Serial no./Serial/g;s/Node Name/Name/g;s/Printer Type/PrntrType/g;s/Network Version/NetFW/g;s/$/|/g'|grep -e Firm -e Tota -e SUM -e Net |tr -d '\n'
                       echo "Paper:";snmpwalk -v2c -c public $1 iso.3.6.1.2.1.43.8.2.1.12.1.1 |grep -v Hex-STRING |cut -d":" -f2|sed 's/"//g;s/\\//g;s/iso.3.6.1.2.1.43.8.2.1.12.1.1 =//g'
                     ) 
