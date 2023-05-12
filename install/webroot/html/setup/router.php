@@ -159,6 +159,46 @@ table {
 td:first-child, th:first-child {
      border-left: none;
 }
+
+:root {
+  --code-bg: #2e2e2e;
+  --code-fg: #9e86c8;
+  --code-title-fg: #b4d273;
+  --code-lang-fg: #d6d6d6;
+  --code-font: monospace;
+}
+
+.code {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--code-bg);
+  padding: 2px;
+}
+.code > * {
+  font-family: var(--code-font);
+}
+.code .info {
+  display: flex;
+  justify-content: space-between;
+  border-radius: 4px 3px 4px / 4px 4px;
+}
+.code .title {
+  color: var(--code-title-fg);
+  border-radius: 4px 3px 4px / 4px 4px;
+}
+.code .lang {
+  font-size: 12px;
+  color: var(--code-lang-fg);
+  align-self: flex-end;
+  border-radius: 4px 3px 4px / 4px 4px;
+}
+.code pre {
+  color: var(--code-fg);
+  max-width: 100%;
+  overflow-x: auto;
+  border-radius: 8px 4px 6px / 4px 6px;
+}
+
 </style>
 <script>
 function reload_with_message() {
@@ -192,7 +232,9 @@ livestatus=livestatus+"+"+cardid
    target="cardstatus"+padWithLeadingZeros(i, 2);
    status=data[cardid];
    status=status.replace('."'".'/(^\|)/gi'."'".', "");
-   document.getElementById(target).innerHTML=status.replace('."'".'/\|/g'."'".', "<br>");
+   prepend='."'".'<div class="code"><div class="info"><span class="title"> status </span><span class="lang">CARD'."'".'+padWithLeadingZeros(i, 2)+'."'".'</span></div><pre>'."'".'
+   append="</pre></div>"
+   document.getElementById(target).innerHTML=prepend+status.split("|").join("<br>")+append;
 }
 if (labelid in data) {
 livestatus=livestatus+"+"+labelid
@@ -200,7 +242,9 @@ livestatus=livestatus+"+"+labelid
    target="labelstatus"+padWithLeadingZeros(i, 2);
    status=data[labelid];
    status=status.replace('."'".'/(^\|)/gi'."'".', "");
-   document.getElementById(target).innerHTML=status.replace('."'".'/\|/g'."'".', "<br>");
+   prepend='."'".'<div class="code"><div class="info"><span class="title"> status </span><span class="lang">LABEL'."'".'+padWithLeadingZeros(i, 2)+'."'".'</span></div><pre>'."'".'
+   append="</pre></div>"
+   document.getElementById(target).innerHTML=prepend+status.split("|").join("<br>")+append;
 }
 
 }  
@@ -305,12 +349,12 @@ print("\n");
                 foreach ($opt as &$value){ print('<option>'.$value);        print("\n"); }
         print('</select></form></td>');
         print("\n");
-        if (isset($status['card-'.sprintf("%02d",$station)])) { print('<td id="cardstatus'.sprintf("%02d",$station).'" >'.str_replace("|","<br>",ltrim($status['card-'.sprintf("%02d",$station)],"|")).'</td>'); }
+        if (isset($status['card-'.sprintf("%02d",$station)])) { print('<td id="cardstatus'.sprintf("%02d",$station).'" ><div class="code"><div class="info"><span class="title"> status </span><span class="lang">CARD'.sprintf("%02d",$station).'</span></div><pre>'.str_replace("|","<br>",ltrim($status['card-'.sprintf("%02d",$station)],"|")).'</pre></div></td>'); }
             else { print('<td id="cardstatus'.sprintf("%02d",$station).'" >..</td>'); }
         print("\n");
         print('<td>LABEL'.$station.'</td>');
         print("\n");
-        if (isset($status['label-'.sprintf("%02d",$station)])) { print('<td id="labelstatus'.sprintf("%02d",$station).'" >'.str_replace("|","<br>",ltrim($status['label-'.sprintf("%02d",$station)], "|")).'</td>'); }
+        if (isset($status['label-'.sprintf("%02d",$station)])) { print('<td id="labelstatus'.sprintf("%02d",$station).'" ><div class="code"><div class="info"><span class="title"> status </span><span class="lang">LABEL'.sprintf("%02d",$station).'</span></div><pre>'.str_replace("|","<br>",ltrim($status['label-'.sprintf("%02d",$station)], "|")).'</pre></div></td>'); }
             else { print('<td id="labelstatus'.sprintf("%02d",$station).'" >..</td>'); }    
         print("\n");
         print('<td ><form method="POST" action="'.curPageURL().'?action=labelmode" onchange="document.getElementById(\'labelmode_'.$station.'\').form.submit()"> <select class="noncustom-select" id=labelmode_'.$station.'  name=labelmode_'.$station.'  required><option selected>'.getLabelMode($config,$station)); 
