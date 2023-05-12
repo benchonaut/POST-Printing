@@ -8,36 +8,6 @@ $status=array();
 if (file_exists($configfile))  {                  $config=json_decode(file_get_contents($configfile),1); }
         else { initPrinterConfig($configfile);    $config=json_decode(file_get_contents($configfile),1); }
 
-if(isset($_POST) AND !empty($_POST)) 
-    {
-    //file_put_contents('/tmp/printrouterPOST.log', print_r($_POST, true)); //DEBUG...DUMP POST REQUEST
-    foreach ($_POST as $action => $value) { 
-    $act=explode("_", $action);
-    if ($act[0] == 'label' )             { $config=setLabelNum($config,$act[1],$value);         header("HTTP/1.0 204 No Content");    exit; }
-    elseif ($act[0] == 'labelmode')        { $config=setLabelMode($config,$act[1],$value);      header("HTTP/1.0 204 No Content");    exit; }
-    elseif ($act[0] == 'cardmode')        { $config=setCardMode($config,$act[1],$value);      header("HTTP/1.0 204 No Content");    exit; }
-    elseif ($act[0] == 'cardribbon')    { $config=setCardRibbon($config,$act[1],$value);      header("HTTP/1.0 204 No Content");    exit; }
-    elseif ($act[0] == 'card')    { $config=setCardNum($config,$act[1],$value);  header("HTTP/1.0 204 No Content");    exit; }
-     } 
-     if(isset($_POST['Rotate']))
-        {
-        if ($_POST['Rotate'] == 'Front')
-            { $execute='';for ($a=1;$a< count((array)$config) + 1;$a++ ) { $num=sprintf("%02d",$a);$execute=$execute.'lpadmin -p CARD'.$num.' -o FPageRotate180=ON;' ; } ; exec($execute);  } 
-        elseif ($_POST['Rotate'] == 'Back')
-            { $execute='';for ($a=1;$a< count((array)$config) + 1;$a++ ) { $num=sprintf("%02d",$a);$execute=$execute.'lpadmin -p CARD'.$num.' -o BPageRotate180=ON;' ; } ; exec($execute); } 
-        }
-    if(isset($_POST['NoRotate']))
-        {            
-        if ($_POST['NoRotate'] == 'Front')     
-            { $execute='';for ($a=1;$a< count((array)$config) + 1;$a++ ) { $num=sprintf("%02d",$a);$execute=$execute.'lpadmin -p CARD'.$num.' -o FPageRotate180=OFF;' ; } ; exec($execute); } 
-        elseif ($_POST['NoRotate'] == 'Back')     
-            { $execute='';for ($a=1;$a< count((array)$config) + 1;$a++ ) { $num=sprintf("%02d",$a);$execute=$execute.'lpadmin -p CARD'.$num.' -o BPageRotate180=OFF;' ; } ; exec($execute); } 
-        }
-        //header("HTTP/1.0 204 No Content");    exit;
-    // $action = $_GET['action']; 
-    // $agent_id = $_POST['agent_id']; 
-    }
-
 //file_put_contents('/tmp/printrouterCONF.log', print_r(count((array)$config))); //DEBUG...DUMP config object count
 //station id is determined by last number of ipv4
 exec('/bin/bash /etc/printer_status.sh '.$statusfile);
@@ -148,14 +118,15 @@ print("\n");
         print("\n");
         print('<td >RIBBON:'.getCardRibbon($config,$station).'</td>');
         print("\n");
-        if (isset($status['card-'.sprintf("%02d",$station)])) { print('<td>'.str_replace("|","<br>",$status['card-'.sprintf("%02d",$station)]).'</td>'); }
-            else { print('<td >..</td>'); }
+        if (isset($status['card-'.sprintf("%02d",$station)])) { print('<td id="cardstatus'.sprintf("%02d",$station).'" >'.str_replace("|","<br>",$status['card-'.sprintf("%02d",$station)]).'</td>'); }
+            else { print('<td id="cardstatus'.sprintf("%02d",$station).'" >..</td>'); }
+        print("\n");
         print("\n");
         print("\n");
         print('<td>LABEL'.$station.'</td>');
         print("\n");
-        if (isset($status['label-'.sprintf("%02d",$station)])) { print('<td>'.str_replace("|","<br>",$status['label-'.sprintf("%02d",$station)]).'</td>'); }
-            else { print('<td >..</td>'); }    
+        if (isset($status['label-'.sprintf("%02d",$station)])) { print('<td id="labelstatus'.sprintf("%02d",$station).'" >'.str_replace("|","<br>",$status['label-'.sprintf("%02d",$station)]).'</td>'); }
+            else { print('<td id="labelstatus'.sprintf("%02d",$station).'" >..</td>'); }    
         print("\n");
         print('<td >LMODE:'.getLabelMode($config,$station).'</td>');    
         print("\n");

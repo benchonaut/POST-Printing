@@ -255,14 +255,13 @@ print("\n");
                 foreach ($opt as &$value){ print('<option>'.$value);        print("\n"); }
         print('</select></form></td>');
         print("\n");
-        if (isset($status['card-'.sprintf("%02d",$station)])) { print('<td>'.str_replace("|","<br>",$status['card-'.sprintf("%02d",$station)]).'</td>'); }
-            else { print('<td >..</td>'); }
+        if (isset($status['card-'.sprintf("%02d",$station)])) { print('<td id="cardstatus'.sprintf("%02d",$station).'" >'.str_replace("|","<br>",$status['card-'.sprintf("%02d",$station)]).'</td>'); }
+            else { print('<td id="cardstatus'.sprintf("%02d",$station).'" >..</td>'); }
         print("\n");
         print('<td>LABEL'.$station.'</td>');
         print("\n");
-
-        if (isset($status['label-'.sprintf("%02d",$station)])) { print('<td>'.str_replace("|","<br>",$status['label-'.sprintf("%02d",$station)]).'</td>'); }
-            else { print('<td >..</td>'); }    
+        if (isset($status['label-'.sprintf("%02d",$station)])) { print('<td id="labelstatus'.sprintf("%02d",$station).'" >'.str_replace("|","<br>",$status['label-'.sprintf("%02d",$station)]).'</td>'); }
+            else { print('<td id="labelstatus'.sprintf("%02d",$station).'" >..</td>'); }    
         print("\n");
         print('<td ><form method="POST" action="'.curPageURL().'?action=labelmode" onchange="document.getElementById(\'labelmode_'.$station.'\').form.submit()"> <select class="noncustom-select" id=labelmode_'.$station.'  name=labelmode_'.$station.'  required><option selected>'.getLabelMode($config,$station)); 
                 $opt = array('WIRE_BLK','WIRE_29x90','WIFI_BLK','WIFI_RED','WIFI_29x90');
