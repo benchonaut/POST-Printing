@@ -15,7 +15,6 @@ primacy_stat()    {
                                       echo "$rawres"|grep -q "Kit nb:" && (
                                            echo "|Kit-NB:";echo -n "$rawres"|grep "Kit nb:"|cut -d">" -f5|cut -d"<" -f1 ;
                                       )
-                                      
                                       ) |tr -d '\n' ;  } ; 
 ql720_stat()    { 
     pingres=$(ping -c1 -w2 "$1" &>/dev/null && echo "YES" )
