@@ -216,7 +216,6 @@ setTimeout(function () {
         status_parse(out))
         .catch(err => { throw err });
                     }, 15000);
-    }, 235 );
     
 </script>
 

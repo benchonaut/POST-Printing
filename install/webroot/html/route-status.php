@@ -121,7 +121,6 @@ setTimeout(function () {
         status_parse(out))
         .catch(err => { throw err });
                     }, 15000);
-    }, 235 );
     
 </script>
 <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
