@@ -2,12 +2,12 @@
 
 test -e /tmp/.printerstatus || mkdir /tmp/.printerstatus
 primacy_stat()    { 
-    pingres=$(ping -c1 -w1  $1 2>&1 )
+    pingres=$(ping -c1 -w2  $1 2>&1 )
     echo "$pingres"|grep -q "bytes from" || echo -n "OFFLINE"
     echo "$pingres"|grep -q "bytes from" && (res=$(wget -q -O- http://$1/info.htm);echo -n "$res"|grep "Printer status"|cut -d">" -f5|cut -d"<" -f1 ;
                     res=$(echo "$res"|grep Firmware|cut -d">" -f3,5) ; res=${res//td/} ; res=${res/\<\//} ;res=${res/\//}; echo "|"$res;) |tr -d '\n' ;  } ; 
 ql720_stat()    { 
-    pingres=$(ping -c1 -w1  $1 2>&1 )
+    pingres=$(ping -c1 -w2  $1 2>&1 )
     echo "$pingres"|grep -q "bytes from" || echo -n "OFFLINE"
     echo "$pingres"|grep -q "bytes from" && (echo -n $(snmpwalk -v2c -c public $1 iso.3.6.1.2.1.43.16.5.1.2.1.1|cut -d":" -f2 ; echo "|";
                     #echo "|TotalPages:" ;snmpwalk -v2c -c public $1 iso.3.6.1.2.1.43.10.2.1.4.1.1|cut -d":" -f2  ;
