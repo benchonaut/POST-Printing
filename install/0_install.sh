@@ -144,7 +144,11 @@ ln -s /var/www/html/setup/select-arrows.svg /var/www/html/
 tar xvzf assets/favicon.tgz -C /var/www/html/
 chown -R www-data:www-data /var/www/
 chown -R root:lp /etc/cups
+chown -R root:lp /etc/cups/printers.conf
+chmod ug+r /etc/cups/printers.conf
+
 adduser www-data lpadmin
+adduser www-data lp
 
 ) & 
 
