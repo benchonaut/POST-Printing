@@ -110,11 +110,19 @@ exec('/bin/bash -c " echo;cat /dev/shm/printer-events.log/printer-events.*"|tac|
 print('<center><p style="color:red;font-size-adjust: .8;font-size: 18px">Debug Log </p> </center>');
 print('<table style="background:black;width:100%;" class="mytable"><thead><td class="mytd"><p style="color:white;font-size-adjust: .8;font-size: 12px;text-align: right;">( Auto Reload every 30 seconds)</p></td></thead><tr class="mytr"><td class="mytd"><div class="code"><div class="info"><span class="title"> </span><span class="lang">1</span></div><pre>');
 $linenum=1;
+$length=0
+foreach ($output as $line) {      $length=$length+1; }
 foreach ($output as $line) {
   if($line!="") {
   print($line);
   //if($linenum!=1) { 
+  
+      //if ($linenum==$length) {
+      //    // last line
+      //    } else { 
       print('</pre></div></td></tr><tr class="mytr"><td class="mytd"><div class="code"><div class="info"><span class="title"> </span><span class="lang">'.$linenum.'</span></div><pre>');
+
+      //        }
   //    }
   $linenum=$linenum+1;
   }
